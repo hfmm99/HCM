@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/HCM/Client/bin/Debug/netstandard2.0
+/.vs/HCM/v16/Server/sqlite3
+/HCM/Client/obj
+/HCM/Server/bin/Debug/netcoreapp3.0
+/HCM/Server/obj
+/HCM/Shared/bin/Debug/netstandard2.0
+/HCM/Shared/obj

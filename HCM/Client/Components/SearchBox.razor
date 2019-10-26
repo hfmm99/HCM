@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Components;
+
+<div class="input-group">
+    <input type="search" class="form-control" placeholder="@PlaceHolder" value="@SearchTerm" @onchange="OnChange" aria-label="Search" aria-describedby="btnGroupAddon" />
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary" type="button">
+            <span class="oi oi-magnifying-glass" />
+            Search
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string SearchTerm { get; set; }
+
+    [Parameter]
+    public string PlaceHolder { get; set; } = "Search...";
+
+    [ParameterAttribute]
+    public Action<string> SearchTermChanged { get; set; }
+
+    protected void OnChange(ChangeEventArgs e)
+    {
+        SearchTermChanged(e.Value.ToString());
+    }
+}

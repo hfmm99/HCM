@@ -1,0 +1,61 @@
+﻿@page "/roles"
+@using HCM.Client.Components
+@inject HttpClient httpClient
+
+<SearchBox @bind-SearchTerm="SearchTerm" />
+
+@if (roles == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var role in roles)
+            {
+                <tr>
+                    <td>@role.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code
+{
+    List<GqlRole> roles = null;
+
+    private string searchTerm;
+    public string SearchTerm
+    {
+        get { return searchTerm; }
+        set { searchTerm = value; Search(); }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Search();
+    }
+
+    protected async Task Search()
+    {
+        var gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+        var query = gql.Role(string.Empty, first: 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_RoleFilter { Name_contains = SearchTerm }, orderBy: new[] { Gql_RoleOrdering.name_asc }, fields: r => new GqlRole
+        {
+            _id = r._id,
+            Name = r.Name
+        });
+
+        roles = await query.RunAsync();
+
+        StateHasChanged();
+    }
+}

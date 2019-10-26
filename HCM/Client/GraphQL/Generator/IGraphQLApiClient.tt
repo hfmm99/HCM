@@ -1,0 +1,138 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using Newtonsoft.Json;
+using HCM.Client.GraphQL.Client;
+using System.Threading.Tasks;
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Net" #>
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ import namespace="Newtonsoft.Json.Linq" #>
+<#@ output extension=".cs" #>
+<#@ include file="Introspection.tt" #>
+<#
+	string introspectionResult = HttpPostGraphQLQuery("http://localhost:7474/graphql/", "query IntrospectionQuery { __schema { queryType { name } mutationType { name } subscriptionType { name } types { ...FullType } directives { name description locations args { ...InputValue } } } } fragment FullType on __Type { kind name description fields(includeDeprecated: true) { name description args { ...InputValue } type { ...TypeRef } isDeprecated deprecationReason } inputFields { ...InputValue } interfaces { ...TypeRef } enumValues(includeDeprecated: true) { name description isDeprecated deprecationReason } possibleTypes { ...TypeRef }} fragment InputValue on __InputValue { name description type { ...TypeRef } defaultValue} fragment TypeRef on __Type { kind name ofType { kind name ofType { kind name ofType { kind name ofType { kind name ofType { kind name ofType { kind name ofType { kind name } } } } } } }}");
+    
+	var introspection = Introspection.FromJson(introspectionResult);
+#>
+public interface IGraphQLApiClient
+{
+<#
+	var queries = introspection.Data.Schema.Types.FirstOrDefault(t => t.Name == introspection.Data.Schema.QueryType.Name);
+
+	if (queries != null)
+	{
+		foreach(var field in queries.Fields)
+		{
+			if(!string.IsNullOrEmpty(field.Description))
+			{
+#>
+	/// <summary><#= field.Description ?? string.Empty #></summary>
+<#
+			}
+
+			foreach(var arg in field.Args)
+			{
+				if(!string.IsNullOrEmpty(arg.Description))
+				{
+#>
+	/// <param name="<#= arg.Name #>"><#= arg.Description #></param>
+<#
+				}
+			}
+#>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("<#= field.Name #>")]
+	GraphQLQuery<<#= ParseType(field.Type, false, false, false) #>> <#= ToPascalCase(field.Name) #> (string sessionToken, <#
+			field.Args = field.Args.OrderBy(f => f.Type.Kind == Kind.NonNull ? 0 : 1).ToArray();
+			for(int argIndex = 0; argIndex < field.Args.Length; argIndex++)
+			{
+				#><#= ParseType(field.Args[argIndex].Type, true, false, field.Args[argIndex].Type.Kind != Kind.NonNull) #> <#= field.Args[argIndex].Name #><#= field.Args[argIndex].Type.Kind != Kind.NonNull ? " = " + (field.Args[argIndex].DefaultValue.Enum != null ? field.Args[argIndex].DefaultValue.Enum.ToString().ToLower() : field.Args[argIndex].DefaultValue.ToString()) : string.Empty  #><#= argIndex < field.Args.Length - 1 ?  ", " : string.Empty #><#
+			}
+#>, Func<<#= ParseType(field.Type, false, false, false) #>, <#= ParseType(field.Type, false, false, false) #>> fields = null );
+	
+
+<#
+		}
+#>    
+<#
+	}
+#>
+}
+<#+
+    public string ParseType(OfTypeClass type, bool isArgument, bool isField, bool allowsNulls)
+    {
+		string result = string.Empty;
+
+		switch(type.Kind)
+		{
+			case Kind.Object:
+			case Kind.Enum:
+			case Kind.InputObject:
+				result = "Gql" + type.Name;
+			break;
+			case Kind.List:
+				result = isArgument ? ParseType(type.OfType, isArgument, isField, false) + "[]" : (isField ? "List<" + ParseType(type.OfType, isArgument, false, allowsNulls) + ">" : ParseType(type.OfType, isArgument, false, allowsNulls));
+			break;
+			case Kind.Scalar:
+				switch(type.Name)
+				{
+					case "Boolean":
+						result = "bool?";
+						break;
+					case "Date":
+					case "DateTime":
+					case "DateTimeOffset":
+						result = "DateTime?";
+						break;
+					case "String":
+						result = "string";	
+						break;
+					default:
+						result = type.Name.ToLower()+"?";
+						break;
+				}
+			break;
+			case Kind.NonNull:
+				result = ParseType(type.OfType, isArgument, isField, false);
+			break;
+		}
+
+		if (allowsNulls && (new [] {"int", "long", "float", "bool", "DateTime"}.Contains(result) || type.Kind == Kind.Enum))
+			result += "?";
+
+		return result; 
+    }
+
+	public string ToPascalCase (string inputText)
+    {
+		if(!string.IsNullOrEmpty(inputText))
+			inputText = inputText.Substring(0, 1).ToUpper() + inputText.Substring(1);
+
+		return inputText;
+    }
+
+	public static string HttpPostGraphQLQuery(string weburl, string graphQLQuery)
+    {
+        try
+        {
+            using (var client = new WebClient())
+            {
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+				byte[] data = Encoding.Default.GetBytes(JObject.FromObject(new { query = graphQLQuery }).ToString());
+                byte[] result = client.UploadData(weburl, "POST", data);
+                return Encoding.Default.GetString(result);
+            }
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error accessing url:" + weburl + " :json:" + graphQLQuery, e);
+        }
+    }
+#>

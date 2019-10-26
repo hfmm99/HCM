@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Components;
+
+<div class="input-group">
+    <div class="input-group-prepend">
+        <button class="btn btn-outline-primary" type="button" @onclick='(() => ChangePage(false))'>❮</button>
+    </div>
+    <select class="custom-select" @bind="CurrentPage">
+        @for (int i = 1; i <= Pages; i++)
+        {
+            <option value="@i">@i</option>
+        }
+    </select>
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary" type="button" @onclick='(() => ChangePage(true))'>❯</button>
+    </div>
+</div>
+
+@code {
+
+    private int currentPage = 1;
+    public int CurrentPage
+    {
+        get => currentPage;
+        set
+        {
+            currentPage = value;
+            OnPageChange.InvokeAsync(new PageChangeEventArgs { Page = value });
+        }
+    }
+
+    [Parameter]
+    public int Pages { get; set; }
+
+    /// <summary>
+    ///  Event occurs when the user clicks on a column header to sort.
+    /// </summary>
+    [Parameter]
+    public EventCallback<PageChangeEventArgs> OnPageChange { get; set; }
+
+    private void ChangePage(bool ascending)
+    {
+        if (ascending && currentPage < Pages)
+            CurrentPage++;
+        else if (!ascending && currentPage > 1)
+            CurrentPage--;
+    }
+}

@@ -1,0 +1,86 @@
+﻿@using System.Collections;
+
+<CascadingValue Value="@this">
+    @ChildContent
+</CascadingValue>
+
+@if (Items == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                @if (CheckBoxSelection)
+                {
+                    <th style="width: 10px"></th>
+                }
+                @foreach (var column in Columns)
+                {
+                    <th class='sorting @(GetSortStyle(column.Field))' style="width: @columnWidth%" @onclick='(() => SortGrid(column.Field))'>@(column.Title ?? column.Field)</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Items)
+            {
+                <tr>
+                    @if (CheckBoxSelection)
+                    {
+                        <th>
+                            <input type="checkbox" />
+                        </th>
+                    }
+                    @foreach (var column in Columns)
+                    {
+                        <td>@item.GetType().GetProperty(column.Field).GetValue(item)</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private int columnWidth = 100;
+    private string sortColumn = string.Empty;
+    private bool sortAscending = true;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public IEnumerable Items { get; set; }
+
+    [Parameter]
+    public bool CheckBoxSelection { get; set; }
+
+    internal List<GridColumn> Columns { get; set; } = new List<GridColumn>();
+
+    protected override void OnParametersSet()
+    {
+        if (Columns.Count > 0)
+            columnWidth = 100 / Columns.Count;
+    }
+
+    protected string GetSortStyle(string columnName)
+    {
+        return sortColumn == columnName ? (sortAscending ? "sorting_asc" : "sorting_desc") : string.Empty;
+    }
+
+    protected void SortGrid(string columnName)
+    {
+        sortAscending = sortColumn == columnName ? !sortAscending : true;
+        sortColumn = columnName;
+
+        OnSort.InvokeAsync(new SortEventArgs { ColumnName = sortColumn, SortingAscending = sortAscending });
+    }
+
+    /// <summary>
+    ///  Event occurs when the user clicks on a column header to sort.
+    /// </summary>
+    [Parameter]
+    public EventCallback<SortEventArgs> OnSort { get; set; }
+}

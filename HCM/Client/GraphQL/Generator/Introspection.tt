@@ -1,0 +1,398 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="Newtonsoft.Json.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ import namespace="Newtonsoft.Json.Converters" #>
+<#+
+   public partial class Introspection
+    {
+        [JsonProperty("data")]
+        public Data Data { get; set; }
+    }
+
+    public partial class Data
+    {
+        [JsonProperty("__schema")]
+        public Schema Schema { get; set; }
+    }
+
+    public partial class Schema
+    {
+        [JsonProperty("queryType")]
+        public MutationTypeClass QueryType { get; set; }
+
+        [JsonProperty("mutationType")]
+        public MutationTypeClass MutationType { get; set; }
+
+        [JsonProperty("types")]
+        public TypeElement[] Types { get; set; }
+    }
+
+    public partial class Arg
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("type")]
+        public OfTypeClass Type { get; set; }
+
+        [JsonProperty("defaultValue")]
+        public DefaultValueUnion DefaultValue { get; set; }
+    }
+
+    public partial class OfTypeClass
+    {
+        [JsonProperty("kind")]
+        public Kind Kind { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("ofType")]
+        public OfTypeClass OfType { get; set; }
+    }
+
+    public partial class MutationTypeClass
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+    }
+
+    public partial class TypeElement
+    {
+        [JsonProperty("kind")]
+        public Kind Kind { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("fields")]
+        public Field[] Fields { get; set; }
+
+        [JsonProperty("inputFields")]
+        public Arg[] InputFields { get; set; }
+
+        [JsonProperty("interfaces")]
+        public object[] Interfaces { get; set; }
+
+        [JsonProperty("enumValues")]
+        public EnumValue[] EnumValues { get; set; }
+
+        [JsonProperty("possibleTypes")]
+        public object PossibleTypes { get; set; }
+    }
+
+    public partial class EnumValue
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("isDeprecated")]
+        public bool IsDeprecated { get; set; }
+
+        [JsonProperty("deprecationReason")]
+        public object DeprecationReason { get; set; }
+    }
+
+    public partial class Field
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+		[JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("args")]
+        public Arg[] Args { get; set; }
+
+        [JsonProperty("type")]
+        public OfTypeClass Type { get; set; }
+
+        [JsonProperty("isDeprecated")]
+        public bool IsDeprecated { get; set; }
+
+        [JsonProperty("deprecationReason")]
+        public string DeprecationReason { get; set; }
+    }
+
+    public enum DefaultValueEnum { Asc, NoLongerSupported, Null };
+
+    public enum Kind { Enum, InputObject, List, NonNull, Object, Scalar };
+
+    public partial struct DefaultValueUnion
+    {
+        public bool? Bool;
+        public DefaultValueEnum? Enum;
+        public long? Integer;
+
+        public static implicit operator DefaultValueUnion(bool Bool)
+        {
+            return new DefaultValueUnion { Bool = Bool };
+        }
+
+        public static implicit operator DefaultValueUnion(DefaultValueEnum Enum)
+        {
+            return new DefaultValueUnion { Enum = Enum };
+        }
+
+        public static implicit operator DefaultValueUnion(long Integer)
+        {
+            return new DefaultValueUnion { Integer = Integer };
+        }
+
+        public bool IsNull
+        {
+            get
+            {
+                return Bool == null && Integer == null && Enum == null;
+            }
+        }
+
+		public override string ToString()
+		{
+			return Bool.HasValue ? Bool.ToString() : (Integer.HasValue ? Integer.ToString() : (Enum.HasValue ? Enum.ToString() : "null"));
+		}
+    }
+
+    public partial class Introspection
+    {
+        public static Introspection FromJson(string json)
+        {
+            return JsonConvert.DeserializeObject<Introspection>(json, Converter.Settings);
+        }
+    }
+
+    internal static class Converter
+    {
+        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+        {
+            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+            DateParseHandling = DateParseHandling.None,
+            Converters =
+            {
+                DefaultValueUnionConverter.Singleton,
+                DefaultValueEnumConverter.Singleton,
+                KindConverter.Singleton,
+                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
+            },
+        };
+    }
+
+    internal class DefaultValueUnionConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t)
+        {
+            return t == typeof(DefaultValueUnion) || t == typeof(DefaultValueUnion?);
+        }
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            switch (reader.TokenType)
+            {
+                case JsonToken.Null:
+                    return new DefaultValueUnion { };
+
+                case JsonToken.String:
+                case JsonToken.Date:
+                    var stringValue = serializer.Deserialize<string>(reader);
+                    bool b;
+
+                    if (Boolean.TryParse(stringValue, out b))
+                        return new DefaultValueUnion { Bool = b };
+
+                    switch (stringValue)
+                    {
+                        case "\"No longer supported\"":
+                            return new DefaultValueUnion { Enum = DefaultValueEnum.NoLongerSupported };
+                        case "ASC":
+                            return new DefaultValueUnion { Enum = DefaultValueEnum.Asc };
+                        case "null":
+                            return new DefaultValueUnion { Enum = DefaultValueEnum.Null };
+                    }
+
+                    long l;
+                    if (Int64.TryParse(stringValue, out l))
+                        return new DefaultValueUnion { Integer = l };
+
+                    break;
+            }
+            throw new Exception("Cannot unmarshal type DefaultValueUnion");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            var value = (DefaultValueUnion)untypedValue;
+            if (value.IsNull)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+
+            if (value.Bool != null)
+            {
+                var boolString = value.Bool.Value ? "true" : "false";
+                serializer.Serialize(writer, boolString);
+                return;
+            }
+
+            if (value.Enum != null)
+            {
+                switch (value.Enum)
+                {
+                    case DefaultValueEnum.NoLongerSupported:
+                        serializer.Serialize(writer, "\"No longer supported\"");
+                        return;
+                    case DefaultValueEnum.Asc:
+                        serializer.Serialize(writer, "ASC");
+                        return;
+                    case DefaultValueEnum.Null:
+                        serializer.Serialize(writer, "null");
+                        return;
+                }
+            }
+
+            if (value.Integer != null)
+            {
+                serializer.Serialize(writer, value.Integer.Value.ToString());
+                return;
+            }
+
+            throw new Exception("Cannot marshal type DefaultValueUnion");
+        }
+
+        public static readonly DefaultValueUnionConverter Singleton = new DefaultValueUnionConverter();
+    }
+
+    internal class DefaultValueEnumConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t)
+        {
+            return t == typeof(DefaultValueEnum) || t == typeof(DefaultValueEnum?);
+        }
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+
+            switch (value)
+            {
+                case "\"No longer supported\"":
+                    return DefaultValueEnum.NoLongerSupported;
+                case "ASC":
+                    return DefaultValueEnum.Asc;
+                case "null":
+                    return DefaultValueEnum.Null;
+            }
+
+            throw new Exception("Cannot unmarshal type DefaultValueEnum");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+
+            var value = (DefaultValueEnum)untypedValue;
+            switch (value)
+            {
+                case DefaultValueEnum.NoLongerSupported:
+                    serializer.Serialize(writer, "\"No longer supported\"");
+                    return;
+                case DefaultValueEnum.Asc:
+                    serializer.Serialize(writer, "ASC");
+                    return;
+                case DefaultValueEnum.Null:
+                    serializer.Serialize(writer, "null");
+                    return;
+            }
+
+            throw new Exception("Cannot marshal type DefaultValueEnum");
+        }
+
+        public static readonly DefaultValueEnumConverter Singleton = new DefaultValueEnumConverter();
+    }
+
+    internal class KindConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t)
+        {
+            return t == typeof(Kind) || t == typeof(Kind?);
+        }
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            switch (value)
+            {
+                case "ENUM":
+                    return Kind.Enum;
+                case "INPUT_OBJECT":
+                    return Kind.InputObject;
+                case "LIST":
+                    return Kind.List;
+                case "NON_NULL":
+                    return Kind.NonNull;
+                case "OBJECT":
+                    return Kind.Object;
+                case "SCALAR":
+                    return Kind.Scalar;
+            }
+
+            throw new Exception("Cannot unmarshal type Kind");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+
+            var value = (Kind)untypedValue;
+
+            switch (value)
+            {
+                case Kind.Enum:
+                    serializer.Serialize(writer, "ENUM");
+                    return;
+                case Kind.InputObject:
+                    serializer.Serialize(writer, "INPUT_OBJECT");
+                    return;
+                case Kind.List:
+                    serializer.Serialize(writer, "LIST");
+                    return;
+                case Kind.NonNull:
+                    serializer.Serialize(writer, "NON_NULL");
+                    return;
+                case Kind.Object:
+                    serializer.Serialize(writer, "OBJECT");
+                    return;
+                case Kind.Scalar:
+                    serializer.Serialize(writer, "SCALAR");
+                    return;
+            }
+
+            throw new Exception("Cannot marshal type Kind");
+        }
+
+        public static readonly KindConverter Singleton = new KindConverter();
+    }
+#>
