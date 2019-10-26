@@ -1,0 +1,72 @@
+Team,Name,Email,Country,Percent,Role
+BDX Live,Allan Quirós,aquiros@builderhomesite.com,Costa Rica,40,"Developer,Lead"
+BDX Live,Adrián Ovares,aovares@outcoding.com,Costa Rica,100,Developer
+BDX Live,Manuel Fernández,mafernandez@outcoding.com,Perú,100,Developer
+BDX Live,Alejandra Solís,aponce@outcoding.com,Costa Rica,100,QA Engineer
+BDX Live,Luís González,lgonzalezs@builderhomesite.com,Costa Rica,20,Business Analyst
+BDX Live Redesign,Allán Quirós,aquiros@builderhomesite.com,Costa Rica,60,Lead
+BDX Live Redesign,Alex Solís,@builderhomesite.com,Costa Rica,100,"Developer,Lead"
+BDX Live Redesign,Gary Valverde,@builderhomesite.com,Costa Rica,100,Developer
+BDX Live Redesign,Dorian Cortés,@builderhomesite.com,Costa Rica,100,Developer
+BDX Live Redesign,Héctor Vargas,@builderhomesite.com,Costa Rica,100,Developer
+BDX Live Redesign,Josseline Sánchez,@builderhomesite.com,Costa Rica,100,"Developer,Intern"
+BDX Live Redesign,Wendy Zúñiga,@builderhomesite.com,Costa Rica,100,QA Engineer
+BDX Live Redesign,Natalie Cedeño,@builderhomesite.com,Costa Rica,100,QA Engineer
+BDX Live Redesign,Martha Cajachagua,@builderhomesite.com,Perú,100,QA Engineer
+BDX Live Redesign,Oscar Ubillus,@builderhomesite.com,Perú,100,QA Engineer
+BDX Live Redesign,Luís González,@builderhomesite.com,Costa Rica,40,Business Analyst
+BDX Live Redesign,Johan Aguero,@builderhomesite.com,Costa Rica,100,"Business Analyst,Documentation"
+NHS/CNA Sprint Team,Jonathan Velázquez,@builderhomesite.com,Costa Rica,100,"Developer,Lead"
+NHS/CNA Sprint Team,Juan Achio,@builderhomesite.com,Costa Rica,100,"Developer,BuildMaster"
+NHS/CNA Sprint Team,Jean Carlo Zúñiga,@builderhomesite.com,Costa Rica,100,Developer
+NHS/CNA Sprint Team,Roy Ramos,@builderhomesite.com,Costa Rica,100,"Developer,SEO"
+NHS/CNA Sprint Team,Guillermo Ramirez,@builderhomesite.com,Costa Rica,100,"Developer,SEO"
+NHS/CNA Sprint Team,César López,@builderhomesite.com,Costa Rica,100,Developer
+NHS/CNA Sprint Team,Johnny Jiron,jjiron@builderhomesite.com,Costa Rica,50,QA Engineer
+NHS/CNA Sprint Team,Karen Chinchilla,@builderhomesite.com,Costa Rica,100,QA Engineer
+NHS/CNA Sprint Team,Vanessa Carpio,@builderhomesite.com,Costa Rica,100,QA Engineer
+NHS/CNA Sprint Team,Elizabeth Gamboa,@builderhomesite.com,Costa Rica,100,QA Engineer
+NHS/CNA Sprint Team,Victor Grimaldos,@builderhomesite.com,Perú,100,QA Engineer
+NHS Performance Team,Carlos Torres,@builderhomesite.com,Costa Rica,100,"Developer,Lead"
+NHS Performance Team,Esteban Leandro,@builderhomesite.com,Costa Rica,100,Developer
+NHS Performance Team,Kimberly Granados,@builderhomesite.com,Costa Rica,-,QA Engineer
+NHS Performance Team,Diana Bonilla,@builderhomesite.com,Costa Rica,100,"Intern,Research"
+NHS Performance Team,Fernando Solano,@builderhomesite.com,Costa Rica,100,Developer
+Rating & Reviews,Esteban Sánchez,@builderhomesite.com,Costa Rica,90,"Developer,BuildMaster,Lead"
+Rating & Reviews,Fabián Vargas,@builderhomesite.com,Costa Rica,100,Developer
+Rating & Reviews,Marjorie Guevara,@builderhomesite.com,Costa Rica,100,"QA Engineer,Contractor"
+Rating & Reviews,Kimberly Granados,@builderhomesite.com,Costa Rica,-,QA Engineer
+Lead Augmentation - UserInfo API,Braulio Alpizar,@builderhomesite.com,Costa Rica,100,Developer
+Lead Augmentation - UserInfo API,Ricardo Sánchez,@builderhomesite.com,Costa Rica,100,"Developer,Contractor"
+Lead Augmentation - UserInfo API,Miguel Borja,mborja@builderhomesite.com,Costa Rica,75,Developer
+Lead Augmentation - UserInfo API,Davis Gómez,@builderhomesite.com,Costa Rica,100,QA Engineer
+BDX Reports,Esteban Sánchez,@builderhomesite.com,Costa Rica,10,"Developer,BuildMaster,Lead"
+BDX Reports,Diego Fenández,@builderhomesite.com,Perú,100,Developer
+BDX Reports,Marco Porras,@builderhomesite.com,Costa Rica,100,"Developer,Contractor"
+BDX Reports,Johnny Jiron,jjiron@builderhomesite.com,Costa Rica,50,QA Engineer
+BDX Reports,Genesis Valdiviezo,@builderhomesite.com,Costa Rica,50,QA Engineer
+BDX Reports,Luís González,@builderhomesite.com,Costa Rica,40,Business Analyst
+BDX Web API,Heiner Morales,@builderhomesite.com,Costa Rica,100,"Developer,Lead"
+BDX Web API,Jose David Solano,@builderhomesite.com,Costa Rica,100,"Developer,BuildMaster"
+BDX Web API,Marlon Rivera,@builderhomesite.com,Costa Rica,100,Developer
+BDX Web API,Andrés Durán,@builderhomesite.com,Costa Rica,100,"Developer,BuildMaster"
+BDX Web API,Ricardo Alfaro,@builderhomesite.com,Costa Rica,100,Developer
+BDX Web API,Miguel Borja,mborja@builderhomesite.com,Costa Rica,25,Developer
+Loader & BUS - Rearchitecture,Danny Pérez,@builderhomesite.com,Costa Rica,100,Solution Architect
+Loader & BUS - Rearchitecture,Mario Torres,@builderhomesite.com,Costa Rica,100,"Developer,BuildMaster"
+Loader & BUS - Rearchitecture,Jorge Velázquez,@builderhomesite.com,Costa Rica,100,Developer
+Loader & BUS - Rearchitecture,Ronal Jiménez,@builderhomesite.com,Costa Rica,100,Developer
+Loader & BUS - Rearchitecture,Pablo Barrientos,@builderhomesite.com,Costa Rica,100,Developer
+Loader & BUS - Rearchitecture,Stanley Vargas,@builderhomesite.com,Costa Rica,100,QA Engineer
+Loader & BUS - Rearchitecture,Genesis Valdiviezo,@builderhomesite.com,Costa Rica,50,QA Engineer
+Loader & BUS - Rearchitecture,Koralia Rodriguez,@builderhomesite.com,Costa Rica,100,"Developer,Research"
+Loader & BUS - Rearchitecture,Josue Becerra,@builderhomesite.com,Costa Rica,100,"Developer,Research"
+UI Team,Jason Becker,@builderhomesite.com,USA,100,"UI Engineer,Lead"
+UI Team,Natalia Alpizar,@builderhomesite.com,Costa Rica,100,UI Engineer
+UI Team,Alejandra Ponce,@builderhomesite.com,Costa Rica,100,UI Engineer
+UI Team,Bianca Cortés,@builderhomesite.com,Costa Rica,100,UI Engineer
+UI Team,Bruno Gatjens,@builderhomesite.com,Costa Rica,100,UX
+Test Automation,Luís Herrera,@builderhomesite.com,Costa Rica,100,"Developer,BuildMaster"
+Test Automation,Jefferson Loría,@builderhomesite.com,Costa Rica,100,Developer
+Test Automation,Stephany Barrantes,@builderhomesite.com,Costa Rica,100,Developer
+Test Automation,Kendall Piedra,@builderhomesite.com,Costa Rica,100,Developer
