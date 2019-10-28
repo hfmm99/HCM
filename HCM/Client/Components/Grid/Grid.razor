@@ -1,4 +1,5 @@
 ﻿@using System.Collections;
+@using Microsoft.AspNetCore.Components;
 
 <CascadingValue Value="@this">
     @ChildContent
@@ -26,7 +27,7 @@ else
         <tbody>
             @foreach (var item in Items)
             {
-                <tr>
+                <tr @onclick="@(e => ChangeSelection(e, item))" class="@(IsSelected(item) ? "table-active" : null)">
                     @if (CheckBoxSelection)
                     {
                         <th>
@@ -47,6 +48,20 @@ else
     private int columnWidth = 100;
     private string sortColumn = string.Empty;
     private bool sortAscending = true;
+
+    public object SelectedItem { get; private set; }
+
+    private bool IsSelected(object item) => item.Equals(SelectedItem);
+
+    private void ChangeSelection(EventArgs e, object item)
+    {
+        if (IsSelected(item))
+        {
+            return;
+        }
+
+        SelectedItem = item;
+    }
 
     [Parameter]
     public RenderFragment ChildContent { get; set; }

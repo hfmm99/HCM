@@ -1,0 +1,60 @@
+﻿@page "/employees/{Id:int}"
+@using HCM.Client.Components
+@inject HttpClient httpClient
+
+<form class="needs-validation">
+    @if (employee != null)
+    {
+        <div class="form-group">
+            <label for="txtName">Name</label>
+            <input id="txtName" type="text" class="form-control" placeholder="Enter employee's name" @bind="employee.Name" required />
+            <div class="invalid-feedback">
+                You must enter a name.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="txtEmail">Email</label>
+            <input id="txtEmail" type="email" class="form-control" placeholder="Enter employee's email" @bind="employee.Email" required />
+            <div class="invalid-feedback">
+                You must enter a valid email.
+            </div>
+        </div>
+        <div class="form-group">
+            <div>Gender</div>
+            <label class="radio-inline">
+                <input type="radio" name="rbGender" />
+                Male
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="rbGender" />
+                Female
+            </label>
+        </div>
+        <div class="form-group">
+
+        </div>
+        <button class="btn btn-primary btn-sm" type="submit">Save</button>
+    }
+</form>
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private GqlEmployee employee = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+        var query = gql.Employee(string.Empty, _id: Id, fields: e => new GqlEmployee
+        {
+            _id = e._id,
+            Name = e.Name,
+            Email = e.Email
+        });
+
+        employee = (await query.RunAsync()).FirstOrDefault();
+    }
+}

@@ -2,7 +2,10 @@
 
 <div class="input-group">
     <div class="input-group-prepend">
-        <button class="btn btn-outline-primary" type="button" @onclick='(() => ChangePage(false))'>❮</button>
+            <button class="btn btn-outline-primary" type="button" title="First" @onclick='(() => CurrentPage = 1)'>❰❰</button>
+        </div>
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-primary" type="button" title="Previous" @onclick='(() => ChangePage(false))'>❮</button>
     </div>
     <select class="custom-select" @bind="CurrentPage">
         @for (int i = 1; i <= Pages; i++)
@@ -11,7 +14,10 @@
         }
     </select>
     <div class="input-group-append">
-        <button class="btn btn-outline-primary" type="button" @onclick='(() => ChangePage(true))'>❯</button>
+            <button class="btn btn-outline-primary" type="button" title="Next" @onclick='(() => ChangePage(true))'>❯</button>
+        </div>
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary" type="button" title="Last" @onclick='(() => CurrentPage = Pages)'>❱❱</button>
     </div>
 </div>
 
