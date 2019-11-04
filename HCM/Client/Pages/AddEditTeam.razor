@@ -1,0 +1,60 @@
+@page "/team/{Id:int}"
+@using HCM.Client.Components
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<form class="needs-validation">
+    @if (team != null)
+    {
+        <div class="form-group">
+            <label for="txtName">Name</label>
+            <input id="txtName" type="text" class="form-control" placeholder="Enter team's name" @bind="team.Name" required autofocus />
+            <div class="invalid-feedback">
+                You must enter a name.
+            </div>
+        </div>
+        <div class="form-group">
+
+        </div>
+        <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
+        <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
+    }
+</form>
+
+@code{
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private GraphQLApiClient gql = null;
+    private GqlTeam team = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+        if (Id > 0)
+        {
+            var query = gql.Team(string.Empty, _id: Id, fields: e => new GqlTeam
+            {
+                _id = e._id,
+                Name = e.Name,
+            });
+
+            team = (await query.RunAsync()).FirstOrDefault();
+        }
+        else
+            team = new GqlTeam();
+    }
+
+    public void Save()
+    {
+        gql.MergeTeam(string.Empty, team.Name).RunAsync();
+        Cancel();
+    }
+
+    public void Cancel()
+    {
+        navigationManager.NavigateTo("/teams");
+    }
+}

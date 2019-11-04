@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HCM.Client.GraphQL.Client
 {
-    public class GraphQLQuery<T> where T : class, new()
+    public class GraphQLQuery<T> where T : class
     {
         /// <summary>The GraphQL client service.</summary>
         private IGraphQLClient _graphQlClientService;
@@ -30,6 +30,9 @@ namespace HCM.Client.GraphQL.Client
         /// <summary> Shows if should return an IEnumerable</summary>
         private bool _isIEnumerableResult;
 
+        /// <summary> Wheather the GraphQL Request is a Mutation </summary>
+        private bool _isMutation;
+
         /// <summary>Arguments sent to the Query.</summary>
         public object[] Arguments { get; }
 
@@ -44,10 +47,11 @@ namespace HCM.Client.GraphQL.Client
         /// <param name="queryMethod">Query method.</param>
         /// <param name="fields">GraphQL HTTP Field Selector Function.</param>
         /// <param name="args">A variable-length parameters list containing arguments.</param>
-        public GraphQLQuery(HttpClient httpClient, string endpoint, bool isIEnumerableResult, MethodBase queryMethod, Func<T, T> fields, params object[] args)
+        public GraphQLQuery(HttpClient httpClient, string endpoint, bool isIEnumerableResult, bool isMutation, MethodBase queryMethod, Func<T, T> fields, params object[] args)
         {
             _graphQlClientService = new GraphQLHttpClient(httpClient, endpoint);
             _isIEnumerableResult = isIEnumerableResult;
+            _isMutation = isMutation;
             QueryMethod = queryMethod;
             Arguments = args;
             FieldsSelector = fields;
@@ -87,41 +91,50 @@ namespace HCM.Client.GraphQL.Client
             //Get GraphQL Query Fields
             T defaultObject = DefaultGraphQL<T>();
 
-            var emptyObject = FieldsSelector(defaultObject);
-
-            if (emptyObject != null)
+            if (FieldsSelector != null)
             {
-                var attributes = emptyObject.GetType().GetProperties();
+                var emptyObject = FieldsSelector(defaultObject);
 
-                foreach (PropertyInfo attribute in attributes)
+                if (emptyObject != null)
                 {
-                    if (attribute.GetValue(emptyObject) == null) continue;
+                    var attributes = emptyObject.GetType().GetProperties();
 
-                    fields.Add(new GraphQLRequestBasicField(attribute.Name));
-
-                    if (attribute.PropertyType.IsGenericType && attribute.PropertyType.GetGenericTypeDefinition()
-                            .GetInterface("IEnumerable") != null)
+                    foreach (PropertyInfo attribute in attributes)
                     {
-                        AddListObjects(fields, emptyObject, attribute);
+                        if (attribute.GetValue(emptyObject) == null) continue;
+
+                        fields.Add(new GraphQLRequestBasicField(attribute.Name));
+
+                        if (attribute.PropertyType.IsGenericType && attribute.PropertyType.GetGenericTypeDefinition()
+                                .GetInterface("IEnumerable") != null)
+                        {
+                            AddListObjects(fields, emptyObject, attribute);
+                        }
+                        else if (!attribute.PropertyType.IsSealed && attribute.PropertyType.IsClass)
+                            AddComplexObjectsFromProp(fields, attribute, emptyObject);
                     }
-                    else if (!attribute.PropertyType.IsSealed && attribute.PropertyType.IsClass)
-                        AddComplexObjectsFromProp(fields, attribute, emptyObject);
                 }
             }
 
             //Build GraphQL Request
             _graphQlRequest = new GraphQLRequest(_queryName, arguments.ToArray(), fields.ToArray());
 
+            Console.WriteLine(_isIEnumerableResult);
+
             //Make HTTP call
-            var response = _isIEnumerableResult
+            var response = _isMutation
+                        ? (_isIEnumerableResult
+                           ? await _graphQlClientService.PostMutationAsync(_graphQlRequest, executeOptionalFunc: GetGenericListMethod)
+                           : await _graphQlClientService.PostMutationAsync(_graphQlRequest, executeOptionalFunc: GetGenericSingleObjMethod))
+                        : (_isIEnumerableResult
                            ? await _graphQlClientService.PostQueryAsync(_graphQlRequest, executeOptionalFunc: GetGenericListMethod)
-                           : await _graphQlClientService.PostQueryAsync(_graphQlRequest, executeOptionalFunc: GetGenericSingleObjMethod);
+                           : await _graphQlClientService.PostQueryAsync(_graphQlRequest, executeOptionalFunc: GetGenericSingleObjMethod));
 
             //Return results
             return response;
         }
 
-        private T DefaultGraphQL<T>() where T : new()
+        private T DefaultGraphQL<T>() where T : class
         {
             return (T)DefaultGraphQL(typeof(T));
         }
@@ -133,12 +146,18 @@ namespace HCM.Client.GraphQL.Client
                 return typesDefaultGraphQL[t.Name];
             }
 
+            if (t == typeof(string))
+                return string.Empty;
+
             var result = Activator.CreateInstance(t);
             typesDefaultGraphQL[t.Name] = result;
 
-            foreach (var property in result.GetType().GetProperties())
+            if (t != typeof(string))
             {
-                SetDefaultValues(property, result);
+                foreach (var property in result.GetType().GetProperties())
+                {
+                    SetDefaultValues(property, result);
+                }
             }
 
             return result;
@@ -247,7 +266,7 @@ namespace HCM.Client.GraphQL.Client
         {
             dynamic dynamicResponse = JObject.Parse(graphQlGeneric);
 
-            var getResult = dynamicResponse["Result"]; //TODO: Need to check how to get the data from other schemas, maybe use the Introspection Query
+            var getResult = dynamicResponse["data"]; //TODO: Need to check how to get the data from other schemas, maybe use the Introspection Query
             var result = getResult[_queryName];
 
             var serialiceVal = (T)JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(result));

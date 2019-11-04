@@ -141,7 +141,54 @@ public sealed class GraphQLApiClient : IGraphQLApiClient
 			}
 #>, Func<<#= ParseType(field.Type, false, false, false) #>, <#= ParseType(field.Type, false, false, false) #>> fields = null ) 
 	{
-		return new GraphQLQuery<<#= ParseType(field.Type, false, false, false) #>>(_httpClient, _endpoint, <#= (field.Type.Kind == Kind.List).ToString().ToLower() #>, MethodBase.GetCurrentMethod(), fields, sessionToken, <#
+		return new GraphQLQuery<<#= ParseType(field.Type, false, false, false) #>>(_httpClient, _endpoint, <#= (field.Type.Kind == Kind.List).ToString().ToLower() #>, false, MethodBase.GetCurrentMethod(), fields, sessionToken, <#
+			for(int argIndex = 0; argIndex < field.Args.Length; argIndex++)
+			{
+				#><#= field.Args[argIndex].Name #><#= argIndex < field.Args.Length - 1 ?  ", " : string.Empty #><#
+			}
+#>);
+	}
+
+<#
+		}
+#>    
+<#
+	}
+#>
+<#
+	var mutations = introspection.Data.Schema.Types.FirstOrDefault(t => t.Name == introspection.Data.Schema.MutationType.Name);
+
+	if (mutations != null)
+	{
+		foreach(var field in mutations.Fields)
+		{
+			if(!string.IsNullOrEmpty(field.Description))
+			{
+#>
+	/// <summary><#= field.Description ?? string.Empty #></summary>
+<#
+			}
+			foreach(var arg in field.Args)
+			{
+				if(!string.IsNullOrEmpty(arg.Description))
+				{
+#>
+	/// <param name="<#= arg.Name #>"><#= arg.Description #></param>
+<#
+				}
+			}
+#>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("<#= field.Name #>")]
+	public GraphQLQuery<<#= ParseType(field.Type, false, false, false) #>> <#= ToPascalCase(field.Name) #> (string sessionToken, <#
+			field.Args = field.Args.OrderBy(f => f.Type.Kind == Kind.NonNull ? 0 : 1).ToArray();
+			for(int argIndex = 0; argIndex < field.Args.Length; argIndex++)
+			{
+				#><#= ParseType(field.Args[argIndex].Type, true, false, field.Args[argIndex].Type.Kind != Kind.NonNull) #> <#= field.Args[argIndex].Name #><#= field.Args[argIndex].Type.Kind != Kind.NonNull ? " = " + (field.Args[argIndex].DefaultValue.Enum != null ? field.Args[argIndex].DefaultValue.Enum.ToString().ToLower() : field.Args[argIndex].DefaultValue.ToString()) : string.Empty  #><#= argIndex < field.Args.Length - 1 ?  ", " : string.Empty #><#
+			}
+#>, Func<<#= ParseType(field.Type, false, false, false) #>, <#= ParseType(field.Type, false, false, false) #>> fields = null ) 
+	{
+		return new GraphQLQuery<<#= ParseType(field.Type, false, false, false) #>>(_httpClient, _endpoint, <#= (field.Type.Kind == Kind.List).ToString().ToLower() #>, true, MethodBase.GetCurrentMethod(), fields, sessionToken, <#
 			for(int argIndex = 0; argIndex < field.Args.Length; argIndex++)
 			{
 				#><#= field.Args[argIndex].Name #><#= argIndex < field.Args.Length - 1 ?  ", " : string.Empty #><#

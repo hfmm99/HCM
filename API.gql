@@ -1,0 +1,45 @@
+type Team {
+
+  name: String!
+  contains: [Role] @relation(name: "REQUIRES", direction: out)
+  requires: [LearningItem] @relation(name: "REQUIRES", direction: out)
+  members: [Employee] @relation(name: "IS_MEMBER_OF", direction: in)
+}
+type Employee {
+  name: String!
+  email: String
+  isMemberOf: [Team] @relation(name: "IS_MEMBER_OF", direction: out)
+  worksAs: [Role] @relation(name: "WOKS_AS", direction: out)
+  worksFor: Client @relation(name: "WOKS_FOR", direction: out)
+  livesIn: Country @relation(name: "LIVES_IN", direction: out)
+  completed: [LearningPath] @relation(name: "COMPLETED", direction: out)
+}
+type Role {
+  name: String!
+  employees: [Employee] @relation(name: "WOKS_AS", direction: in)
+  isRequired: [Team] @relation(name: "REQUIRES", direction: in)
+  requires: [LearningItem] @relation(name: "REQUIRES", direction: out)
+}
+type LearninPath {
+  name: String!
+  description: String!
+  contains: [LearningItem] @relation(name: "CONTENT", direction: in)
+  isCompleted: [Employee] @relation(name: "COMPLETED", direction: in)
+  isFollowed: LearningPath @relation(name: "NEXT", direction: out)
+}
+type LearningItem {
+  name: String!
+  duration: String!
+  isFollowed: LearningItem @relation(name: "NEXT", direction: out)
+  isPartOf: LearninPath @relation(name: "CONTENT", direction: out)
+  isNeededFor: [Role] @relation(name: "REQUIRES", direction: in)
+  isRequired: [Team] @relation(name: "REQUIRES", direction: in)
+}
+type Country {
+  name: String!
+  livesIn: [Employee] @relation(name: "LIVES_IN", direction: in)
+}
+type Client {
+  name: String!
+  worksFor: [Employee] @relation(name: "WORKS_FOR", direction: in)
+}

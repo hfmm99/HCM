@@ -1,35 +1,53 @@
 ﻿@page "/teams"
 @using HCM.Client.Components
+@using HCM.Client.Components.Grid
 @inject HttpClient httpClient
+@inject NavigationManager navigationManager
 
-<SearchBox @bind-SearchTerm="SearchTerm" />
+<div class="btn-toolbar row margin-bottom-small" role="toolbar">
+    <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewTeam">
+        <span class="oi oi-plus" />
+        New
+    </button>
+    <button type="button" class="btn btn-outline-secondary mr-1 underline-first-letter" @onclick="EditTeam">
+        <span class="oi oi-pencil" />
+        Edit
+    </button>
+    <button type="button" class="btn btn-outline-danger mr-1 underline-first-letter" @onclick="DeleteTeam">
+        <span class="oi oi-x" />
+        Delete
+    </button>
+</div>
 
-@if (teams == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
+<div class="row margin-bottom-small">
+    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Team" />
+</div>
 
-            @foreach (var team in teams)
-            {
-                <tr>
-                    <td>@team.Name</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<div class="row">
+    <Grid @ref="grid" Items="@teams" OnDoubleClick="@EditTeam" OnSort="@OnGridSort">
+        <GridColumns>
+            <GridColumn Field="@nameof(GqlTeam.Name)" />
+        </GridColumns>
+    </Grid>
+    <div class="mx-auto" style="width: 215px;">
+        <Pager Pages="10" OnPageChange="OnPageChange" />
+    </div>
+</div>
 
-@code {
-    List<GqlTeam> teams = null;
+@code{
+    private GraphQLApiClient gql = null;
+    private List<GqlTeam> teams = null;
+
+    private Gql_TeamOrdering sorting = Gql_TeamOrdering.name_asc;
+
+    private int page = 1;
+
+    private Grid grid;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Search();
+    }
 
     private string searchTerm;
     public string SearchTerm
@@ -38,16 +56,11 @@ else
         set { searchTerm = value; Search(); }
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        await Search();
-    }
-
     protected async Task Search()
     {
-        var gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
 
-        var query = gql.Team(string.Empty, first: 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_TeamFilter { Name_contains = SearchTerm }, orderBy: new[] { Gql_TeamOrdering.name_asc }, fields: t => new GqlTeam
+        var query = gql.Team(string.Empty, first: 10, offset: (page - 1) * 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_TeamFilter { Name_contains = SearchTerm }, orderBy: new[] { sorting }, fields: t => new GqlTeam
         {
             _id = t._id,
             Name = t.Name
@@ -56,5 +69,43 @@ else
         teams = await query.RunAsync();
 
         StateHasChanged();
+    }
+
+    public void OnGridSort(SortEventArgs e)
+    {
+        switch (e.ColumnName)
+        {
+            case nameof(GqlTeam.Name):
+                sorting = e.SortingAscending ? Gql_TeamOrdering.name_asc : Gql_TeamOrdering.name_desc;
+                break;
+        }
+        Search();
+    }
+
+    public void OnPageChange(PageChangeEventArgs e)
+    {
+        Console.WriteLine(e.Page);
+        page = e.Page;
+        Search();
+    }
+
+    public void NewTeam()
+    {
+        navigationManager.NavigateTo("/team/" + -1);
+    }
+
+    public void EditTeam()
+    {
+        if (grid.SelectedItem != null)
+            navigationManager.NavigateTo("/team/" + (grid.SelectedItem as GqlTeam)._id);
+    }
+
+    public void DeleteTeam()
+    {
+        if (grid.SelectedItem != null)
+        {
+            gql.DeleteTeam(string.Empty, (grid.SelectedItem as GqlTeam).Name).RunAsync();
+            Search();
+        }
     }
 }

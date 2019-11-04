@@ -1,0 +1,61 @@
+@page "/role/{Id:int}"
+@using HCM.Client.Components
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+
+<form class="needs-validation">
+    @if (role != null)
+    {
+        <div class="form-group">
+            <label for="txtName">Name</label>
+            <input id="txtName" type="text" class="form-control" placeholder="Enter role's name" @bind="role.Name" required autofocus />
+            <div class="invalid-feedback">
+                You must enter a name.
+            </div>
+        </div>
+        <div class="form-group">
+
+        </div>
+        <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
+        <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
+    }
+</form>
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private GraphQLApiClient gql = null;
+    private GqlRole role = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+        if (Id > 0)
+        {
+            var query = gql.Role(string.Empty, _id: Id, fields: e => new GqlRole
+            {
+                _id = e._id,
+                Name = e.Name,
+            });
+
+            role = (await query.RunAsync()).FirstOrDefault();
+        }
+        else
+            role = new GqlRole();
+    }
+
+    public void Save()
+    {
+        gql.MergeRole(string.Empty, role.Name).RunAsync();
+        Cancel();
+    }
+
+    public void Cancel()
+    {
+        navigationManager.NavigateTo("/roles");
+    }
+}

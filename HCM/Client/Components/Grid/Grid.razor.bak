@@ -27,7 +27,7 @@ else
         <tbody>
             @foreach (var item in Items)
             {
-                <tr @onclick="@(e => ChangeSelection(e, item))" class="@(IsSelected(item) ? "table-active" : null)" @ondblclick='(() => DoubleClick(SelectedItem))'>
+                <tr @onclick="@(e => ChangeSelection(e, item))" class="@(IsSelected(item) ? "table-active" : null)">
                     @if (CheckBoxSelection)
                     {
                         <th>
@@ -61,8 +61,6 @@ else
         }
 
         SelectedItem = item;
-
-        Click(SelectedItem);
     }
 
     [Parameter]
@@ -100,20 +98,4 @@ else
     /// </summary>
     [Parameter]
     public EventCallback<SortEventArgs> OnSort { get; set; }
-
-    protected void DoubleClick(object item)
-    {
-        OnDoubleClick.InvokeAsync(new DblClickEventArgs { SelectedItem = item });
-}
-
-    [Parameter]
-    public EventCallback<DblClickEventArgs> OnDoubleClick { get; set; }
-
-    protected void Click(object item)
-    {
-        OnClick.InvokeAsync(new OnClickEventArgs { itemShown = item });
-    }
-
-    [Parameter]
-    public EventCallback<OnClickEventArgs> OnClick { get; set; }
 }

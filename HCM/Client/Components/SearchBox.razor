@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components;
 
 <div class="input-group">
-    <input type="search" class="form-control" placeholder="@PlaceHolder" value="@SearchTerm" @onchange="OnChange" aria-label="Search" aria-describedby="btnGroupAddon" />
+    <input type="search" class="form-control" placeholder="@PlaceHolder" value="@SearchTerm" @onchange="OnChange" aria-label="Search" aria-describedby="btnGroupAddon" autofocus />
     <div class="input-group-append">
         <button class="btn btn-outline-primary" type="button">
             <span class="oi oi-magnifying-glass" />

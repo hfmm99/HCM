@@ -1,36 +1,53 @@
 ﻿@page "/roles"
 @using HCM.Client.Components
+@using HCM.Client.Components.Grid
 @inject HttpClient httpClient
+@inject NavigationManager navigationManager
 
-<SearchBox @bind-SearchTerm="SearchTerm" />
+<div class="btn-toolbar row margin-bottom-small" role="toolbar">
+    <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewRole">
+        <span class="oi oi-plus" />
+        New
+    </button>
+    <button type="button" class="btn btn-outline-secondary mr-1" @onclick="EditRole">
+        <span class="oi oi-pencil" />
+        Edit
+    </button>
+    <button type="button" class="btn btn-outline-danger mr-1" @onclick="DeleteRole">
+        <span class="oi oi-x" />
+        Delete
+    </button>
+</div>
 
-@if (roles == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
+<div class="row margin-bottom-small">
+    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Role" />
+</div>
 
-            @foreach (var role in roles)
-            {
-                <tr>
-                    <td>@role.Name</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<div class="row">
+    <Grid @ref="grid" Items="@roles" OnDoubleClick="@EditRole" OnSort="@OnGridSort">
+        <GridColumns>
+            <GridColumn Field="@nameof(GqlRole.Name)" />
+        </GridColumns>
+    </Grid>
+    <div class="mx-auto" style="width: 215px;">
+        <Pager Pages="10" OnPageChange="OnPageChange" />
+    </div>
+</div>
 
-@code
-{
-    List<GqlRole> roles = null;
+@code{
+    private GraphQLApiClient gql = null;
+    private List<GqlRole> roles = null;
+
+    private Gql_RoleOrdering sorting = Gql_RoleOrdering.name_asc;
+
+    private int page = 1;
+
+    private Grid grid;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Search();
+    }
 
     private string searchTerm;
     public string SearchTerm
@@ -39,16 +56,11 @@ else
         set { searchTerm = value; Search(); }
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        await Search();
-    }
-
     protected async Task Search()
     {
-        var gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
 
-        var query = gql.Role(string.Empty, first: 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_RoleFilter { Name_contains = SearchTerm }, orderBy: new[] { Gql_RoleOrdering.name_asc }, fields: r => new GqlRole
+        var query = gql.Role(string.Empty, first: 10, offset: (page - 1) * 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_RoleFilter { Name_contains = SearchTerm }, orderBy: new[] { sorting }, fields: r => new GqlRole
         {
             _id = r._id,
             Name = r.Name
@@ -57,5 +69,44 @@ else
         roles = await query.RunAsync();
 
         StateHasChanged();
+    }
+
+    public void OnGridSort(SortEventArgs e)
+    {
+        switch (e.ColumnName)
+        {
+            case nameof(GqlRole.Name):
+                sorting = e.SortingAscending ? Gql_RoleOrdering.name_asc : Gql_RoleOrdering.name_desc;
+                break;
+        }
+
+        Search();
+    }
+
+    public void OnPageChange(PageChangeEventArgs e)
+    {
+        Console.WriteLine(e.Page);
+        page = e.Page;
+        Search();
+    }
+
+    public void NewRole()
+    {
+        navigationManager.NavigateTo("/role/" + -1);
+    }
+
+    public void EditRole()
+    {
+        if (grid.SelectedItem != null)
+            navigationManager.NavigateTo("/role/" + (grid.SelectedItem as GqlRole)._id);
+    }
+
+    public void DeleteRole()
+    {
+        if (grid.SelectedItem != null)
+        {
+            gql.DeleteRole(string.Empty, (grid.SelectedItem as GqlRole).Name).RunAsync();
+            Search();
+        }
     }
 }

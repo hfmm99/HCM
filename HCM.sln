@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HCM.Shared", "HCM\Shared\HC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{0C2CFC99-BDA1-47BC-8711-968CA34F6102}"
 	ProjectSection(SolutionItems) = preProject
+		API.gql = API.gql
+		API1.gql = API1.gql
 		Scripts\CareerPath.cql = Scripts\CareerPath.cql
 		Scripts\Employees.csv = Scripts\Employees.csv
 	EndProjectSection

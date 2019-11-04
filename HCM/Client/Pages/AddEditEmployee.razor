@@ -1,13 +1,15 @@
-﻿@page "/employees/{Id:int}"
+﻿@page "/employee/{Id:int}"
 @using HCM.Client.Components
 @inject HttpClient httpClient
+@inject NavigationManager navigationManager
 
 <form class="needs-validation">
+
     @if (employee != null)
     {
         <div class="form-group">
             <label for="txtName">Name</label>
-            <input id="txtName" type="text" class="form-control" placeholder="Enter employee's name" @bind="employee.Name" required />
+            <input id="txtName" type="text" class="form-control" placeholder="Enter employee's name" @bind="employee.Name" required autofocus />
             <div class="invalid-feedback">
                 You must enter a name.
             </div>
@@ -30,10 +32,8 @@
                 Female
             </label>
         </div>
-        <div class="form-group">
-
-        </div>
-        <button class="btn btn-primary btn-sm" type="submit">Save</button>
+        <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
+        <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
     }
 </form>
 
@@ -42,19 +42,37 @@
     [Parameter]
     public int Id { get; set; }
 
+    private GraphQLApiClient gql = null;
     private GqlEmployee employee = null;
+    private int create;
 
     protected override async Task OnInitializedAsync()
     {
-        var gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
 
-        var query = gql.Employee(string.Empty, _id: Id, fields: e => new GqlEmployee
+        if (Id > 0)
         {
-            _id = e._id,
-            Name = e.Name,
-            Email = e.Email
-        });
+            var query = gql.Employee(string.Empty, _id: Id, fields: e => new GqlEmployee
+            {
+                _id = e._id,
+                Name = e.Name,
+                Email = e.Email
+            });
 
-        employee = (await query.RunAsync()).FirstOrDefault();
+            employee = (await query.RunAsync()).FirstOrDefault();
+        }
+        else
+            employee = new GqlEmployee();
+    }
+
+    public void Save()
+    {
+        gql.MergeEmployee(string.Empty, employee.Name, employee.Email).RunAsync();
+        Cancel();
+    }
+
+    public void Cancel()
+    {
+        navigationManager.NavigateTo("/employees");
     }
 }

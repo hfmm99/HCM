@@ -174,3 +174,7 @@ table thead > tr > th.sorting_desc {
 .margin-bottom-small {
     margin-bottom: 0.3rem;
 }
+
+.underline-first-letter::first-letter {
+    text-decoration: underline;
+}

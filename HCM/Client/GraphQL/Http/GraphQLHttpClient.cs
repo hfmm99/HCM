@@ -66,29 +66,29 @@ namespace HCM.Client.GraphQL.Client.Http
             return await this.graphQlHttpHandler.GetAsync<T>(request, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<T> PostMutationAsync<T>(GraphQLRequest[] requests,
-            IDictionary<string, IEnumerable<string>> headers = default,
+        public async Task<T> PostMutationAsync<T>(GraphQLRequest[] requests, Func<string, T> executeOptionalFunc = null,
+            IDictionary<string, IEnumerable<string>> headers = default, 
             CancellationToken cancellationToken = default)
         {
             if (requests == null) throw new ArgumentNullException(nameof(requests));
 
             var requestsRendered = requests.Select(request => request.RenderRequest()).ToList().Join("\n");
 
-            return await PostQueryAsync<T>(request: $"mutation {{ {requestsRendered} }}", headers: headers, cancellationToken: cancellationToken).ConfigureAwait(false);
+            return await PostQueryAsync<T>(request: $"mutation {{ {requestsRendered} }}", executeOptionalFunc: executeOptionalFunc, headers: headers, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<T> PostMutationAsync<T>(GraphQLRequest request,
-            IDictionary<string, IEnumerable<string>> headers = default,
+        public async Task<T> PostMutationAsync<T>(GraphQLRequest request, Func<string, T> executeOptionalFunc = null,
+            IDictionary<string, IEnumerable<string>> headers = default, 
             CancellationToken cancellationToken = default)
         {
-            return await this.PostMutationAsync<T>(requests: new[] { request }, headers: headers, cancellationToken: cancellationToken).ConfigureAwait(false);
+            return await this.PostMutationAsync<T>(requests: new[] { request }, executeOptionalFunc: executeOptionalFunc, headers: headers, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<T> PostMutationAsync<T>(string name, object arguments, Type fieldsFrom,
-            IDictionary<string, IEnumerable<string>> headers = default,
+            Func<string, T> executeOptionalFunc = null, IDictionary<string, IEnumerable<string>> headers = default, 
             CancellationToken cancellationToken = default)
         {
-            return await this.PostMutationAsync<T>(request: new GraphQLRequest(name, arguments, fieldsFrom), headers: headers, cancellationToken: cancellationToken)
+            return await this.PostMutationAsync<T>(request: new GraphQLRequest(name, arguments, fieldsFrom), executeOptionalFunc: executeOptionalFunc, headers: headers, cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
         }
 

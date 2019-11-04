@@ -5,15 +5,15 @@
 @inject NavigationManager navigationManager
 
 <div class="btn-toolbar row margin-bottom-small" role="toolbar">
-    <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewEmployee">
+    <button type="button" class="btn btn-outline-primary mr-1">
         <span class="oi oi-plus" />
-        New
+        Insert
     </button>
     <button type="button" class="btn btn-outline-secondary mr-1" @onclick="EditEmployee">
         <span class="oi oi-pencil" />
         Edit
     </button>
-    <button type="button" class="btn btn-outline-danger mr-1" @onclick="DeleteEmployee">
+    <button type="button" class="btn btn-outline-danger mr-1">
         <span class="oi oi-x" />
         Delete
     </button>
@@ -24,7 +24,7 @@
 </div>
 
 <div class="row">
-    <Grid @ref="grid" Items="@employees" OnDoubleClick="@EditEmployee" OnSort="@OnGridSort">
+    <Grid @ref="grid" Items="@employees" OnSort="@OnGridSort">
         <GridColumns>
             <GridColumn Field="@nameof(GqlEmployee.Name)" />
             <GridColumn Field="@nameof(GqlEmployee.Email)" />
@@ -35,8 +35,8 @@
     </div>
 </div>
 
-@code{
-    private GraphQLApiClient gql = null;
+@code
+{
     private List<GqlEmployee> employees = null;
 
     private Gql_EmployeeOrdering sorting = Gql_EmployeeOrdering.name_asc;
@@ -59,7 +59,7 @@
 
     protected async Task Search()
     {
-        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+        var gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
 
         var query = gql.Employee(string.Empty, first: 10, offset: (page - 1) * 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_EmployeeFilter { OR = new List<Gql_EmployeeFilter> { new Gql_EmployeeFilter { Name_contains = SearchTerm }, new Gql_EmployeeFilter { Email_contains = SearchTerm } } }, orderBy: new[] { sorting }, fields: e => new GqlEmployee
         {
@@ -95,23 +95,9 @@
         Search();
     }
 
-    public void NewEmployee()
-    {
-        navigationManager.NavigateTo("/employee/" + -1);
-    }
-
     public void EditEmployee()
     {
         if (grid.SelectedItem != null)
-            navigationManager.NavigateTo("/employee/" + (grid.SelectedItem as GqlEmployee)._id);
-    }
-
-    public void DeleteEmployee()
-    {
-        if (grid.SelectedItem != null)
-        {
-            gql.DeleteEmployee(string.Empty, (grid.SelectedItem as GqlEmployee).Name).RunAsync();
-            Search();
-        }
+            navigationManager.NavigateTo("/employees/" + (grid.SelectedItem as GqlEmployee)._id);
     }
 }

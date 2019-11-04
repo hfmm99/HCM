@@ -18,11 +18,11 @@ namespace HCM.Client.GraphQL.Client
 
         Task<T> GetQueryAsync<T>(string request, CancellationToken cancellationToken = default);
 
-        Task<T> PostMutationAsync<T>(GraphQLRequest[] requests, IDictionary<string, IEnumerable<string>> headers = default, CancellationToken cancellationToken = default);
+        Task<T> PostMutationAsync<T>(GraphQLRequest[] requests, Func<string, T> executeOptionalFunc = null, IDictionary<string, IEnumerable<string>> headers = default, CancellationToken cancellationToken = default);
 
-        Task<T> PostMutationAsync<T>(GraphQLRequest request, IDictionary<string, IEnumerable<string>> headers = default, CancellationToken cancellationToken = default);
+        Task<T> PostMutationAsync<T>(GraphQLRequest request, Func<string, T> executeOptionalFunc = null, IDictionary<string, IEnumerable<string>> headers = default, CancellationToken cancellationToken = default);
 
-        Task<T> PostMutationAsync<T>(string name, object arguments, Type fieldsFrom, IDictionary<string, IEnumerable<string>> headers = default, CancellationToken cancellationToken = default);
+        Task<T> PostMutationAsync<T>(string name, object arguments, Type fieldsFrom, Func<string, T> executeOptionalFunc = null, IDictionary<string, IEnumerable<string>> headers = default, CancellationToken cancellationToken = default);
 
         Task<T> PostQueryAsync<T>(string request, Func<string, T> executeOptionalFunc = null, IDictionary<string, IEnumerable<string>> headers = default, CancellationToken cancellationToken = default);
 
