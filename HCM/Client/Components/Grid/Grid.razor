@@ -25,7 +25,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (dynamic item in Data)
+            @foreach (object item in Data)
             {
                 <tr @onclick="@(e => ChangeSelection(e, item))" class="@(IsSelected(item) ? "table-active" : null)" @ondblclick='(() => DoubleClick(SelectedItem))'>
                     @if (CheckBoxSelection)
@@ -81,7 +81,7 @@ else
     public RenderFragment ChildContent { get; set; }
 
     [Parameter]
-    public IEnumerable<dynamic> Data { get; set; }
+    public IEnumerable<object> Data { get; set; }
 
     [Parameter]
     public bool CheckBoxSelection { get; set; }
