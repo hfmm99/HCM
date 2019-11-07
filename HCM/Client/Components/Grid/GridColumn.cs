@@ -12,6 +12,12 @@ namespace HCM.Client.Components.Grid
         [Parameter]
         public string Title { get; set; }
 
+        [Parameter]
+        public string Format { get; set; }
+
+        [Parameter]
+        public RenderFragment<dynamic> Template { get; set; }
+
         [CascadingParameter()]
         public Grid Grid { get; set; }
 

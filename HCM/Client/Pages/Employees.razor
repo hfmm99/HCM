@@ -24,7 +24,7 @@
 </div>
 
 <div class="row">
-    <Grid @ref="grid" Items="@employees" OnDoubleClick="@EditEmployee" OnSort="@OnGridSort">
+    <Grid @ref="grid" Data="@employees" OnDoubleClick="@EditEmployee" OnSort="@OnGridSort">
         <GridColumns>
             <GridColumn Field="@nameof(GqlEmployee.Name)" />
             <GridColumn Field="@nameof(GqlEmployee.Email)" />

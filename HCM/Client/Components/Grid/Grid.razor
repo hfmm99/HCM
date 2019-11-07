@@ -5,7 +5,7 @@
     @ChildContent
 </CascadingValue>
 
-@if (Items == null)
+@if (Data == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -25,7 +25,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Items)
+            @foreach (dynamic item in Data)
             {
                 <tr @onclick="@(e => ChangeSelection(e, item))" class="@(IsSelected(item) ? "table-active" : null)" @ondblclick='(() => DoubleClick(SelectedItem))'>
                     @if (CheckBoxSelection)
@@ -34,9 +34,21 @@ else
                             <input type="checkbox" />
                         </th>
                     }
-                    @foreach (var column in Columns)
+                    @foreach (GridColumn column in Columns)
                     {
-                        <td>@item.GetType().GetProperty(column.Field).GetValue(item)</td>
+                        if (column.Template == null)
+                        {
+                            var value = @item.GetType().GetProperty(column.Field).GetValue(item);
+                            <td>
+                                @(string.IsNullOrEmpty(column.Format) ? value : string.Format(column.Format, value))
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @column.Template(item);
+                            </td>
+                        }
                     }
                 </tr>
             }
@@ -69,7 +81,7 @@ else
     public RenderFragment ChildContent { get; set; }
 
     [Parameter]
-    public IEnumerable Items { get; set; }
+    public IEnumerable<dynamic> Data { get; set; }
 
     [Parameter]
     public bool CheckBoxSelection { get; set; }
@@ -104,7 +116,7 @@ else
     protected void DoubleClick(object item)
     {
         OnDoubleClick.InvokeAsync(new DblClickEventArgs { SelectedItem = item });
-}
+    }
 
     [Parameter]
     public EventCallback<DblClickEventArgs> OnDoubleClick { get; set; }
