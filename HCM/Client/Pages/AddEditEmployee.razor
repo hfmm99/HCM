@@ -8,6 +8,9 @@
     @if (employee != null)
     {
         <div class="form-group">
+            <img src="/Images/@employee.Image" alt="@employee.Name" />
+        </div>
+        <div class="form-group">
             <label for="txtName">Name</label>
             <input id="txtName" type="text" class="form-control" placeholder="Enter employee's name" @bind="employee.Name" required autofocus />
             <div class="invalid-feedback">
@@ -62,7 +65,8 @@
                 Name = e.Name,
                 DateOfBirth = e.DateOfBirth,
                 Email = e.Email,
-                Gender = e.Gender
+                Gender = e.Gender,
+                Image = e.Image
             });
 
             employee = (await query.RunAsync()).FirstOrDefault();

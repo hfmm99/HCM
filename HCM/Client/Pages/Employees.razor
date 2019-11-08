@@ -26,9 +26,21 @@
 <div class="row">
     <Grid @ref="grid" Data="@employees" OnDoubleClick="@EditEmployee" OnSort="@OnGridSort">
         <GridColumns>
+            <GridColumn Title="Image">
+                <Template>
+                    @{
+                        var employee = context as GqlEmployee;
+
+                        if (!string.IsNullOrEmpty(employee.Image))
+                        {
+                            <center><img src="/Images/@employee.Image" alt="@employee.Name" height="64" /></center>
+                        }
+                    }
+                </Template>
+            </GridColumn>
             <GridColumn Field="@nameof(GqlEmployee.Name)" />
             <GridColumn Field="@nameof(GqlEmployee.Email)" />
-            <GridColumn Field="@nameof(GqlEmployee.DateOfBirth)" Title="Date of Birth" />
+            <GridColumn Field="@nameof(GqlEmployee.DateOfBirth)" Title="Date of Birth" Format="{0:mm/dd/yyyy}" />
             <GridColumn Title="Gender">
                 <Template>
                     @{
@@ -85,7 +97,8 @@
             Name = e.Name,
             Email = e.Email,
             DateOfBirth = e.DateOfBirth,
-            Gender = e.Gender
+            Gender = e.Gender,
+            Image = e.Image
         }); ;
 
         employees = await query.RunAsync();

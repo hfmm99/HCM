@@ -3,6 +3,7 @@ type Employee {
   email: String
   dateOfBirth: DateTime
   gender: String
+  image: String
   isMemberOf: [Team] @relation(name: "IS_MEMBER_OF", direction: out)
   worksAs: [Role] @relation(name: "WOKS_AS", direction: out)
   worksFor: Client @relation(name: "WOKS_FOR", direction: out)

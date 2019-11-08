@@ -179,3 +179,13 @@ table thead > tr > th.sorting_desc {
 .underline-first-letter::first-letter {
     text-decoration: underline;
 }
+
+.card {
+    background-color: transparent;
+}
+
+.card-header {
+    background-color: rgba(255,255,255,0.25);
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+}
