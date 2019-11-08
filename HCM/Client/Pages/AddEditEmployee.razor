@@ -16,19 +16,23 @@
         </div>
         <div class="form-group">
             <label for="txtEmail">Email</label>
-            <input id="txtEmail" type="email" class="form-control" placeholder="Enter employee's email" @bind="employee.Email" required />
+            <input id="txtEmail" type="email" class="form-control" placeholder="Enter employee's email" @bind="employee.Email" />
             <div class="invalid-feedback">
                 You must enter a valid email.
             </div>
         </div>
         <div class="form-group">
+            <label for="dtpDateOfBirth">Date of Birth</label>
+            <input id="dtpDateOfBirth" type="date" class="form-control" placeholder="Enter employee's email" @bind="employee.DateOfBirth" />
+        </div>
+        <div class="form-group">
             <div>Gender</div>
             <label class="radio-inline">
-                <input type="radio" name="rbGender" />
+                <input type="radio" name="rbGender" checked='@(employee.Gender == "M")' @onchange='(() => employee.Gender = "M")' />
                 Male
             </label>
             <label class="radio-inline">
-                <input type="radio" name="rbGender" />
+                <input type="radio" name="rbGender" checked='@(employee.Gender == "F")' @onchange='(() => employee.Gender = "F")' />
                 Female
             </label>
         </div>
@@ -56,7 +60,9 @@
             {
                 _id = e._id,
                 Name = e.Name,
-                Email = e.Email
+                DateOfBirth = e.DateOfBirth,
+                Email = e.Email,
+                Gender = e.Gender
             });
 
             employee = (await query.RunAsync()).FirstOrDefault();
@@ -67,7 +73,7 @@
 
     public void Save()
     {
-        gql.MergeEmployee(string.Empty, employee.Name, employee.Email).RunAsync();
+        gql.MergeEmployee(string.Empty, employee.Name, employee.DateOfBirth, employee.Email, employee.Gender).RunAsync();
         Cancel();
     }
 

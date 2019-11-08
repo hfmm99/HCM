@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HCM.Client.GraphQL.Client
 {
-    public class GraphQLQuery<T> where T : class
+    public class GraphQLQuery<T>
     {
         /// <summary>The GraphQL client service.</summary>
         private IGraphQLClient _graphQlClientService;
@@ -134,7 +134,7 @@ namespace HCM.Client.GraphQL.Client
             return response;
         }
 
-        private T DefaultGraphQL<T>() where T : class
+        private T DefaultGraphQL<T>()
         {
             return (T)DefaultGraphQL(typeof(T));
         }

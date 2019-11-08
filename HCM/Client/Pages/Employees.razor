@@ -28,10 +28,27 @@
         <GridColumns>
             <GridColumn Field="@nameof(GqlEmployee.Name)" />
             <GridColumn Field="@nameof(GqlEmployee.Email)" />
+            <GridColumn Field="@nameof(GqlEmployee.DateOfBirth)" Title="Date of Birth" />
+            <GridColumn Title="Gender">
+                <Template>
+                    @{
+                        var employee = context as GqlEmployee;
+
+                        if (employee.Gender == "M")
+                        {
+                            <span>Male</span>
+                        }
+                        else if (employee.Gender == "F")
+                        {
+                            <span>Female</span>
+                        }
+                    }
+                </Template>
+            </GridColumn>
         </GridColumns>
     </Grid>
     <div class="mx-auto" style="width: 215px;">
-        <Pager Pages="10" OnPageChange="OnPageChange" />
+        <Pager Pages="@pages" OnPageChange="OnPageChange" />
     </div>
 </div>
 
@@ -42,6 +59,7 @@
     private Gql_EmployeeOrdering sorting = Gql_EmployeeOrdering.name_asc;
 
     private int page = 1;
+    private int pages = 0;
 
     private Grid grid;
 
@@ -65,10 +83,14 @@
         {
             _id = e._id,
             Name = e.Name,
-            Email = e.Email
+            Email = e.Email,
+            DateOfBirth = e.DateOfBirth,
+            Gender = e.Gender
         }); ;
 
         employees = await query.RunAsync();
+
+        pages = 10; // (await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault().Value;
 
         StateHasChanged();
     }

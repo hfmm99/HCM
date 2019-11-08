@@ -1,7 +1,8 @@
 type Employee {
   name: ID!
   email: String
-  dateOfBirth: String
+  dateOfBirth: DateTime
+  gender: String
   isMemberOf: [Team] @relation(name: "IS_MEMBER_OF", direction: out)
   worksAs: [Role] @relation(name: "WOKS_AS", direction: out)
   worksFor: Client @relation(name: "WOKS_FOR", direction: out)
@@ -30,11 +31,17 @@ type Client {
   employees: [Employee] @relation(name: "WORKS_FOR", direction: in)
 }
 
-type Counts {
-  Employees: Int
+type QueryType {
+  EmployeeCount: Int
     @cypher(statement: "MATCH (e:Employee) RETURN COUNT(e) AS Employees"),
-  Teams: Int
+  TeamCount: Int
     @cypher(statement: "MATCH (t:Team) RETURN COUNT(t) AS Teams"),
-  Roles: Int
+  RoleCount: Int
     @cypher(statement: "MATCH (r:Role) RETURN COUNT(r) AS Roles")
 }
+
+schema {
+   query: QueryType
+}
+
+scalar DateTime
