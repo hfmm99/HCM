@@ -7,37 +7,63 @@
 
     @if (employee != null)
     {
-        <div class="form-group">
-            <img src="/Images/@employee.Image" alt="@employee.Name" />
+        <div class="hovereffect">
+            @if (employee.Image == null)
+            {
+                <div class="img-thumbnail" style="width: 100px;" />
+            }
+            else
+            {
+                <img src="/Images/@employee.Image" alt="@employee.Name" class="img-thumbnail img-responsive" />
+            }
+            <a class="info" href="#">Change Image</a>
         </div>
-        <div class="form-group">
-            <label for="txtName">Name</label>
-            <input id="txtName" type="text" class="form-control" placeholder="Enter employee's name" @bind="employee.Name" required autofocus />
-            <div class="invalid-feedback">
-                You must enter a name.
+
+        <div class="form-row">
+            <div class="col">
+                <label for="txtName">Name:</label>
+                <input id="txtName" type="text" class="form-control" placeholder="Enter employee's name" @bind="employee.Name" required autofocus />
+                <div class="invalid-feedback">
+                    You must enter a name.
+                </div>
+            </div>
+            <div class="col">
+                <label for="txtPhone">Phone:</label>
+                <input id="txtPhone" type="tel" class="form-control" placeholder="Enter employee's phone" @bind="employee.Phone" />
+                <div class="invalid-feedback">
+                    You must enter a valid phone.
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <label for="txtEmail">Email:</label>
+                <input id="txtEmail" type="email" class="form-control" placeholder="Enter employee's email" @bind="employee.Email" />
+                <div class="invalid-feedback">
+                    You must enter a valid email.
+                </div>
+            </div>
+            <div class="col">
+                <label for="dtpDateOfBirth">Date of Birth:</label>
+                <input id="dtpDateOfBirth" type="date" class="form-control" placeholder="Enter employee's email" @bind="employee.DateOfBirth" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <div class="form-row">Gender:</div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="rbMale" name="rbGender" class="custom-control-input" checked='@(employee.Gender == "M")' @onchange='(() => employee.Gender = "M")' />
+                    <label for="rbMale" class="custom-control-label">Male</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="rbFemale" name="rbGender" class="custom-control-input" checked='@(employee.Gender == "F")' @onchange='(() => employee.Gender = "F")' />
+                    <label for="rbFemale" class="custom-control-label">Female</label>
+                </div>
             </div>
         </div>
         <div class="form-group">
-            <label for="txtEmail">Email</label>
-            <input id="txtEmail" type="email" class="form-control" placeholder="Enter employee's email" @bind="employee.Email" />
-            <div class="invalid-feedback">
-                You must enter a valid email.
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="dtpDateOfBirth">Date of Birth</label>
-            <input id="dtpDateOfBirth" type="date" class="form-control" placeholder="Enter employee's email" @bind="employee.DateOfBirth" />
-        </div>
-        <div class="form-group">
-            <div>Gender</div>
-            <label class="radio-inline">
-                <input type="radio" name="rbGender" checked='@(employee.Gender == "M")' @onchange='(() => employee.Gender = "M")' />
-                Male
-            </label>
-            <label class="radio-inline">
-                <input type="radio" name="rbGender" checked='@(employee.Gender == "F")' @onchange='(() => employee.Gender = "F")' />
-                Female
-            </label>
+            <label>Roles:</label>
+            <MultiSelect Placeholder="Select Employee's Roles" Items="Roles" DisplayField="@nameof(GqlTeam.Name)" />
         </div>
         <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
         <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
@@ -51,10 +77,19 @@
 
     private GraphQLApiClient gql = null;
     private GqlEmployee employee = null;
-    private int create;
+
+    private List<GqlRole> Roles;
 
     protected override async Task OnInitializedAsync()
     {
+        Roles = new List<GqlRole>
+{
+            new GqlRole { Name = "Junior Developer" },
+            new GqlRole { Name = "Mid Developer" },
+            new GqlRole { Name = "Senior Developer" },
+            new GqlRole { Name = "Tech Lead" }
+        };
+
         gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
 
         if (Id > 0)
@@ -63,10 +98,11 @@
             {
                 _id = e._id,
                 Name = e.Name,
-                DateOfBirth = e.DateOfBirth,
-                Email = e.Email,
                 Gender = e.Gender,
-                Image = e.Image
+                Phone = e.Phone,
+                Email = e.Email,
+                Image = e.Image,
+                DateOfBirth = e.DateOfBirth
             });
 
             employee = (await query.RunAsync()).FirstOrDefault();
@@ -75,9 +111,13 @@
             employee = new GqlEmployee();
     }
 
+    public void ChangeImage()
+    {
+    }
+
     public void Save()
     {
-        gql.MergeEmployee(string.Empty, employee.Name, employee.DateOfBirth, employee.Email, employee.Gender).RunAsync();
+        gql.MergeEmployee(string.Empty, employee.Name, employee.DateOfBirth, employee.Email, employee.Gender, phone: employee.Phone).RunAsync();
         Cancel();
     }
 

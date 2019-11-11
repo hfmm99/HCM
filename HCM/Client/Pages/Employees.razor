@@ -40,7 +40,8 @@
             </GridColumn>
             <GridColumn Field="@nameof(GqlEmployee.Name)" />
             <GridColumn Field="@nameof(GqlEmployee.Email)" />
-            <GridColumn Field="@nameof(GqlEmployee.DateOfBirth)" Title="Date of Birth" Format="{0:mm/dd/yyyy}" />
+            <GridColumn Field="@nameof(GqlEmployee.Phone)" />
+            <GridColumn Field="@nameof(GqlEmployee.DateOfBirth)" Title="Date of Birth" Format="{0:MMM/dd/yyyy}" />
             <GridColumn Title="Gender">
                 <Template>
                     @{
@@ -96,6 +97,7 @@
             _id = e._id,
             Name = e.Name,
             Email = e.Email,
+            Phone = e.Phone,
             DateOfBirth = e.DateOfBirth,
             Gender = e.Gender,
             Image = e.Image

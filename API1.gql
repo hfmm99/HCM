@@ -1,8 +1,9 @@
 type Employee {
   name: ID!
-  email: String
-  dateOfBirth: DateTime
   gender: String
+  email: String
+  phone: String
+  dateOfBirth: DateTime
   image: String
   isMemberOf: [Team] @relation(name: "IS_MEMBER_OF", direction: out)
   worksAs: [Role] @relation(name: "WOKS_AS", direction: out)

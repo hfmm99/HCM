@@ -31,9 +31,11 @@ public interface IGraphQLApiClient
 	/// <param name="images">images is list variant of image of Employee</param>
 	/// <param name="name">name of Employee</param>
 	/// <param name="names">names is list variant of name of Employee</param>
+	/// <param name="phone">phone of Employee</param>
+	/// <param name="phones">phones is list variant of phone of Employee</param>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("Employee")]
-	GraphQLQuery<GqlEmployee> Employee (string sessionToken, long? _id = null, long?[] _ids = null, DateTime? dateOfBirth = null, DateTime?[] dateOfBirths = null, string email = null, string[] emails = null, Gql_EmployeeFilter filter = null, int? first = null, string gender = null, string[] genders = null, string image = null, string[] images = null, string name = null, string[] names = null, int? offset = null, Gql_EmployeeOrdering[] orderBy = null, Func<GqlEmployee, GqlEmployee> fields = null );
+	GraphQLQuery<GqlEmployee> Employee (string sessionToken, long? _id = null, long?[] _ids = null, DateTime? dateOfBirth = null, DateTime?[] dateOfBirths = null, string email = null, string[] emails = null, Gql_EmployeeFilter filter = null, int? first = null, string gender = null, string[] genders = null, string image = null, string[] images = null, string name = null, string[] names = null, int? offset = null, Gql_EmployeeOrdering[] orderBy = null, string phone = null, string[] phones = null, Func<GqlEmployee, GqlEmployee> fields = null );
 	
 
 	/// <param name="sessionToken">Token Used on production</param>
@@ -141,7 +143,7 @@ public interface IGraphQLApiClient
 	/// <summary>Creates a Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createEmployee")]
-	GraphQLQuery<string> CreateEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, Func<string, string> fields = null );
+	GraphQLQuery<string> CreateEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string phone = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Creates a Role entity</summary>
@@ -261,7 +263,7 @@ public interface IGraphQLApiClient
 	/// <summary>Merge a Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeEmployee")]
-	GraphQLQuery<string> MergeEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, Func<string, string> fields = null );
+	GraphQLQuery<string> MergeEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string phone = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Merge a Role entity</summary>
@@ -291,7 +293,7 @@ public interface IGraphQLApiClient
 	/// <summary>Updates a Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateEmployee")]
-	GraphQLQuery<string> UpdateEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, Func<string, string> fields = null );
+	GraphQLQuery<string> UpdateEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string phone = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Updates a Role entity</summary>

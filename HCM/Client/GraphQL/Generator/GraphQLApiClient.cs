@@ -73,6 +73,10 @@ public partial class GqlEmployee
 	[GraphQLField("name")]
 	public string Name { get; set; }
 
+	/// <summary>phone of  Employee</summary>
+	[GraphQLField("phone")]
+	public string Phone { get; set; }
+
 	/// <summary>Employee worksAs Role</summary>
 	[GraphQLField("worksAs")]
 	public List<GqlRole> WorksAs { get; set; }
@@ -655,6 +659,62 @@ public class Gql_EmployeeFilter
 	[JsonProperty(PropertyName = "name_starts_with", NullValueHandling = NullValueHandling.Ignore)]
 	public string Name_starts_with { get; set; }
 
+	/// <summary>phone</summary>
+	[JsonProperty(PropertyName = "phone", NullValueHandling = NullValueHandling.Ignore)]
+	public string Phone { get; set; }
+
+	/// <summary>phone_contains</summary>
+	[JsonProperty(PropertyName = "phone_contains", NullValueHandling = NullValueHandling.Ignore)]
+	public string Phone_contains { get; set; }
+
+	/// <summary>phone_ends_with</summary>
+	[JsonProperty(PropertyName = "phone_ends_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Phone_ends_with { get; set; }
+
+	/// <summary>phone_gt</summary>
+	[JsonProperty(PropertyName = "phone_gt", NullValueHandling = NullValueHandling.Ignore)]
+	public string Phone_gt { get; set; }
+
+	/// <summary>phone_gte</summary>
+	[JsonProperty(PropertyName = "phone_gte", NullValueHandling = NullValueHandling.Ignore)]
+	public string Phone_gte { get; set; }
+
+	/// <summary>phone_in</summary>
+	[JsonProperty(PropertyName = "phone_in", NullValueHandling = NullValueHandling.Ignore)]
+	public List<string> Phone_in { get; set; }
+
+	/// <summary>phone_lt</summary>
+	[JsonProperty(PropertyName = "phone_lt", NullValueHandling = NullValueHandling.Ignore)]
+	public string Phone_lt { get; set; }
+
+	/// <summary>phone_lte</summary>
+	[JsonProperty(PropertyName = "phone_lte", NullValueHandling = NullValueHandling.Ignore)]
+	public string Phone_lte { get; set; }
+
+	/// <summary>phone_not</summary>
+	[JsonProperty(PropertyName = "phone_not", NullValueHandling = NullValueHandling.Ignore)]
+	public string Phone_not { get; set; }
+
+	/// <summary>phone_not_contains</summary>
+	[JsonProperty(PropertyName = "phone_not_contains", NullValueHandling = NullValueHandling.Ignore)]
+	public string Phone_not_contains { get; set; }
+
+	/// <summary>phone_not_ends_with</summary>
+	[JsonProperty(PropertyName = "phone_not_ends_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Phone_not_ends_with { get; set; }
+
+	/// <summary>phone_not_in</summary>
+	[JsonProperty(PropertyName = "phone_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public List<string> Phone_not_in { get; set; }
+
+	/// <summary>phone_not_starts_with</summary>
+	[JsonProperty(PropertyName = "phone_not_starts_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Phone_not_starts_with { get; set; }
+
+	/// <summary>phone_starts_with</summary>
+	[JsonProperty(PropertyName = "phone_starts_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Phone_starts_with { get; set; }
+
 	/// <summary>worksAs</summary>
 	[JsonProperty(PropertyName = "worksAs", NullValueHandling = NullValueHandling.Ignore)]
 	public Gql_RoleFilter WorksAs { get; set; }
@@ -727,7 +787,11 @@ public enum Gql_EmployeeOrdering
 	/// <summary>Ascending sort for name</summary>
 	name_asc,
 	/// <summary>Descending sort for name</summary>
-	name_desc
+	name_desc,
+	/// <summary>Ascending sort for phone</summary>
+	phone_asc,
+	/// <summary>Descending sort for phone</summary>
+	phone_desc
 }
 
 public class Gql_RoleFilter
@@ -1054,12 +1118,14 @@ _id, _ids, filter, first, name, names, offset, orderBy);
 	/// <param name="images">images is list variant of image of Employee</param>
 	/// <param name="name">name of Employee</param>
 	/// <param name="names">names is list variant of name of Employee</param>
+	/// <param name="phone">phone of Employee</param>
+	/// <param name="phones">phones is list variant of phone of Employee</param>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("Employee")]
-	public GraphQLQuery<GqlEmployee> Employee (string sessionToken, long? _id = null, long?[] _ids = null, DateTime? dateOfBirth = null, DateTime?[] dateOfBirths = null, string email = null, string[] emails = null, Gql_EmployeeFilter filter = null, int? first = null, string gender = null, string[] genders = null, string image = null, string[] images = null, string name = null, string[] names = null, int? offset = null, Gql_EmployeeOrdering[] orderBy = null, Func<GqlEmployee, GqlEmployee> fields = null ) 
+	public GraphQLQuery<GqlEmployee> Employee (string sessionToken, long? _id = null, long?[] _ids = null, DateTime? dateOfBirth = null, DateTime?[] dateOfBirths = null, string email = null, string[] emails = null, Gql_EmployeeFilter filter = null, int? first = null, string gender = null, string[] genders = null, string image = null, string[] images = null, string name = null, string[] names = null, int? offset = null, Gql_EmployeeOrdering[] orderBy = null, string phone = null, string[] phones = null, Func<GqlEmployee, GqlEmployee> fields = null ) 
 	{
 		return new GraphQLQuery<GqlEmployee>(_httpClient, _endpoint, true, false, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-_id, _ids, dateOfBirth, dateOfBirths, email, emails, filter, first, gender, genders, image, images, name, names, offset, orderBy);
+_id, _ids, dateOfBirth, dateOfBirths, email, emails, filter, first, gender, genders, image, images, name, names, offset, orderBy, phone, phones);
 	}
 
 	/// <param name="sessionToken">Token Used on production</param>
@@ -1218,10 +1284,10 @@ name);
 	/// <summary>Creates a Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createEmployee")]
-	public GraphQLQuery<string> CreateEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> CreateEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string phone = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-name, dateOfBirth, email, gender, image);
+name, dateOfBirth, email, gender, image, phone);
 	}
 
 	/// <summary>Creates a Role entity</summary>
@@ -1398,10 +1464,10 @@ name);
 	/// <summary>Merge a Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeEmployee")]
-	public GraphQLQuery<string> MergeEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> MergeEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string phone = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-name, dateOfBirth, email, gender, image);
+name, dateOfBirth, email, gender, image, phone);
 	}
 
 	/// <summary>Merge a Role entity</summary>
@@ -1443,10 +1509,10 @@ name);
 	/// <summary>Updates a Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateEmployee")]
-	public GraphQLQuery<string> UpdateEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> UpdateEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string phone = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-name, dateOfBirth, email, gender, image);
+name, dateOfBirth, email, gender, image, phone);
 	}
 
 	/// <summary>Updates a Role entity</summary>

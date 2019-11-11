@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Components;
+@typeparam TItem
+
+<div class="multi-select">
+    <ul>
+        <li class="chip">
+            Developer
+            <span class="close">×</span>
+        </li>
+        <li class="chip">
+            Tech Lead
+            <span class="close">×</span>
+        </li>
+        <li class="multi-select-input">
+            <input type="search" placeholder="@Placeholder" />
+        </li>
+    </ul>
+    <div class="dropdown">
+        <div>
+            <ul>
+                @foreach (var item in Items)
+                {
+                    <li @onclick="@(e => ItemClick(e, item))">@item.GetType().GetProperty(DisplayField).GetValue(item).ToString()</li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="float-none" />
+</div>
+
+@code {
+    public TItem SelectedItem { get; private set; }
+
+    [Parameter]
+    public IReadOnlyList<TItem> Items { get; set; }
+
+    [Parameter]
+    public string DisplayField { get; set; }
+
+    [Parameter]
+    public string Placeholder { get; set; }
+
+    private void ItemClick(EventArgs e, TItem item)
+    {
+        SelectedItem = item;
+    }
+}
