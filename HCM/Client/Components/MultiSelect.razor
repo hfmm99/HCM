@@ -12,30 +12,83 @@
             <span class="close">×</span>
         </li>
         <li class="multi-select-input">
-            <input type="search" placeholder="@Placeholder" />
+            <input type="search" placeholder="@Placeholder" @oninput="OnValueChanged" @bind="SearchText" @onfocus="(e => IsOpened = true)" @onblur="(e => IsOpened = false)" />
         </li>
     </ul>
-    <div class="dropdown">
-        <div>
-            <ul>
-                @foreach (var item in Items)
-                {
-                    <li @onclick="@(e => ItemClick(e, item))">@item.GetType().GetProperty(DisplayField).GetValue(item).ToString()</li>
-                }
-            </ul>
+    @if (Items != null && IsOpened)
+    {
+        <div class="dropdown">
+            <div>
+                <ul>
+                    @foreach (var item in GetFilteredItems(SearchText))
+                    {
+                        <li @onclick="@(e => ItemClick(e, item))">@(DisplayFieldSelector?.Invoke(item) ?? item?.ToString())</li>
+                    }
+                </ul>
+            </div>
         </div>
-    </div>
-    <div class="float-none" />
+        <div class="float-none" />
+    }
 </div>
 
 @code {
+    private bool isOpened;
+    private string searchText;
+
+    /// <summary>
+    /// The Search Text displayed in the TextField
+    /// </summary>
+    [Parameter]
+    public string SearchText
+    {
+        get { return searchText; }
+        set
+        {
+            searchText = value;
+            OnTextChanged.InvokeAsync(value);
+        }
+    }
+
+    public bool IsOpened
+    {
+        get { return isOpened; }
+        set
+        {
+            isOpened = value;
+            OnOpenedChanged.InvokeAsync(value);
+            this.StateHasChanged();
+        }
+    }
+
+    public void OnValueChanged(ChangeEventArgs ev)
+    {
+        Console.WriteLine(ev.Value);
+        SearchText = (string)ev.Value;
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// OnOpenedChanged is fired when the popup dialog is opened or close and the parameter indicates whenever is it open, the default value is false
+    /// </summary>
+    [Parameter]
+    public EventCallback<bool> OnOpenedChanged { get; set; }
+
+    /// <summary>
+    /// OnTextChanged is fired when the string value is changed(when an input occurs in the textfield or when an item is selected)
+    /// </summary>
+    [Parameter]
+    public EventCallback<string> OnTextChanged { get; set; }
+
     public TItem SelectedItem { get; private set; }
+
+    /// <summary>
+    /// This function is used to select the string part from the item, used both for filtering and displaying if no ItemTemplate is defined.
+    /// </summary>
+    [Parameter]
+    public Func<TItem, string> DisplayFieldSelector { get; set; }
 
     [Parameter]
     public IReadOnlyList<TItem> Items { get; set; }
-
-    [Parameter]
-    public string DisplayField { get; set; }
 
     [Parameter]
     public string Placeholder { get; set; }
@@ -43,5 +96,19 @@
     private void ItemClick(EventArgs e, TItem item)
     {
         SelectedItem = item;
+    }
+
+    protected IEnumerable<TItem> GetFilteredItems(string searchText)
+    {
+        if (string.IsNullOrEmpty(searchText))
+            return Items;
+
+        return Items.Select(i => new
+        {
+            Text = DisplayFieldSelector(i),
+            Item = i
+        })
+        .Where(i => i.Text.ToLowerInvariant().Contains(searchText.ToLowerInvariant()))
+        .Select(i => i.Item);
     }
 }

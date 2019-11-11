@@ -274,6 +274,7 @@ td {
     border: 1px solid #ced4da;
     border-radius: .25rem;
     padding: .3rem;
+    position: relative;
 }
 
     .multi-select:focus-within {
@@ -334,8 +335,8 @@ td {
 
 .multi-select .dropdown {
     background-color: white;
-    float: left;
-    top: .7rem;
+    position: absolute;
+    top: 3rem;
     border: 1px solid #ced4da;
     border-radius: .25rem;
     min-height: 50px;
