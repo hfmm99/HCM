@@ -141,8 +141,7 @@
 
     public void DeleteEmployee()
     {
-        showModal = false;
-        ModalService.Show(showModal);
+        ModalService.Close();
         gql.DeleteEmployee(string.Empty, (grid.SelectedItem as GqlEmployee).Name).RunAsync();
         Search();
     }

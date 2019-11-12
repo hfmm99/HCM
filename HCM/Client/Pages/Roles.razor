@@ -118,9 +118,8 @@
 
     public void DeleteRole()
     {
-            showModal = false;
-            ModalService.Show(showModal);
             gql.DeleteRole(string.Empty, (grid.SelectedItem as GqlRole).Name).RunAsync();
+            ModalService.Close();
             Search();
     }
 }

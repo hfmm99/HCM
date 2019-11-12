@@ -117,9 +117,8 @@
 
     public void DeleteTeam()
     {
-            showModal = false;
-            ModalService.Show(showModal);
             gql.DeleteTeam(string.Empty, (grid.SelectedItem as GqlTeam).Name).RunAsync();
+            ModalService.Close();
             Search();
     }
 }

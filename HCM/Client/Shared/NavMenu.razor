@@ -1,4 +1,6 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using MatBlazor
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">HCM</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -6,7 +8,7 @@
 </div>
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
+    <MatNavMenu class="nav flex-column">
         <li class="nav-item px-2">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true" />Home
@@ -14,64 +16,65 @@
         </li>
         <li class="nav-item px-2">
             <div id="accordion" class="accordion">
-                <div class="card">
-                    <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
-                        <a class="mb-0">
-                            Maintenance
-                        </a>
-                    </div>
-                    <div id="collapseOne" class="card-body collapse show" data-parent="#accordion">
+                <MatNavSubMenu class="card" @bind-Expanded="@subMenuOpen">
+                    <MatNavSubMenuHeader class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
+                        <MatNavItem AllowSelection="false" class="navMenuHeader mb-0">
+                            <a class="navMenuHeader">Maintenance</a> 
+                        </MatNavItem>
+                    </MatNavSubMenuHeader>
+                    <MatNavSubMenuList id="collapseOne" class="card-body collapse show" data-parent="#accordion">
                         <ul class="nav flex-column">
-                            <li class="nav-item px-1">
+                            <MatNavItem class="nav-item px-1">
                                 <NavLink class="nav-link" href="employees">
                                     <span class="oi oi-list-rich" aria-hidden="true"></span> Employees
                                 </NavLink>
-                            </li>
-                            <li class="nav-item px-1">
+                            </MatNavItem>
+                            <MatNavItem class="nav-item px-1">
                                 <NavLink class="nav-link" href="teams">
                                     <span class="oi oi-list-rich" aria-hidden="true"></span> Teams
                                 </NavLink>
-                            </li>
-                            <li class="nav-item px-1">
+                            </MatNavItem>
+                            <MatNavItem class="nav-item px-1">
                                 <NavLink class="nav-link" href="roles">
                                     <span class="oi oi-list-rich" aria-hidden="true"></span> Roles
                                 </NavLink>
-                            </li>
+                            </MatNavItem>
                         </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
-                        <a class="mb-0">
-                            Processes
-                        </a>
-                    </div>
-                    <div id="collapseOne" class="card-body collapse" data-parent="#accordion">
+                    </MatNavSubMenuList>
+                </MatNavSubMenu>
+                <MatNavSubMenu class="card">
+                    <MatNavSubMenuHeader class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
+                        <MatNavItem AllowSelection="false" class="navMenuHeader mb-0">
+                            <a  class="navMenuHeader">Processes</a>
+                        </MatNavItem>
+                    </MatNavSubMenuHeader>
+                    <MatNavSubMenuList id="collapseOne" class="card-body collapse" data-parent="#accordion">
                         <ul class="nav flex-column">
-                            <li class="nav-item px-1">
+                            <MatNavItem class="nav-item px-1">
                                 <NavLink class="nav-link" href="employees">
                                     <span class="oi oi-list-rich" aria-hidden="true"></span> Employees
                                 </NavLink>
-                            </li>
-                            <li class="nav-item px-1">
+                            </MatNavItem>
+                            <MatNavItem class="nav-item px-1">
                                 <NavLink class="nav-link" href="teams">
                                     <span class="oi oi-list-rich" aria-hidden="true"></span> Teams
                                 </NavLink>
-                            </li>
-                            <li class="nav-item px-1">
+                            </MatNavItem>
+                            <MatNavItem class="nav-item px-1">
                                 <NavLink class="nav-link" href="roles">
                                     <span class="oi oi-list-rich" aria-hidden="true"></span> Roles
                                 </NavLink>
-                            </li>
+                            </MatNavItem>
                         </ul>
-                    </div>
-                </div>
+                    </MatNavSubMenuList>
+                </MatNavSubMenu>
             </div>
         </li>
-    </ul>
+    </MatNavMenu>
 </div>
 
 @code {
+    bool subMenuOpen;
     bool collapseNavMenu = true;
 
     string NavMenuCssClass => collapseNavMenu ? "collapse" : null;

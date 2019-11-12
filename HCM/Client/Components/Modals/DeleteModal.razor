@@ -1,32 +1,34 @@
 ﻿@inherits HCM.Client.FrameModel
 @using HCM.Client.Components
 
-<div class="modal modal-container @(IsVisible ? "modal-active":string.Empty)">
+<div class="modal modal-container @(IsVisible ? "modal-active":string.Empty)"  id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
     <div class="modal-overlay" @onclick="CloseModal"></div>
-
-    <div class="blazor-modal">
-        <div class="modal-header">
-            <h2 class="modal-title">Are you sure you want delete this item?</h2>
-            <button type="button" class="bm-close" @onclick="CloseModal">
-                <span>&times;</span>
-            </button>
-        </div>
-        <div class="modal-content">
-            <div>
-                <label>Be careful, this process can't be undone.</label>
+        <div class="blazor-modal modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Are you sure you want delete this item?</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="@CloseModal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div>
-                <button @onclick="@CloseModal" type="button" class="btn btn-primary">
-                    Cancel
-                </button>
-                <button @onclick="DeleteEmployee" type="button" class="btn btn-danger">
-                    Delete
-                </button>
+            <div class="modal-body">
+                <div>
+                    <h5>Be careful, this process can't be undone.</h5>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <button @onclick="@CloseModal" type="button" class="btn btn-primary">
+                        Cancel
+                    </button>
+                    <button @onclick="DeleteEmployee" type="button" class="btn btn-danger">
+                        Delete
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
 
 @code{
 
