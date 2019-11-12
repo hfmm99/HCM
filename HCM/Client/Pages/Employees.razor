@@ -41,23 +41,6 @@
             <GridColumn Field="@nameof(GqlEmployee.Name)" />
             <GridColumn Field="@nameof(GqlEmployee.Email)" />
             <GridColumn Field="@nameof(GqlEmployee.Phone)" />
-            <GridColumn Field="@nameof(GqlEmployee.DateOfBirth)" Title="Date of Birth" Format="{0:MMM/dd/yyyy}" />
-            <GridColumn Title="Gender">
-                <Template>
-                    @{
-                        var employee = context as GqlEmployee;
-
-                        if (employee.Gender == "M")
-                        {
-                            <span>Male</span>
-                        }
-                        else if (employee.Gender == "F")
-                        {
-                            <span>Female</span>
-                        }
-                    }
-                </Template>
-            </GridColumn>
         </GridColumns>
     </Grid>
     <div class="mx-auto" style="width: 215px;">
@@ -98,8 +81,6 @@
             Name = e.Name,
             Email = e.Email,
             Phone = e.Phone,
-            DateOfBirth = e.DateOfBirth,
-            Gender = e.Gender,
             Image = e.Image
         }); ;
 

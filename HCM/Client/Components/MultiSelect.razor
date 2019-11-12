@@ -3,16 +3,15 @@
 
 <div class="multi-select">
     <ul>
-        <li class="chip">
-            Developer
-            <span class="close">×</span>
-        </li>
-        <li class="chip">
-            Tech Lead
-            <span class="close">×</span>
-        </li>
+        @foreach (var item in Values)
+        {
+            <li class="chip">
+                @DisplayFieldSelector?.Invoke(item)
+                <span class="close" @onclick="(e => RemoveItem(e, item))">×</span>
+            </li>
+        }
         <li class="multi-select-input">
-            <input type="search" placeholder="@Placeholder" @oninput="OnValueChanged" @bind="SearchText" @onfocus="(e => IsOpened = true)" @onblur="(e => IsOpened = false)" />
+            <input type="search" placeholder="@Placeholder" @oninput="OnValueChanged" @bind="SearchText" @onfocus="OpenPopup" />
         </li>
     </ul>
     @if (Items != null && IsOpened)
@@ -22,18 +21,35 @@
                 <ul>
                     @foreach (var item in GetFilteredItems(SearchText))
                     {
-                        <li @onclick="@(e => ItemClick(e, item))">@(DisplayFieldSelector?.Invoke(item) ?? item?.ToString())</li>
+                        <li @onclick="@(e => ItemClick(e, item))">
+                            @(DisplayFieldSelector?.Invoke(item) ?? item?.ToString())
+                        </li>
                     }
                 </ul>
             </div>
         </div>
-        <div class="float-none" />
     }
 </div>
 
 @code {
+
     private bool isOpened;
     private string searchText;
+
+    protected override void OnInitialized()
+    {
+        Values = new List<TItem>();
+    }
+
+    protected void OpenPopup()
+    {
+        IsOpened = true;
+    }
+
+    protected void ClosePopup()
+    {
+        IsOpened = false;
+    }
 
     /// <summary>
     /// The Search Text displayed in the TextField
@@ -79,8 +95,6 @@
     [Parameter]
     public EventCallback<string> OnTextChanged { get; set; }
 
-    public TItem SelectedItem { get; private set; }
-
     /// <summary>
     /// This function is used to select the string part from the item, used both for filtering and displaying if no ItemTemplate is defined.
     /// </summary>
@@ -90,12 +104,21 @@
     [Parameter]
     public IReadOnlyList<TItem> Items { get; set; }
 
+    public List<TItem> Values { get; set; }
+
     [Parameter]
     public string Placeholder { get; set; }
 
-    private void ItemClick(EventArgs e, TItem item)
+    protected void ItemClick(EventArgs e, TItem item)
     {
-        SelectedItem = item;
+        Values.Add(item);
+        ClosePopup();
+        StateHasChanged();
+    }
+
+    protected void RemoveItem(EventArgs e, TItem item)
+    {
+        Values.Remove(item);
     }
 
     protected IEnumerable<TItem> GetFilteredItems(string searchText)

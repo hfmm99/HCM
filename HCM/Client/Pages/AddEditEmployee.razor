@@ -82,14 +82,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Roles = new List<GqlRole>
-{
-            new GqlRole { Name = "Junior Developer" },
-            new GqlRole { Name = "Mid Developer" },
-            new GqlRole { Name = "Senior Developer" },
-            new GqlRole { Name = "Tech Lead" }
-        };
-
         gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
 
         if (Id > 0)
@@ -109,6 +101,13 @@
         }
         else
             employee = new GqlEmployee();
+
+        //Load Roles
+        Roles = await gql.Role(string.Empty, fields: r => new GqlRole
+        {
+            _id = r._id,
+            Name = r.Name
+        }).RunAsync();
     }
 
     public void ChangeImage()
