@@ -7,6 +7,7 @@ namespace HCM.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddBlazorModal();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

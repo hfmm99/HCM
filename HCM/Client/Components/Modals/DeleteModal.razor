@@ -1,0 +1,45 @@
+﻿@inherits HCM.Client.FrameModel
+@using HCM.Client.Components
+
+<div class="modal modal-container @(IsVisible ? "modal-active":string.Empty)">
+
+    <div class="modal-overlay" @onclick="CloseModal"></div>
+
+    <div class="blazor-modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Are you sure you want delete this item?</h2>
+            <button type="button" class="bm-close" @onclick="CloseModal">
+                <span>&times;</span>
+            </button>
+        </div>
+        <div class="modal-content">
+            <div>
+                <label>Be careful, this process can't be undone.</label>
+            </div>
+            <div>
+                <button @onclick="@CloseModal" type="button" class="btn btn-primary">
+                    Cancel
+                </button>
+                <button @onclick="DeleteEmployee" type="button" class="btn btn-danger">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code{
+
+    public bool ShowPopUp { get; set; } = true;
+    public bool deleteConfirm;
+
+    protected void DeleteEmployee()
+    {
+        deleteConfirm = true;
+        OnDelete.InvokeAsync(new DeleteEventArgs { willDelete = deleteConfirm });
+    }
+
+    [Parameter]
+    public EventCallback<DeleteEventArgs>
+    OnDelete { get; set; }
+}

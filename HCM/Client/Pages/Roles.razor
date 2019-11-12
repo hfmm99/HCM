@@ -1,8 +1,12 @@
 ﻿@page "/roles"
 @using HCM.Client.Components
 @using HCM.Client.Components.Grid
+@using HCM.Client.Components.Modals
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
+@inject ModalService ModalService
+
+<DeleteModal OnDelete="@DeleteRole" />
 
 <div class="btn-toolbar row margin-bottom-small" role="toolbar">
     <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewRole">
@@ -13,7 +17,7 @@
         <span class="oi oi-pencil" />
         Edit
     </button>
-    <button type="button" class="btn btn-outline-danger mr-1" @onclick="DeleteRole">
+    <button type="button" class="btn btn-outline-danger mr-1" @onclick="ConfirmDelete">
         <span class="oi oi-x" />
         Delete
     </button>
@@ -43,6 +47,8 @@
     private int page = 1;
 
     private Grid grid;
+
+    private bool showModal;
 
     protected override async Task OnInitializedAsync()
     {
@@ -101,12 +107,20 @@
             navigationManager.NavigateTo("/role/" + (grid.SelectedItem as GqlRole)._id);
     }
 
-    public void DeleteRole()
+    public void ConfirmDelete()
     {
         if (grid.SelectedItem != null)
         {
+            showModal = true;
+            ModalService.Show(showModal);
+        }
+    }
+
+    public void DeleteRole()
+    {
+            showModal = false;
+            ModalService.Show(showModal);
             gql.DeleteRole(string.Empty, (grid.SelectedItem as GqlRole).Name).RunAsync();
             Search();
-        }
     }
 }

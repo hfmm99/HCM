@@ -1,8 +1,12 @@
 ﻿@page "/employees"
 @using HCM.Client.Components
 @using HCM.Client.Components.Grid
+@using HCM.Client.Components.Modals
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
+@inject ModalService ModalService
+
+<DeleteModal OnDelete="@DeleteEmployee" />
 
 <div class="btn-toolbar row margin-bottom-small" role="toolbar">
     <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewEmployee">
@@ -13,7 +17,7 @@
         <span class="oi oi-pencil" />
         Edit
     </button>
-    <button type="button" class="btn btn-outline-danger mr-1" @onclick="DeleteEmployee">
+    <button type="button" class="btn btn-outline-danger mr-1" @onclick="ConfirmDelete">
         <span class="oi oi-x" />
         Delete
     </button>
@@ -58,6 +62,8 @@
     private int pages = 0;
 
     private Grid grid;
+
+    private bool showModal;
 
     protected override async Task OnInitializedAsync()
     {
@@ -124,12 +130,20 @@
             navigationManager.NavigateTo("/employee/" + (grid.SelectedItem as GqlEmployee)._id);
     }
 
-    public void DeleteEmployee()
+    public void ConfirmDelete()
     {
         if (grid.SelectedItem != null)
         {
-            gql.DeleteEmployee(string.Empty, (grid.SelectedItem as GqlEmployee).Name).RunAsync();
-            Search();
+            showModal = true;
+            ModalService.Show(showModal);
         }
+    }
+
+    public void DeleteEmployee()
+    {
+        showModal = false;
+        ModalService.Show(showModal);
+        gql.DeleteEmployee(string.Empty, (grid.SelectedItem as GqlEmployee).Name).RunAsync();
+        Search();
     }
 }
