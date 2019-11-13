@@ -115,14 +115,14 @@
         {
             deleteItemName = (grid.SelectedItem as GqlRole).Name;
             showModal = true;
-            ModalService.Show(showModal,deleteItemName);
+            ModalService.ShowDeleteModal(showModal,deleteItemName);
         }
     }
 
     public void DeleteRole()
     {
             gql.DeleteRole(string.Empty, (grid.SelectedItem as GqlRole).Name).RunAsync();
-            ModalService.Close();
+            ModalService.CloseDeleteModal();
             Search();
     }
 }

@@ -4,20 +4,19 @@ using System;
 
 namespace HCM.Client
 {
-    public class DeleteModalBase : ComponentBase, IDisposable
+    public class RolePropertiesModalBase : ComponentBase, IDisposable
     {
         [Inject] ModalService ModalService { get; set; }
         protected bool IsVisible { get; set; }
         protected string Name { get; set; }
         protected override void OnInitialized()
         {
-            ModalService.OnShowDeleteModal += ShowModal;
-            ModalService.OnCloseDeleteModal += CloseModal;
+            ModalService.OnShowRolePropertiesModal += ShowModal;
+            ModalService.OnCloseRolePropertiesModal += CloseModal;
         }
-        public void ShowModal(bool show, string name)
+        public void ShowModal(bool show)
         {
             IsVisible = show;
-            Name = name;
             StateHasChanged();
         }
         public void CloseModal()
@@ -28,8 +27,8 @@ namespace HCM.Client
         }
         public void Dispose()
         {
-            ModalService.OnShowDeleteModal -= ShowModal;
-            ModalService.OnCloseDeleteModal -= CloseModal;
+            ModalService.OnShowRolePropertiesModal -= ShowModal;
+            ModalService.OnCloseRolePropertiesModal -= CloseModal;
         }
     }
 }

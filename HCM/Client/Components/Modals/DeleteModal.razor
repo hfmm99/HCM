@@ -1,5 +1,4 @@
-﻿@inherits HCM.Client.FrameModel
-@using HCM.Client.Components
+﻿@inherits HCM.Client.DeleteModalBase
 
 <div class="modal modal-container @(IsVisible ? "modal-active":string.Empty)"  id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
@@ -43,6 +42,5 @@
     }
 
     [Parameter]
-    public EventCallback<DeleteEventArgs>
-    OnDelete { get; set; }
+    public EventCallback<DeleteEventArgs> OnDelete { get; set; }
 }

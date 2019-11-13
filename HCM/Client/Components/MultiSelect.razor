@@ -30,7 +30,7 @@
                         if (displayItems.Count() == 0)
                         {
                             <li class="text-center text-info">
-                                <a href="#">Add New Value: @SearchText</a>
+                                <a @onmousedown="AddNewRole" href="#">Add New Value: @SearchText</a>
                             </li>
                         }
                     }
@@ -87,10 +87,17 @@
 
     public void OnValueChanged(ChangeEventArgs ev)
     {
-        Console.WriteLine(ev.Value);
         SearchText = (string)ev.Value;
         StateHasChanged();
     }
+
+    public void AddNewRole()
+    {
+        OnNewRoleAdded.InvokeAsync(SearchText);
+    }
+
+    [Parameter]
+    public EventCallback<string> OnNewRoleAdded { get; set; }
 
     /// <summary>
     /// OnOpenedChanged is fired when the popup dialog is opened or close and the parameter indicates whenever is it open, the default value is false
@@ -123,13 +130,22 @@
         Values.Add(item);
         ClosePopup();
         SearchText = string.Empty;
+        OnAddedRoleRelation.InvokeAsync(new OnClickEventArgs { itemShown = item });
         StateHasChanged();
     }
+
+    [Parameter]
+    public EventCallback<OnClickEventArgs> OnAddedRoleRelation { get; set; }
 
     protected void RemoveItem(EventArgs e, TItem item)
     {
         Values.Remove(item);
+        bool testingVar = true;
+        OnRemoveRole.InvokeAsync(testingVar);
     }
+
+    [Parameter]
+    public EventCallback<bool> OnRemoveRole { get; set; }
 
     protected IEnumerable<TItem> GetFilteredItems(string searchText)
     {

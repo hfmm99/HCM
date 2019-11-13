@@ -1,7 +1,11 @@
 ﻿@page "/employee/{Id:int}"
 @using HCM.Client.Components
+@using HCM.Client.Components.Modals
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
+@inject ModalService ModalService
+
+<RolePropertiesModal/>
 
 <form class="needs-validation">
 
@@ -63,7 +67,7 @@
         </div>
         <div class="form-group">
             <label>Roles:</label>
-            <MultiSelect Placeholder="Select Employee's Roles" Items="Roles" DisplayFieldSelector="@(i => i.Name)" />
+            <MultiSelect Placeholder="Select Employee's Roles" Items="Roles" DisplayFieldSelector="@(i => i.Name)" OnAddedRoleRelation="@AddedRoleRelation" OnNewRoleAdded="@NewRoleAdded" OnRemoveRole="@RemoveRole"/>
         </div>
         <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
         <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
@@ -123,5 +127,21 @@
     public void Cancel()
     {
         navigationManager.NavigateTo("/employees");
+    }
+
+    public void AddedRoleRelation()
+    {
+        bool showModal = true;
+        ModalService.ShowRolePropertiesModal(showModal);
+    }
+
+    public void NewRoleAdded()
+    {
+        Console.WriteLine("New role added");
+    }
+
+    public void RemoveRole()
+    {
+        Console.WriteLine("Removing role");
     }
 }
