@@ -49,6 +49,8 @@
     private Grid grid;
 
     private bool showModal;
+    private string deleteItemName;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -111,8 +113,9 @@
     {
         if (grid.SelectedItem != null)
         {
+            deleteItemName = (grid.SelectedItem as GqlRole).Name;
             showModal = true;
-            ModalService.Show(showModal);
+            ModalService.Show(showModal,deleteItemName);
         }
     }
 

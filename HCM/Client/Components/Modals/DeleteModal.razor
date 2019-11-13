@@ -6,14 +6,15 @@
     <div class="modal-overlay" @onclick="CloseModal"></div>
         <div class="blazor-modal modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Are you sure you want delete this item?</h4>
+                <h3 class="modal-title">Are you sure?</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="@CloseModal">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body align-content-center">
                 <div>
-                    <h5>Be careful, this process can't be undone.</h5>
+                    <h5>Do you really want to delete @Name?</h5>
+                    <div class="alert alert-danger" role="alert">This process can't be undone.</div>
                 </div>
             </div>
             <div class="modal-footer">
