@@ -11,7 +11,7 @@
             </li>
         }
         <li class="multi-select-input">
-            <input type="search" placeholder="@Placeholder" @oninput="OnValueChanged" @bind="SearchText" @onfocus="OpenPopup" />
+            <input type="search" placeholder="@Placeholder" @oninput="OnValueChanged" @bind="SearchText" @onfocus="OpenPopup" @onblur="ClosePopup" />
         </li>
     </ul>
     @if (Items != null && IsOpened)
@@ -19,11 +19,20 @@
         <div class="dropdown">
             <div>
                 <ul>
-                    @foreach (var item in GetFilteredItems(SearchText))
-                    {
-                        <li @onclick="@(e => ItemClick(e, item))">
-                            @(DisplayFieldSelector?.Invoke(item) ?? item?.ToString())
-                        </li>
+                    @{
+                        var displayItems = GetFilteredItems(SearchText);
+                        foreach (var item in displayItems)
+                        {
+                            <li @onmousedown="@(e => ItemClick(e, item))">
+                                @(DisplayFieldSelector?.Invoke(item) ?? item?.ToString())
+                            </li>
+                        }
+                        if (displayItems.Count() == 0)
+                        {
+                            <li class="text-center text-info">
+                                <a href="#">Add New Value: @SearchText</a>
+                            </li>
+                        }
                     }
                 </ul>
             </div>
@@ -72,7 +81,7 @@
         {
             isOpened = value;
             OnOpenedChanged.InvokeAsync(value);
-            this.StateHasChanged();
+            StateHasChanged();
         }
     }
 
@@ -113,6 +122,7 @@
     {
         Values.Add(item);
         ClosePopup();
+        SearchText = string.Empty;
         StateHasChanged();
     }
 
@@ -123,15 +133,18 @@
 
     protected IEnumerable<TItem> GetFilteredItems(string searchText)
     {
-        if (string.IsNullOrEmpty(searchText))
-            return Items;
-
-        return Items.Select(i => new
+        var values = Values.Select(i => DisplayFieldSelector(i));
+        var items = Items.Select(i => new
         {
             Text = DisplayFieldSelector(i),
             Item = i
         })
-        .Where(i => i.Text.ToLowerInvariant().Contains(searchText.ToLowerInvariant()))
-        .Select(i => i.Item);
+        .Where(i => !values.Contains(i.Text))
+        .OrderBy(i => i.Text);
+
+        if (!string.IsNullOrEmpty(searchText))
+            items = items.Where(i => i.Text.ToLowerInvariant().Contains(searchText.ToLowerInvariant())).OrderBy(i => i.Text);
+
+        return items.Select(i => i.Item);
     }
 }
