@@ -113,14 +113,14 @@
         {
             deleteItemName = (grid.SelectedItem as GqlTeam).Name;
             showModal = true;
-            ModalService.ShowDeleteModal(showModal, deleteItemName);
+            ModalService.ShowModal(showModal, deleteItemName);
         }
     }
 
     public void DeleteTeam()
     {
             gql.DeleteTeam(string.Empty, (grid.SelectedItem as GqlTeam).Name).RunAsync();
-            ModalService.CloseDeleteModal();
+            ModalService.CloseModal();
             Search();
     }
 }

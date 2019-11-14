@@ -4,29 +4,16 @@ namespace HCM.Client.Services
 {
     public class ModalService
     {
-        public event Action<bool, string> OnShowDeleteModal;
-        public event Action OnCloseDeleteModal;
-        public void ShowDeleteModal(bool show, string name)
+        public event Action<bool, string> OnShow;
+        public event Action OnClose;
+        public void ShowModal(bool show, string name = null)
         {
-            OnShowDeleteModal?.Invoke(show, name);
+            OnShow?.Invoke(show, name);
         }
 
-        public void CloseDeleteModal()
+        public void CloseModal()
         {
-            OnCloseDeleteModal?.Invoke();
-        }
-
-        public event Action<bool> OnShowRolePropertiesModal;
-        public event Action OnCloseRolePropertiesModal;
-
-        public void ShowRolePropertiesModal(bool show)
-        {
-            OnShowRolePropertiesModal?.Invoke(show);
-        }
-
-        public void CloseRolePropertiesModal()
-        {
-            OnCloseRolePropertiesModal?.Invoke();
+            OnClose?.Invoke();
         }
     }
 }

@@ -136,13 +136,13 @@
         if (grid.SelectedItem != null) {
             deleteItemName = (grid.SelectedItem as GqlEmployee).Name;
             showModal = true;
-            ModalService.ShowDeleteModal(showModal, deleteItemName);
+            ModalService.ShowModal(showModal, deleteItemName);
         }
     }
 
     public void DeleteEmployee()
     {
-        ModalService.CloseDeleteModal();
+        ModalService.CloseModal();
         gql.DeleteEmployee(string.Empty, (grid.SelectedItem as GqlEmployee).Name).RunAsync();
         Search();
     }

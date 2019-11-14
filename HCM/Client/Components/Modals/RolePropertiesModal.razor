@@ -1,8 +1,8 @@
-﻿@inherits HCM.Client.RolePropertiesModalBase
+﻿@inherits HCM.Client.ModalTemplate
 
 <div class="modal modal-container @(IsVisible ? "modal-active":string.Empty)" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-    <div class="modal-overlay" @onclick="CloseModal"></div>
+    <div class="modal-overlay" @onclick="@CloseModal"></div>
     <div class="blazor-modal modal-content">
         <div class="modal-header">
             <h3 class="modal-title">Set the role properties</h3>
