@@ -5,7 +5,7 @@
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
 
-<RolePropertiesModal/>
+<RolePropertiesModal />
 
 <form class="needs-validation">
 
@@ -66,8 +66,8 @@
             </div>
         </div>
         <div class="form-group">
-            <label>Roles:</label>
-            <MultiSelect Placeholder="Select Employee's Roles" Items="Roles" DisplayFieldSelector="@(i => i.Name)" OnAddedRoleRelation="@AddedRoleRelation" OnNewRoleAdded="@NewRoleAdded" OnRemoveRole="@RemoveRole"/>
+            <label>Skills:</label>
+            <MultiSelect TItem="GqlSkill" Placeholder="Select Employee's Skills" Items="Skills" Values="employee.Skills" DisplayFieldSelector="@(i => i.Name)" OnItemSelected="@SkillSelected" OnValueRemoved="@SkillRemoved" OnAddNewItem="@AddNewSkill" />
         </div>
         <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
         <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
@@ -82,7 +82,7 @@
     private GraphQLApiClient gql = null;
     private GqlEmployee employee = null;
 
-    private List<GqlRole> Roles;
+    private List<GqlSkill> Skills;
 
     protected override async Task OnInitializedAsync()
     {
@@ -102,16 +102,19 @@
             });
 
             employee = (await query.RunAsync()).FirstOrDefault();
+            employee.Skills = new List<GqlSkill>();
         }
         else
             employee = new GqlEmployee();
 
         //Load Roles
-        Roles = await gql.Role(string.Empty, fields: r => new GqlRole
+        Skills = await gql.Skill(string.Empty, fields: r => new GqlSkill
         {
             _id = r._id,
             Name = r.Name
         }).RunAsync();
+
+        Console.WriteLine(Skills.Count);
     }
 
     public void ChangeImage()
@@ -129,19 +132,20 @@
         navigationManager.NavigateTo("/employees");
     }
 
-    public void AddedRoleRelation()
+    public void SkillSelected(GqlSkill skill)
     {
-        bool showModal = true;
-        ModalService.ShowRolePropertiesModal(showModal);
+        employee.Skills.Add(skill);
     }
 
-    public void NewRoleAdded()
+    public void AddNewSkill(string text)
     {
-        Console.WriteLine("New role added");
+        var newSkill = new GqlSkill { Name = text };
+        Skills.Add(newSkill);
+        employee.Skills.Add(newSkill);
     }
 
-    public void RemoveRole()
+    public void SkillRemoved(GqlSkill skill)
     {
-        Console.WriteLine("Removing role");
+        employee.Skills.Remove(skill);
     }
 }

@@ -1,41 +1,39 @@
-﻿@using Microsoft.AspNetCore.Components;
-@typeparam TItem
+﻿@typeparam TItem
+@using Microsoft.AspNetCore.Components;
 
 <div class="multi-select">
     <ul>
-        @foreach (var item in Values)
+        @foreach (var value in Values)
         {
-            <li class="chip">
-                @DisplayFieldSelector?.Invoke(item)
-                <span class="close" @onclick="(e => RemoveItem(e, item))">×</span>
+            <li class="chip" @onclick="(e => ValueClicked(value))">
+                @DisplayFieldSelector?.Invoke(value)
+                <span class="close" @onclick="(e => RemoveValue(value))">×</span>
             </li>
         }
         <li class="multi-select-input">
             <input type="search" placeholder="@Placeholder" @oninput="OnValueChanged" @bind="SearchText" @onfocus="OpenPopup" @onblur="ClosePopup" />
         </li>
     </ul>
-    @if (Items != null && IsOpened)
+    @if (IsOpened && ((Items != null && Items.Count > 0) || !string.IsNullOrEmpty(SearchText)))
     {
         <div class="dropdown">
-            <div>
-                <ul>
-                    @{
-                        var displayItems = GetFilteredItems(SearchText);
-                        foreach (var item in displayItems)
-                        {
-                            <li @onmousedown="@(e => ItemClick(e, item))">
-                                @(DisplayFieldSelector?.Invoke(item) ?? item?.ToString())
-                            </li>
-                        }
-                        if (displayItems.Count() == 0)
-                        {
-                            <li class="text-center text-info">
-                                <a @onmousedown="AddNewRole" href="#">Add New Value: @SearchText</a>
-                            </li>
-                        }
+            <ul>
+                @{
+                    var displayItems = GetFilteredItems(SearchText);
+                    foreach (var item in displayItems)
+                    {
+                        <li @onmousedown="@(e => ItemClick(item))">
+                            @(DisplayFieldSelector?.Invoke(item) ?? item?.ToString())
+                        </li>
                     }
-                </ul>
-            </div>
+                    if (displayItems.Count() == 0 && !string.IsNullOrEmpty(SearchText))
+                    {
+                        <li class="text-center text-info">
+                            <a @onmousedown="AddNewItem" href="#">Add New Value: @SearchText</a>
+                        </li>
+                    }
+                }
+            </ul>
         </div>
     }
 </div>
@@ -91,13 +89,14 @@
         StateHasChanged();
     }
 
-    public void AddNewRole()
+    public void AddNewItem()
     {
-        OnNewRoleAdded.InvokeAsync(SearchText);
+        OnAddNewItem.InvokeAsync(SearchText);
+        SearchText = string.Empty;
     }
 
     [Parameter]
-    public EventCallback<string> OnNewRoleAdded { get; set; }
+    public EventCallback<string> OnAddNewItem { get; set; }
 
     /// <summary>
     /// OnOpenedChanged is fired when the popup dialog is opened or close and the parameter indicates whenever is it open, the default value is false
@@ -120,32 +119,39 @@
     [Parameter]
     public IReadOnlyList<TItem> Items { get; set; }
 
+    [Parameter]
     public List<TItem> Values { get; set; }
 
     [Parameter]
     public string Placeholder { get; set; }
 
-    protected void ItemClick(EventArgs e, TItem item)
+    protected void ItemClick(TItem item)
     {
-        Values.Add(item);
-        ClosePopup();
         SearchText = string.Empty;
-        OnAddedRoleRelation.InvokeAsync(new OnClickEventArgs { itemShown = item });
+        Values.Add(item);
+        OnItemSelected.InvokeAsync(item);
         StateHasChanged();
     }
 
     [Parameter]
-    public EventCallback<OnClickEventArgs> OnAddedRoleRelation { get; set; }
+    public EventCallback<TItem> OnItemSelected { get; set; }
 
-    protected void RemoveItem(EventArgs e, TItem item)
+    protected void ValueClicked(TItem item)
+    {
+        OnValueClicked.InvokeAsync(item);
+    }
+
+    protected void RemoveValue(TItem item)
     {
         Values.Remove(item);
-        bool testingVar = true;
-        OnRemoveRole.InvokeAsync(testingVar);
+        OnValueRemoved.InvokeAsync(item);
     }
 
     [Parameter]
-    public EventCallback<bool> OnRemoveRole { get; set; }
+    public EventCallback<TItem> OnValueClicked { get; set; }
+
+    [Parameter]
+    public EventCallback<TItem> OnValueRemoved { get; set; }
 
     protected IEnumerable<TItem> GetFilteredItems(string searchText)
     {

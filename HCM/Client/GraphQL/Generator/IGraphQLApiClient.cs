@@ -55,6 +55,13 @@ public interface IGraphQLApiClient
 	GraphQLQuery<int?> RoleCount (string sessionToken, Func<int?, int?> fields = null );
 	
 
+	/// <param name="name">name of Skill</param>
+	/// <param name="names">names is list variant of name of Skill</param>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("Skill")]
+	GraphQLQuery<GqlSkill> Skill (string sessionToken, long? _id = null, long?[] _ids = null, Gql_SkillFilter filter = null, int? first = null, string name = null, string[] names = null, int? offset = null, Gql_SkillOrdering[] orderBy = null, Func<GqlSkill, GqlSkill> fields = null );
+	
+
 	/// <param name="name">name of Team</param>
 	/// <param name="names">names is list variant of name of Team</param>
 	/// <param name="sessionToken">Token Used on production</param>
@@ -92,6 +99,12 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> AddEmployeeLivesIn (string sessionToken, string[] livesIn, string name, Func<string, string> fields = null );
 	
 
+	/// <summary>Adds Skills to Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addEmployeeSkills")]
+	GraphQLQuery<string> AddEmployeeSkills (string sessionToken, string name, string[] skills, Func<string, string> fields = null );
+	
+
 	/// <summary>Adds WorksAs to Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addEmployeeWorksAs")]
@@ -114,6 +127,12 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addRoleIsRequiredBy")]
 	GraphQLQuery<string> AddRoleIsRequiredBy (string sessionToken, string[] isRequiredBy, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Adds Employees to Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addSkillEmployees")]
+	GraphQLQuery<string> AddSkillEmployees (string sessionToken, string[] employees, string name, Func<string, string> fields = null );
 	
 
 	/// <summary>Adds Members to Team entity</summary>
@@ -150,6 +169,12 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createRole")]
 	GraphQLQuery<string> CreateRole (string sessionToken, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Creates a Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("createSkill")]
+	GraphQLQuery<string> CreateSkill (string sessionToken, string name, Func<string, string> fields = null );
 	
 
 	/// <summary>Creates a Team entity</summary>
@@ -200,6 +225,12 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> DeleteEmployeeLivesIn (string sessionToken, string[] livesIn, string name, Func<string, string> fields = null );
 	
 
+	/// <summary>Deletes Skills from Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteEmployeeSkills")]
+	GraphQLQuery<string> DeleteEmployeeSkills (string sessionToken, string name, string[] skills, Func<string, string> fields = null );
+	
+
 	/// <summary>Deletes WorksAs from Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteEmployeeWorksAs")]
@@ -228,6 +259,18 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteRoleIsRequiredBy")]
 	GraphQLQuery<string> DeleteRoleIsRequiredBy (string sessionToken, string[] isRequiredBy, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Deletes a Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteSkill")]
+	GraphQLQuery<string> DeleteSkill (string sessionToken, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Deletes Employees from Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteSkillEmployees")]
+	GraphQLQuery<string> DeleteSkillEmployees (string sessionToken, string[] employees, string name, Func<string, string> fields = null );
 	
 
 	/// <summary>Deletes a Team entity</summary>
@@ -272,6 +315,12 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> MergeRole (string sessionToken, string name, Func<string, string> fields = null );
 	
 
+	/// <summary>Merge a Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("mergeSkill")]
+	GraphQLQuery<string> MergeSkill (string sessionToken, string name, Func<string, string> fields = null );
+	
+
 	/// <summary>Merge a Team entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeTeam")]
@@ -300,6 +349,12 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateRole")]
 	GraphQLQuery<string> UpdateRole (string sessionToken, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Updates a Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("updateSkill")]
+	GraphQLQuery<string> UpdateSkill (string sessionToken, string name, Func<string, string> fields = null );
 	
 
 	/// <summary>Updates a Team entity</summary>

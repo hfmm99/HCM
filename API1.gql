@@ -9,6 +9,7 @@ type Employee {
   worksAs: [Role] @relation(name: "WOKS_AS", direction: out)
   worksFor: Client @relation(name: "WOKS_FOR", direction: out)
   livesIn: Country @relation(name: "LIVES_IN", direction: out)
+  skills: [Skill] @relation(name: "ENDORSES", direction: out)
 }
 
 type Team {
@@ -31,6 +32,11 @@ type Country {
 type Client {
   name: ID!
   employees: [Employee] @relation(name: "WORKS_FOR", direction: in)
+}
+
+type Skill {
+  name: ID!
+  employees: [Employee] @relation(name: "ENDORSES", direction: in)
 }
 
 type QueryType {
