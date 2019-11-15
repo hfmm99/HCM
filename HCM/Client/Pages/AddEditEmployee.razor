@@ -82,7 +82,8 @@
     private GraphQLApiClient gql = null;
     private GqlEmployee employee = null;
 
-    private List<GqlSkill> Skills;
+    private List<GqlSkill>
+    Skills;
 
     protected override async Task OnInitializedAsync()
     {
@@ -98,11 +99,18 @@
                 Phone = e.Phone,
                 Email = e.Email,
                 Image = e.Image,
-                DateOfBirth = e.DateOfBirth
+                DateOfBirth = e.DateOfBirth,
+                Skills = new List<GqlSkill> 
+                {
+                    new GqlSkill
+                    {
+                        Name = e.Skills[0].Name
+                    }
+                }
             });
 
             employee = (await query.RunAsync()).FirstOrDefault();
-            employee.Skills = new List<GqlSkill>();
+            //employee.Skills = new List<GqlSkill>();
         }
         else
             employee = new GqlEmployee();
@@ -113,8 +121,6 @@
             _id = r._id,
             Name = r.Name
         }).RunAsync();
-
-        Console.WriteLine(Skills.Count);
     }
 
     public void ChangeImage()
@@ -123,7 +129,14 @@
 
     public void Save()
     {
-        gql.MergeEmployee(string.Empty, employee.Name, employee.DateOfBirth, employee.Email, employee.Gender, phone: employee.Phone).RunAsync();
+        foreach (var skill in Skills)
+        {
+            gql.MergeSkill(string.Empty, skill.Name).RunAsync();
+        }
+
+        gql.MergeEmployee(string.Empty, employee.Name, employee.DateOfBirth, employee.Email, employee.Gender, phone: employee.Phone).RunAsync()
+        .ContinueWith(t => gql.AddEmployeeSkills(string.Empty, employee.Name, employee.Skills.Select(s => s.Name).ToArray()).RunAsync());
+
         Cancel();
     }
 
