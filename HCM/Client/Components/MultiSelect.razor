@@ -16,7 +16,7 @@
     </ul>
     @if (IsOpened && ((Items != null && Items.Count > 0) || !string.IsNullOrEmpty(SearchText)))
     {
-        <div class="dropdown">
+        <div class="dropdown multiSelect">
             <ul>
                 @{
                     var displayItems = GetFilteredItems(SearchText);

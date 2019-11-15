@@ -357,6 +357,12 @@ td {
             background-color: #b5dbff;
         }
 
+.multiSelect {
+    max-height: 100px;
+    overflow: scroll;
+}
+
+/* Modals */
 .modal-container {
     display: none;
     align-items: center;

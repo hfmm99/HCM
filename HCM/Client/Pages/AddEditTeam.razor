@@ -14,7 +14,8 @@
             </div>
         </div>
         <div class="form-group">
-
+            <label>Members:</label>
+            <MultiSelect TItem="GqlEmployee"  Placeholder="Select Team's Members" Items="Employees" Values="team.Members" DisplayFieldSelector="@(i => i.Name)"/>
         </div>
         <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
         <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
@@ -29,6 +30,8 @@
     private GraphQLApiClient gql = null;
     private GqlTeam team = null;
 
+    private List<GqlEmployee> Employees;
+
     protected override async Task OnInitializedAsync()
     {
         gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
@@ -42,9 +45,19 @@
             });
 
             team = (await query.RunAsync()).FirstOrDefault();
+            team.Members = new List<GqlEmployee>();
         }
         else
             team = new GqlTeam();
+
+        //Load Roles
+        Employees = await gql.Employee(string.Empty, fields: e => new GqlEmployee
+        {
+            _id = e._id,
+            Name = e.Name
+        }).RunAsync();
+
+        Console.WriteLine(Employees.Count);
     }
 
     public void Save()

@@ -6,14 +6,8 @@ namespace HCM.Client.Services
     {
         public event Action<bool, string> OnShow;
         public event Action OnClose;
-        public void ShowModal(bool show, string name = null)
-        {
-            OnShow?.Invoke(show, name);
-        }
+        public void ShowModal(bool show, string name = null) => OnShow?.Invoke(show, name);
 
-        public void CloseModal()
-        {
-            OnClose?.Invoke();
-        }
+        public void CloseModal() => OnClose?.Invoke();
     }
 }
