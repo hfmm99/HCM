@@ -43,9 +43,10 @@
     private bool isOpened;
     private string searchText;
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
-        Values = new List<TItem>();
+        if (Values == null)
+            Values = new List<TItem>();
     }
 
     protected void OpenPopup()

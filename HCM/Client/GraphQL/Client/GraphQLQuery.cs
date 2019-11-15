@@ -119,8 +119,6 @@ namespace HCM.Client.GraphQL.Client
             //Build GraphQL Request
             _graphQlRequest = new GraphQLRequest(_queryName, arguments.ToArray(), fields.ToArray());
 
-            Console.WriteLine(_isIEnumerableResult);
-
             //Make HTTP call
             var response = _isMutation
                         ? (_isIEnumerableResult
@@ -141,16 +139,14 @@ namespace HCM.Client.GraphQL.Client
 
         private object DefaultGraphQL(Type t)
         {
-            if (typesDefaultGraphQL.ContainsKey(t.Name))
-            {
-                return typesDefaultGraphQL[t.Name];
-            }
+            if (typesDefaultGraphQL.ContainsKey(t.FullName))
+                return typesDefaultGraphQL[t.FullName];
 
             if (t == typeof(string))
                 return string.Empty;
 
             var result = Activator.CreateInstance(t);
-            typesDefaultGraphQL[t.Name] = result;
+            typesDefaultGraphQL[t.FullName] = result;
 
             if (t != typeof(string))
             {
@@ -189,14 +185,15 @@ namespace HCM.Client.GraphQL.Client
                     return;
             }
 
-            if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition()
-                    .GetInterface("IEnumerable") != null)
+            if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition().GetInterface("IEnumerable") != null)
             {
                 object complexList = null;
 
-                if (typesDefaultGraphQL.ContainsKey(property.PropertyType.Name))
+                if (typesDefaultGraphQL.ContainsKey(property.PropertyType.FullName))
                 {
-                    complexList = typesDefaultGraphQL[property.PropertyType.Name];
+                    complexList = typesDefaultGraphQL[property.PropertyType.FullName];
+
+                    Type type = complexList.GetType().GetGenericArguments()[0];
                 }
                 else
                 {
@@ -213,9 +210,8 @@ namespace HCM.Client.GraphQL.Client
 
                     property.SetValue(result, complexList);
 
-                    typesDefaultGraphQL[property.PropertyType.Name] = complexList;
+                    typesDefaultGraphQL[property.PropertyType.FullName] = complexList;
                 }
-
             }
             else if (property.PropertyType.IsClass)
             {
