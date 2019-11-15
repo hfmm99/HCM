@@ -15,7 +15,15 @@
             </div>
         </div>
         <div class="form-group">
-
+            <label>Employees with this Skill:</label>
+            <ul class="list-group list-group-horizontal-sm">
+                @foreach (var emp in skill.Employees)
+                {
+                    <li class="list-group-item list-group-item-info">
+                        <a href="/employee/@emp._id">@emp.Name</a>
+                    </li>
+                }
+            </ul>
         </div>
         <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
         <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
@@ -36,10 +44,14 @@
 
         if (Id > 0)
         {
-            var query = gql.Skill(string.Empty, _id: Id, fields: e => new GqlSkill
+            var query = gql.Skill(string.Empty, _id: Id, fields: s => new GqlSkill
             {
-                _id = e._id,
-                Name = e.Name,
+                _id = s._id,
+                Name = s.Name,
+                Employees = new List<GqlEmployee>
+            {
+                    new GqlEmployee { _id = s.Employees[0]._id, Name = s.Employees[0].Name }
+                }
             });
 
             skill = (await query.RunAsync()).FirstOrDefault();
