@@ -342,6 +342,8 @@ td {
     min-height: 50px;
     padding: .1rem;
     width: 100%;
+    max-height: 300px;
+    overflow-y: scroll;
 }
 
     .multi-select .dropdown ul {
@@ -356,11 +358,6 @@ td {
         .multi-select .dropdown li:hover {
             background-color: #b5dbff;
         }
-
-.multiSelect {
-    max-height: 100px;
-    overflow: scroll;
-}
 
 /* Modals */
 .modal-container {

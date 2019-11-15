@@ -63,9 +63,6 @@
 
     private Grid grid;
 
-    private bool showModal;
-    private string deleteItemName;
-
     protected override async Task OnInitializedAsync()
     {
         await Search();
@@ -133,16 +130,16 @@
     public void ConfirmDelete()
     {
         if (grid.SelectedItem != null) {
-            deleteItemName = (grid.SelectedItem as GqlEmployee).Name;
-            showModal = true;
+            string deleteItemName = (grid.SelectedItem as GqlEmployee).Name;
+            bool showModal = true;
             ModalService.ShowModal(showModal, deleteItemName);
         }
     }
 
-    public void DeleteEmployee()
+    public async void DeleteEmployee()
     {
-        ModalService.CloseModal();
         gql.DeleteEmployee(string.Empty, (grid.SelectedItem as GqlEmployee).Name).RunAsync();
-        Search();
+        ModalService.CloseModal();
+        await Search();
     }
 }

@@ -1,0 +1,126 @@
+﻿@page "/skills"
+@using HCM.Client.Components
+@using HCM.Client.Components.Grid
+@using HCM.Client.Components.Modals
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+@inject ModalService ModalService
+
+<DeleteModal OnDelete="@DeleteSkill" />
+
+<div class="btn-toolbar row margin-bottom-small" role="toolbar">
+    <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewSkill">
+        <span class="oi oi-plus" />
+        New
+    </button>
+    <button type="button" class="btn btn-outline-secondary mr-1" @onclick="EditSkill">
+        <span class="oi oi-pencil" />
+        Edit
+    </button>
+    <button type="button" class="btn btn-outline-danger mr-1" @onclick="ConfirmDelete">
+        <span class="oi oi-x" />
+        Delete
+    </button>
+</div>
+
+<div class="row margin-bottom-small">
+    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Skill..." />
+</div>
+
+<div class="row">
+    <Grid @ref="grid" Data="@skills" OnDoubleClick="@EditSkill" OnSort="@OnGridSort">
+        <GridColumns>
+            <GridColumn Field="@nameof(GqlEmployee.Name)" />
+        </GridColumns>
+    </Grid>
+    <div class="mx-auto" style="width: 215px;">
+        <Pager Pages="@pages" OnPageChange="OnPageChange" />
+    </div>
+</div>
+
+@code {
+    private GraphQLApiClient gql = null;
+    private List<GqlSkill> skills = null;
+
+    private Gql_SkillOrdering sorting = Gql_SkillOrdering.name_asc;
+
+    private int page = 1;
+    private int pages = 0;
+
+    private Grid grid;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Search();
+    }
+
+    private string searchTerm;
+    public string SearchTerm
+    {
+        get { return searchTerm; }
+        set { searchTerm = value; Search(); }
+    }
+
+    protected async Task Search()
+    {
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+        var query = gql.Skill(string.Empty, first: 10, offset: (page - 1) * 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_SkillFilter { OR = new List<Gql_SkillFilter> { new Gql_SkillFilter { Name_contains = SearchTerm } } }, orderBy: new[] { sorting }, fields: e => new GqlSkill
+        {
+            _id = e._id,
+            Name = e.Name,
+        });
+
+        skills = await query.RunAsync();
+
+        pages = 10; // (await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault().Value;
+
+        StateHasChanged();
+    }
+
+    public void OnGridSort(SortEventArgs e)
+    {
+        switch (e.ColumnName)
+        {
+            case nameof(GqlSkill.Name):
+                sorting = e.SortingAscending ? Gql_SkillOrdering.name_asc : Gql_SkillOrdering.name_desc;
+                break;
+        }
+
+        Search();
+    }
+
+    public void OnPageChange(PageChangeEventArgs e)
+    {
+        page = e.Page;
+        Search();
+    }
+
+    public void NewSkill()
+    {
+        navigationManager.NavigateTo("/skill/" + -1);
+    }
+
+    public void EditSkill()
+    {
+        if (grid.SelectedItem != null)
+            navigationManager.NavigateTo("/skill/" + (grid.SelectedItem as GqlSkill)._id);
+    }
+
+    public void ConfirmDelete()
+    {
+        if (grid.SelectedItem != null)
+        {
+            string deleteItemName = (grid.SelectedItem as GqlSkill).Name;
+            bool showModal = true;
+            ModalService.ShowModal(showModal, deleteItemName);
+        }
+    }
+
+    public void DeleteSkill()
+    {
+        gql.DeleteSkill(string.Empty, (grid.SelectedItem as GqlSkill).Name).RunAsync();
+        ModalService.CloseModal();
+        Search();
+    }
+}

@@ -48,9 +48,6 @@
 
     private Grid grid;
 
-    private bool showModal;
-    private string deleteItemName;
-
     protected override async Task OnInitializedAsync()
     {
         await Search();
@@ -110,16 +107,16 @@
     {
         if (grid.SelectedItem != null)
         {
-            deleteItemName = (grid.SelectedItem as GqlTeam).Name;
-            showModal = true;
+            string deleteItemName = (grid.SelectedItem as GqlTeam).Name;
+            bool showModal = true;
             ModalService.ShowModal(showModal, deleteItemName);
         }
     }
 
-    public void DeleteTeam()
+    public async void DeleteTeam()
     {
             gql.DeleteTeam(string.Empty, (grid.SelectedItem as GqlTeam).Name).RunAsync();
             ModalService.CloseModal();
-            Search();
+            await Search();
     }
 }
