@@ -128,10 +128,9 @@
 
     protected void ItemClick(TItem item)
     {
-        SearchText = string.Empty;
         Values.Add(item);
         OnItemSelected.InvokeAsync(item);
-        StateHasChanged();
+        SearchText = string.Empty;
     }
 
     [Parameter]

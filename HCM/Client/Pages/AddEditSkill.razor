@@ -16,10 +16,10 @@
         </div>
         <div class="form-group">
             <label>Employees with this Skill:</label>
-            <ul class="list-group list-group-horizontal-sm">
-                @foreach (var emp in skill.Employees)
+            <ul class="list-group d-flex flex-row flex-wrap">
+                @foreach (var emp in skill.Employees.OrderBy(e => e.Name))
                 {
-                    <li class="list-group-item list-group-item-info">
+                    <li class="list-group-item list-group-item-info p-1 w-25">
                         <a href="/employee/@emp._id">@emp.Name</a>
                     </li>
                 }
