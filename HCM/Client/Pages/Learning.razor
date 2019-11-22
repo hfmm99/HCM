@@ -1,6 +1,6 @@
 ﻿@page "/learning"
 @using HCM.Client.Components
-@using HCM.Client.Components.Cards
+@using HCM.Client.Components.Grid
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
     
@@ -9,7 +9,7 @@
 </div>
 
 <div class="paths_section">
-    <PathsCard />
+    <DataList />
     <div class="mx-auto" style="width: 215px;">
         <Pager Pages="@pages" OnPageChange="OnPageChange" />
     </div>

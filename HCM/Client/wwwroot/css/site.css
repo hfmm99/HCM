@@ -439,7 +439,7 @@ td {
     padding: 0;
 }
 
-.path-card {
+.data-card {
     display: flex;
     text-align: left;
     align-content: stretch;
@@ -464,11 +464,11 @@ td {
     border-radius: .125rem;
 }
 
-.path-card-header {
+.data-card-header {
     background-color: #2a6fc9;
 }
 
-.path-card-body {
+.data-card-body {
     background-color: #fafafa;
 }
 
@@ -573,6 +573,7 @@ td {
     padding: 1rem !important;
     box-sizing: inherit;
     box-shadow: 0 0 5px;
+    z-index: 1;
 }
 
 .path-info-space {
@@ -607,6 +608,7 @@ td {
     top: 48px;
     right: 57px;
     top: 0 !important;
+    width: 100%
 }
 
 .progress {
@@ -618,6 +620,7 @@ td {
     display: flex;
     transition: background-color .8s ease;
     transition-delay: .4s;
+    width:100%;
 }
 
 .heading-container {
@@ -732,4 +735,60 @@ td {
 .unit-duration {
     font-size: .75rem !important;
     margin-top: .5rem !important;
+}
+ /* Item Page */
+.top-row-container {
+    max-width: 100%;
+    padding: 0;
+    margin: 0 auto;
+    z-index: 3;
+    background-color: rgb(5, 39, 103);
+}
+
+.pagination-space {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    text-align: center;
+    margin: 0;
+    font-size: 1rem;
+}
+
+.previous-button{
+    order:1;
+}
+
+.next-button{
+    order: 3;
+}
+
+.pagination-root {
+    background-color: transparent;
+    border-color: transparent;
+    text-decoration: none !important;
+    cursor: pointer;
+    justify-content: center;
+    padding-bottom: calc(.375em - 1px);
+    padding-left: .75em;
+    padding-right: .75em;
+    padding-top: calc(.375em - 1px);
+    text-align: center;
+    white-space: nowrap;
+    border-radius: 2px;
+    min-width: 2.25em;
+    align-items: center;
+    border: 1px solid transparent;
+    box-shadow: none;
+    display: inline-flex;
+    height: 2.25em;
+    line-height: 1.5;
+    position: relative;
+    vertical-align: top;
+    user-select: none;
+    color:white;
+}
+
+.learning-item{
+    margin: .1rem;
+    padding: .1rem;
 }

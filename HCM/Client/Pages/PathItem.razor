@@ -1,0 +1,29 @@
+﻿@page "/learning/pathname/itemname"
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+    <div class="box">
+        <div class="pre-box">
+            <div class="top-row-container">
+                <nav class="pagination-space">
+                    <a id="previous-item" class="pagination-root previous-button" href="#">
+                        <span class="carousel-control-prev-icon" />
+                        <span>Previous</span>
+                    </a>
+                    <a id="next-item" class="pagination-root next-button" href="#">
+                        <span>Next</span>
+                        <span class="carousel-control-next-icon" />
+
+                    </a>
+                </nav>
+            </div>
+            <div class="learning-item">
+                <article>
+                    Learning items goes here
+                </article>
+            </div>
+        </div>
+    </div>
+
+@code {
+}
