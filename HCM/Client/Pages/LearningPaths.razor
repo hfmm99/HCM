@@ -1,0 +1,28 @@
+﻿@page "/learning"
+@using HCM.Client.Components
+@using HCM.Client.Components.Cards
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+    
+<div class="row margin-bottom-small">
+    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Path..." />
+</div>
+
+<div class="paths_section">
+    <PathsCard />
+    <div class="mx-auto" style="width: 215px;">
+        <Pager Pages="@pages" OnPageChange="OnPageChange" />
+    </div>
+</div>
+
+@code {
+
+    private string SearchTerm;
+    private int pages;
+
+    private void OnPageChange()
+    {
+
+    }
+
+}

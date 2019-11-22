@@ -1,0 +1,77 @@
+﻿@page "/learning/pathname"
+@using HCM.Client.Components
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<div class="box">
+    <div class="path-info-space">
+        <div class="pre-box">
+            <div class="path-info">
+                <figure class="path-info-img">
+                    <img class="img-path-page" role="presentation" src="/css/js.png" />
+                </figure>
+                <div class="info-column">
+                    <div class="progress-data">
+                        <strong>Your progress</strong>
+                        <div class="progress" style="width: 25%;">
+                            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="heading-container">
+                        <div class="heading-sub-container">
+                            <h1 class="path-info-header">Demo Path Name</h1>
+                            <ul class="path-metadata">
+                                <li class="path-duration">Demo Duration</li> ·
+                                <li class="metadata-title"> Path</li> ·
+                                <li class="items-count"> Demo Count 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="path-tags tags">
+                        <div class="badge badge-secondary tag">
+                            Demo tag
+                        </div>
+                    </div>
+                    <div class="path-summary">
+                        <p>Demo Summary</p>
+                    </div>
+                    <div class="path-specific-summary">
+                        <p>In this path you will:</p>
+                        <ul class="specific-summary-list">
+                            <li class="specific-summary-list-item">Demo Specific Summary</li>
+                        </ul>
+                    </div>
+                    <p class="start-space">
+                        <a href="/learning/pathname" class="btn btn-primary start-button">
+                            <span class="start-button-text">Start</span>
+                        </a>
+                    </p>
+                    <div class="prerequisites">
+                        <h3 class="prerequisites-title section-title">Prerequisites</h3>
+                        <ul class="prerequisites-list">
+                            <li class="prerequisites-list-item">
+                                <a href="/learning/previouspath"><p>Previous Path</p></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="header-learning-items">
+                        <h3 class="learning-items-title section-title">This path consists of the next items</h3>
+                    </div>
+                    <ul id="item-pathid" class="items-list">
+                        <li class="path-item" id="item-id">
+                            <div class="barLink">
+                                <div class="barLinkContent">
+                                    <p><a href="/learning/pathname/itemname" class="item-title">Item Name</a></p>
+                                    <span class="unit-duration">Item Duration</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+}

@@ -5,7 +5,7 @@
 
 <form class="needs-validation">
     @if (team != null)
-    {
+     {
         <div class="form-group">
             <label for="txtName">Name</label>
             <input id="txtName" type="text" class="form-control" placeholder="Enter team's name" @bind="team.Name" required autofocus />
@@ -19,7 +19,7 @@
         </div>
         <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
         <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
-    }
+     }
 </form>
 
 @code{
@@ -50,14 +50,12 @@
         else
             team = new GqlTeam();
 
-        //Load Roles
+        //Load Employees
         Employees = await gql.Employee(string.Empty, fields: e => new GqlEmployee
         {
             _id = e._id,
             Name = e.Name
         }).RunAsync();
-
-        Console.WriteLine(Employees.Count);
     }
 
     public void Save()
