@@ -796,3 +796,9 @@ td {
     flex: none;
     display: block;
 }
+
+/* Add Edit Path */
+
+.summary-form{
+    min-height:150px;
+}

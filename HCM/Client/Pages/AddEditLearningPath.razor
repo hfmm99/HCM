@@ -16,17 +16,97 @@
         <div class="form-row">
             <div class="col">
                 <label for="txtName">Summary:</label>
-                <input id="txtName" type="text" class="form-control" placeholder="Enter a little summary" required autofocus />
+                <input id="txtName" type="text" class="form-control summary-form" placeholder="Enter a little summary" required autofocus />
                 <div class="invalid-feedback">
-                    You must enter a name.
+                    You must enter something.
                 </div>
             </div>
         </div>
+        <div class="form-row">
+            <div class="col">
+                <label for="txtName">Punctual objectives:</label>
+                <input id="txtName" type="text" class="form-control" placeholder="Enter an ojective" @oninput="OnValueChanged" required autofocus />
+                <button type="button" class="add-button btn btn-secondary" style="margin-top:1rem;" @onclick="AddObjective">
+                    <span class="oi oi-plus" />
+                    Add
+                </button>
+                <div>
+                    <ul>
+                        @{
+                            <!--Display object added-->
+                        }
+                    </ul>
+                </div>
+                <br />
+                <div class="invalid-feedback">
+                    You must enter something.
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="txtName">Add path's tags:</label>
+                    <MultiSelect TItem="GqlTags" Placeholder="Type to Search" Items="TagsData" DisplayFieldSelector="@(i => i.name)" />
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s">Save</button>
+        <button class="btn btn-secondary underline-first-letter" accesskey="c">Cancel</button>
     </form>
 
 @code {
 
     [Parameter]
     public int Id { get; set; }
+    private GqlTags tag;
+    private List<GqlObjectives> Objectives;
 
+    private bool IsVisible { get; set; }
+    private string newObjective;
+
+    [Parameter]
+    public string NewObjective
+    {
+        get { return newObjective; }
+        set
+        {
+            newObjective = value;
+            OnTextChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<string> OnTextChanged { get; set; }
+
+    private void AddObjective()
+    {
+        Console.WriteLine(NewObjective);
+        OnAddNewItem(NewObjective);
+    }
+
+    public void OnAddNewItem(string text)
+    {
+        var newObjective = new GqlObjectives { objective = text };
+        NewObjective = string.Empty;
+    }
+
+    public void OnValueChanged(ChangeEventArgs ev)
+    {
+        NewObjective = (string)ev.Value;
+        StateHasChanged();
+    }
+
+    private List<GqlTags> TagsData = new List<GqlTags>{
+        new GqlTags{name = "Advanced", id = 1}
+    };
+
+    public class GqlTags{
+        public string name { get; set; }
+        public int id { get; set; }
+    };
+
+    public class GqlObjectives{
+        public string objective { get; set; }
+    };
 }
