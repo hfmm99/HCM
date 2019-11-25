@@ -1,15 +1,44 @@
 ﻿@page "/learning"
 @using HCM.Client.Components
-@using HCM.Client.Components.Grid
+@using HCM.Client.Components.DataList
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
-    
+
 <div class="row margin-bottom-small">
     <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Path..." />
 </div>
 
 <div class="paths_section">
-    <DataList />
+    <DataList TItem="GqlLearningItem" Items="@Data" Style="DataListStyle.Cards">
+        <Template Context="item">
+            <article class="card-content list-item">
+                <div class="card-header data-card-header">
+                    <figure class="card-header card-img-top">
+                        <img src="@item.Image" role="presentation" class="card-img" />
+                    </figure>
+                </div>
+                <div class="card-body data-card-body">
+                    <p class="card-type">Demo card type</p>
+                    <a href="/learning/pathname">
+                        <strong class="card-data-title">@item.Title</strong>
+                    </a>
+                    <p class="card-metadata">@item.Description</p>
+                    <div class="data-tags tags">
+                        <div class="badge badge-secondary tag">
+                            Demo tag
+                        </div>
+                        <div class="badge badge-secondary tag">
+                            Demo tag
+                        </div>
+                        <div class="badge badge-secondary tag">
+                            Demo tag
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer data-card-footer"></div>
+            </article>
+        </Template>
+    </DataList>
     <div class="mx-auto" style="width: 215px;">
         <Pager Pages="@pages" OnPageChange="OnPageChange" />
     </div>
@@ -20,9 +49,24 @@
     private string SearchTerm;
     private int pages;
 
+    protected List<GqlLearningItem> Data = new List<GqlLearningItem>
+{
+        new GqlLearningItem(),
+        new GqlLearningItem { Title = "Another Card", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac." },
+        new GqlLearningItem { Title = "Third Card", Description = "Lorem ipsum dolor sit amet." },
+        new GqlLearningItem { Title = "Fourth Card", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac." },
+        new GqlLearningItem { Title = "Last Card", Description = "Lorem ipsum dolor sit amet." }
+    };
+
     private void OnPageChange()
     {
 
     }
 
+    public class GqlLearningItem
+    {
+        public string Image { get; set; } = "/css/js.png";
+        public string Title { get; set; } = "Upgrade Microsoft Office for IT at scale";
+        public string Description { get; set; } = "Demo metadata";
+    }
 }

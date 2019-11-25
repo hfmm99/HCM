@@ -1,0 +1,23 @@
+﻿@typeparam TItem
+@using Microsoft.AspNetCore.Components;
+
+<ul class="data-list list-group list">
+    @foreach (var item in Items)
+    {
+        <li class=@(Style == DataListStyle.Cards ? "data-card card grid-item" : string.Empty)>
+            @Template(item)
+        </li>
+    }
+
+</ul>
+
+@code {
+    [Parameter]
+    public DataListStyle Style { get; set; }
+
+    [Parameter]
+    public IReadOnlyList<TItem> Items { get; set; }
+
+    [Parameter]
+    public RenderFragment<TItem> Template { get; set; }
+}
