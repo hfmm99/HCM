@@ -788,3 +788,11 @@ td {
     margin: .1rem;
     padding: .1rem;
 }
+
+/* Paths filter */
+
+.filter-section {
+    padding: 1.5rem;
+    flex: none;
+    display: block;
+}

@@ -59,7 +59,7 @@
     private int pages;
 
     protected List<GqlLearningItem> Data = new List<GqlLearningItem>
-{
+    {
         new GqlLearningItem(),
         new GqlLearningItem { Title = "Another Card", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac." },
         new GqlLearningItem { Title = "Third Card", Description = "Lorem ipsum dolor sit amet." },
@@ -67,7 +67,6 @@
 
     private void OnPageChange()
     {
-
     }
 
     public class GqlLearningItem
@@ -81,4 +80,5 @@
     {
         navigationManager.NavigateTo("/learning");
     }
+
 }

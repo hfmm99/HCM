@@ -1,0 +1,73 @@
+﻿@page "/learning_paths"
+@using HCM.Client.Components
+@using HCM.Client.Components.Grid
+@using HCM.Client.Components.Modals
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<DeleteModal OnDelete="@DeletePath" />
+
+<div class="btn-toolbar row margin-bottom-small" role="toolbar">
+    <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewPath">
+        <span class="oi oi-plus" />
+        New
+    </button>
+    <button type="button" class="btn btn-outline-secondary mr-1" @onclick="EditPath">
+        <span class="oi oi-pencil" />
+        Edit
+    </button>
+    <button type="button" class="btn btn-outline-danger mr-1" @onclick="ConfirmDelete">
+        <span class="oi oi-x" />
+        Delete
+    </button>
+</div>
+
+<div class="row margin-bottom-small">
+    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Role" />
+</div>
+
+<div class="row">
+    <Grid @ref="grid" Data="@testData" OnDoubleClick="@EditPath" OnSort="@OnGridSort">
+        <GridColumns>
+            <GridColumn Field="@nameof(GqlRole.Name)" />
+        </GridColumns>
+    </Grid>
+    <div class="mx-auto" style="width: 215px;">
+        <Pager Pages="10" OnPageChange="OnPageChange" />
+    </div>
+</div>
+
+
+@code {
+
+    private string SearchTerm;
+    private int pages;
+    private List<GqlEmployee> testData;
+
+    private Grid grid;
+
+    private void OnPageChange()
+    {
+    }
+
+    private void OnGridSort()
+    {
+    }
+
+    protected void NewPath()
+    {
+        navigationManager.NavigateTo("/learning_paths/" + -1);
+    }
+
+    protected void EditPath()
+    {
+    }
+
+    protected void ConfirmDelete()
+    {
+    }
+
+    protected void DeletePath()
+    {
+    }
+}

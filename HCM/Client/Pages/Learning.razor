@@ -1,6 +1,7 @@
 ﻿@page "/learning"
 @using HCM.Client.Components
 @using HCM.Client.Components.DataList
+@using MatBlazor;
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 
@@ -15,6 +16,91 @@
     <button type="button" class="btn btn-outline-secondary mr-1" @onclick="PathNav">
         Your learning path
     </button>
+</div>
+
+<div class="filter-section">
+    <div role="region">
+        <h3 class="section-title">Filter</h3>
+            <div class="defining-content">
+                <MatNavMenu>
+                    <div id="accordion" class="accordion">
+                        <MatNavSubMenu class="card" @bind-Expanded="@subMenuOpen">
+                            <MatNavSubMenuHeader>
+                                <MatNavItem AllowSelection="false" class="mb-0">
+                                    <a class="navMenuHeader">Level</a>
+                                </MatNavItem>
+                            </MatNavSubMenuHeader>
+                            <MatNavSubMenuList>
+                                <ul>
+                                    <MatNavItem>
+                                        <span class="filter-title">Beginner</span><input type="checkbox" />
+                                    </MatNavItem>
+                                    <MatNavItem>
+                                        <span class="filter-title">Intermediate</span><input type="checkbox" />
+                                    </MatNavItem>
+                                    <MatNavItem>
+                                        <span class="filter-title">Advanced</span><input type="checkbox" />
+                                    </MatNavItem>
+                                </ul>
+                            </MatNavSubMenuList>
+                        </MatNavSubMenu>
+                        <MatNavSubMenu class="card">
+                            <MatNavSubMenuHeader>
+                                <MatNavItem AllowSelection="false" class="mb-0">
+                                    <a class="navMenuHeader">Expertises and skills</a>
+                                </MatNavItem>
+                            </MatNavSubMenuHeader>
+                            <MatNavSubMenuList>
+                                <ul>
+                                    <MatNavSubMenu class="card">
+                                        <MatNavSubMenuHeader>
+                                            <MatNavItem AllowSelection="false" class="mb-0">
+                                                <a class="navMenuHeader">Soft skills</a>
+                                            </MatNavItem>
+                                        </MatNavSubMenuHeader>
+                                        <MatNavSubMenuList>
+                                            <ul>
+                                                <MatNavItem>
+                                                    <span class="filter-title">Demo filter</span><input type="checkbox" />
+                                                </MatNavItem>
+                                            </ul>
+                                        </MatNavSubMenuList>
+                                    </MatNavSubMenu>
+                                    <MatNavSubMenu class="card">
+                                        <MatNavSubMenuHeader>
+                                            <MatNavItem AllowSelection="false" class="mb-0">
+                                                <a class="navMenuHeader">Expertises</a>
+                                            </MatNavItem>
+                                        </MatNavSubMenuHeader>
+                                        <MatNavSubMenuList>
+                                            <ul>
+                                                <MatNavItem>
+                                                    <span class="filter-title">Demo filter</span><input type="checkbox" />
+                                                </MatNavItem>
+                                            </ul>
+                                        </MatNavSubMenuList>
+                                    </MatNavSubMenu>
+                                </ul>
+                            </MatNavSubMenuList>
+                        </MatNavSubMenu>
+                        <MatNavSubMenu class="card">
+                            <MatNavSubMenuHeader>
+                                <MatNavItem AllowSelection="false" class="mb-0">
+                                    <a class="navMenuHeader">Roles</a>
+                                </MatNavItem>
+                            </MatNavSubMenuHeader>
+                            <MatNavSubMenuList>
+                                <ul>
+                                    <MatNavItem>
+                                        <span class="filter-title">Developer</span><input type="checkbox" />
+                                    </MatNavItem>
+                                </ul>
+                            </MatNavSubMenuList>
+                        </MatNavSubMenu>
+                    </div>
+                </MatNavMenu>
+            </div>
+    </div>
 </div>
 
 <div class="paths_section">
@@ -82,5 +168,13 @@
     private void PathNav()
     {
         navigationManager.NavigateTo("/learning/userpath");
+    }
+
+    bool subMenuOpen;
+    bool collapseNavMenu = true;
+
+    void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
     }
 }

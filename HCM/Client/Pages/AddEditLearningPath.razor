@@ -1,0 +1,32 @@
+﻿@page "/learning_paths/{Id:int}"
+@using HCM.Client.Components
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+    <form class="newPath needs-validation">
+        <div class="form-row">
+            <div class="col">
+                <label for="txtName">Title:</label>
+                <input id="txtName" type="text" class="form-control" placeholder="Enter Path's title" required autofocus />
+                <div class="invalid-feedback">
+                    You must enter a name.
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <label for="txtName">Summary:</label>
+                <input id="txtName" type="text" class="form-control" placeholder="Enter a little summary" required autofocus />
+                <div class="invalid-feedback">
+                    You must enter a name.
+                </div>
+            </div>
+        </div>
+    </form>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+}
