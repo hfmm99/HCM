@@ -439,6 +439,7 @@ td {
     text-align: left;
     align-content: stretch;
     align-items: stretch;
+    background-color:transparent;
 }
 
 .list-item {
@@ -447,8 +448,7 @@ td {
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     outline-color: transparent;
-    box-shadow: #cacaca;
-    background-color: #e3e3e3;
+    background-color: transparent;
     color: var(--text);
     max-width: 100%;
     position: relative;

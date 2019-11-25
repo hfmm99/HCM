@@ -8,6 +8,15 @@
     <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Path..." />
 </div>
 
+<div class="btn-toolbar row margin-bottom-small" role="toolbar">
+    <button type="button" class="btn btn-outline-secondary mr-1">
+        Learning Paths
+    </button>
+    <button type="button" class="btn btn-outline-secondary mr-1" @onclick="PathNav">
+        Your learning path
+    </button>
+</div>
+
 <div class="paths_section">
     <DataList TItem="GqlLearningItem" Items="@Data" Style="DataListStyle.Cards">
         <Template Context="item">
@@ -68,5 +77,10 @@
         public string Image { get; set; } = "/css/js.png";
         public string Title { get; set; } = "Upgrade Microsoft Office for IT at scale";
         public string Description { get; set; } = "Demo metadata";
+    }
+
+    private void PathNav()
+    {
+        navigationManager.NavigateTo("/learning/userpath");
     }
 }
