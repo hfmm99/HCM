@@ -655,7 +655,7 @@ td {
     display: flex;
     flex-wrap: wrap;
     list-style: none;
-    margin: 0 !important;
+    margin-bottom: 1rem;
     padding: 0 !important;
     font-size: .875rem
 }
@@ -791,4 +791,28 @@ td {
 .learning-item{
     margin: .1rem;
     padding: .1rem;
+}
+
+.item-footer {
+    max-width: 960px;
+    padding: 0;
+    margin: 0 auto;
+    text-align:left;
+}
+
+.hr {
+    margin: 1.5rem 0;
+    height: 0;
+    border-width: 1px 0 0;
+    border-style: solid;
+    overflow: visible;
+}
+
+.next-item-title {
+    line-height: 1.3;
+    font-weight: 600;
+    word-break: break-word;
+    margin-top: 0 !important;
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
 }
