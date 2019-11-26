@@ -1,0 +1,15 @@
+﻿@page "/learning_item/{Id:int}"
+@using HCM.Client.Components
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<div class="markdown-write box">
+    <MarkDown/>
+</div>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+}

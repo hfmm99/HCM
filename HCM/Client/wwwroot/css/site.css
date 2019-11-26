@@ -802,3 +802,11 @@ td {
 .summary-form{
     min-height:150px;
 }
+
+.path-objectives{
+    display: block;
+    background-color: #e3e3e3;
+    text-align: left;
+    margin: 1rem;
+    padding:5%;
+}

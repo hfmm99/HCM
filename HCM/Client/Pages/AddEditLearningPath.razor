@@ -1,69 +1,90 @@
-﻿@page "/learning_paths/{Id:int}"
+﻿@page "/learning_path/{Id:int}"
 @using HCM.Client.Components
+@using HCM.Client.Components.Grid
+@using HCM.Client.Components.DataList
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 
-    <form class="newPath needs-validation">
-        <div class="form-row">
-            <div class="col">
-                <label for="txtName">Title:</label>
-                <input id="txtName" type="text" class="form-control" placeholder="Enter Path's title" required autofocus />
-                <div class="invalid-feedback">
-                    You must enter a name.
-                </div>
+<form class="newPath needs-validation">
+    <div class="form-row">
+        <div class="col">
+            <label for="txtName">Title:</label>
+            <input id="txtName" type="text" class="form-control" placeholder="Enter Path's title" required autofocus />
+            <div class="invalid-feedback">
+                You must enter a name.
             </div>
         </div>
-        <div class="form-row">
-            <div class="col">
-                <label for="txtName">Summary:</label>
-                <input id="txtName" type="text" class="form-control summary-form" placeholder="Enter a little summary" required autofocus />
-                <div class="invalid-feedback">
-                    You must enter something.
-                </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label for="txtName">Summary:</label>
+            <input id="txtName" type="text" class="form-control summary-form" placeholder="Enter a little summary" required autofocus />
+            <div class="invalid-feedback">
+                You must enter something.
             </div>
         </div>
-        <div class="form-row">
-            <div class="col">
-                <label for="txtName">Punctual objectives:</label>
-                <input id="txtName" type="text" class="form-control" placeholder="Enter an ojective" @oninput="OnValueChanged" required autofocus />
-                <button type="button" class="add-button btn btn-secondary" style="margin-top:1rem;" @onclick="AddObjective">
-                    <span class="oi oi-plus" />
-                    Add
-                </button>
-                <div>
-                    <ul>
-                        @{
-                            <!--Display object added-->
-                        }
-                    </ul>
-                </div>
-                <br />
-                <div class="invalid-feedback">
-                    You must enter something.
-                </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label for="txtName">Punctual objectives:</label>
+            <input id="txtName" type="text" class="form-control" placeholder="Enter an ojective" @oninput="OnValueChanged" required autofocus />
+            <button type="button" class="add-button btn btn-secondary" style="margin-top:1rem;" @onclick="AddObjective">
+                <span class="oi oi-plus" />
+                Add
+            </button>
+            <div>
+                <DataList TItem="GqlObjectives" Items="@PathObjectives" Style="DataListStyle.List">
+                    <Template Context="item">
+                        <li>
+                            <div class="path-objectives">
+                                <div><span>@item.objective</span></div>
+                            </div>
+                        </li>
+                    </Template>
+                </DataList>
+            </div>
+            <br />
+            <div class="invalid-feedback">
+                You must enter something.
             </div>
         </div>
-        <div class="form-row">
-            <div class="col">
-                <div class="form-group">
-                    <label for="txtName">Add path's tags:</label>
-                    <MultiSelect TItem="GqlTags" Placeholder="Type to Search" Items="TagsData" DisplayFieldSelector="@(i => i.name)" />
-                </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <div class="form-group">
+                <label for="txtName">Add path's tags:</label>
+                <MultiSelect TItem="GqlTags" Placeholder="Type to Search" Items="TagsData" DisplayFieldSelector="@(i => i.name)" />
             </div>
         </div>
-        <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s">Save</button>
-        <button class="btn btn-secondary underline-first-letter" accesskey="c">Cancel</button>
-    </form>
+    </div>
+    <div class="row" style="padding:1rem">
+        <div class="col">
+            <label for="txtName">Items in this learning path:</label>
+            <Grid @ref="grid" Data="@LearningItems">
+                <GridColumns>
+                    <GridColumn Field="@nameof(GqlItems.title)"/>
+                </GridColumns>
+            </Grid>
+            <button type="button" class="add-button btn btn-secondary" style="margin-top:1rem;" @onclick="NewLearningItem">
+                    <span class="oi oi-plus" />Add learning item
+            </button>
+        </div>
+    </div>
+    <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s">Save</button>
+    <button class="btn btn-secondary underline-first-letter" accesskey="c">Cancel</button>
+</form>
 
 @code {
 
     [Parameter]
     public int Id { get; set; }
-    private GqlTags tag;
-    private List<GqlObjectives> Objectives;
 
     private bool IsVisible { get; set; }
     private string newObjective;
+
+    private Grid grid;
+
+    private List<GqlItems> LearningItems = null;
 
     [Parameter]
     public string NewObjective
@@ -76,18 +97,38 @@
         }
     }
 
+    protected override void OnInitialized()
+    {
+        LearningItems = new List<GqlItems> {
+            new GqlItems{title = "Variables and constants"}
+        };
+
+        StateHasChanged();
+    }
+
+    private List<GqlTags> TagsData = new List<GqlTags>{
+        new GqlTags{name = "Advanced"}
+    };
+
+    private List<GqlObjectives> PathObjectives = new List<GqlObjectives>
+    {
+        new GqlObjectives{objective = "Understanding javascript basics"},
+        new GqlObjectives{objective = "Learning normalized rules"}
+    };
+
     [Parameter]
     public EventCallback<string> OnTextChanged { get; set; }
 
     private void AddObjective()
     {
-        Console.WriteLine(NewObjective);
         OnAddNewItem(NewObjective);
     }
 
     public void OnAddNewItem(string text)
     {
         var newObjective = new GqlObjectives { objective = text };
+        PathObjectives.Add(newObjective);
+        navigationManager.NavigateTo("/learning_path/-1");
         NewObjective = string.Empty;
     }
 
@@ -97,16 +138,23 @@
         StateHasChanged();
     }
 
-    private List<GqlTags> TagsData = new List<GqlTags>{
-        new GqlTags{name = "Advanced", id = 1}
-    };
+    protected void NewLearningItem()
+    {
+        navigationManager.NavigateTo("/learning_item/-1");
+    }
 
-    public class GqlTags{
+    public class GqlTags
+    {
         public string name { get; set; }
-        public int id { get; set; }
     };
 
-    public class GqlObjectives{
+    public class GqlObjectives
+    {
         public string objective { get; set; }
+    };
+
+    public class GqlItems
+    {
+        public string title { get; set; }
     };
 }
