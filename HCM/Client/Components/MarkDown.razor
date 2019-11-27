@@ -1,13 +1,25 @@
 ﻿<div class="markdown-space">
     <div class="markdown-box">
-        <div class="markdown-box-footer">
-            <label for="txtName" class="section-title"></label>
-            <input type="text" class="markdown-input" />
-        </div>
-        <div class="markdown-box-footer">
-            <button class="btn btn-primary">Save</button>
-            <button class="btn btn-secondary">Cancel</button>
-        </div>
+        <form>
+            <div class="markdown-box-header row">
+                <label for="txtName" class="section-title">Title:</label>
+                <input type="text" class="markdown-input learning-item-title form-control" placeholder="Example, variables" />
+                <div class="invalid-feedback">
+                    You must enter a title.
+                </div>
+            </div>
+            <div class="markdown-box-content row">
+                <label for="txtName" class="section-title">Content:</label>
+                <textarea type="text" class="markdown-input learning-item-input form-control" placeholder="##Markdown content"/>
+                <div class="invalid-feedback">
+                    You must create some content.
+                </div>
+            </div>
+            <div class="markdown-box-footer row">
+                <button class="btn btn-primary underline-first-letter button-mark" type="submit" >Save</button>
+                <button class="btn btn-secondary underline-first-letter button-mark" accesskey="c">Cancel</button>
+            </div>
+        </form>
     </div>
 </div>
 
