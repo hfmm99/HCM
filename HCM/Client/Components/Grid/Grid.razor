@@ -39,14 +39,14 @@ else
                         if (column.Template == null)
                         {
                             var value = @item.GetType().GetProperty(column.Field).GetValue(item);
-                            <td>
+                            <td class="table_td td">
                                 @(string.IsNullOrEmpty(column.Format) ? value : string.Format(column.Format, value))
                             </td>
                         }
                         else
                         {
-                            <td>
-                                @column.Template(item)
+                            <td class="table_td td">
+                                 @column.Template(item)
                             </td>
                         }
                     }

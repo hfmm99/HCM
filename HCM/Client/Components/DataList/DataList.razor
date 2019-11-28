@@ -1,10 +1,10 @@
 ﻿@typeparam TItem
 @using Microsoft.AspNetCore.Components;
 
-<ul class="data-list list-group list">
+<ul class="data_list list_group list">
     @foreach (var item in Items)
     {
-        <li class=@(Style == DataListStyle.Cards ? "data-card card grid-item" : string.Empty)>
+        <li class=@(Style == DataListStyle.Cards ? "data_card card grid_item" : string.Empty)>
             @Template(item)
         </li>
     }

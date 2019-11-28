@@ -1,22 +1,22 @@
 ﻿@inherits HCM.Client.ModalTemplate
 
-<div class="modal modal-container @(IsVisible ? "modal-active":string.Empty)"  id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal modal_container @(IsVisible ? "modal_active":string.Empty)"  id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-    <div class="modal-overlay" @onclick="CloseModal"></div>
-        <div class="blazor-modal modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Are you sure?</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="@CloseModal">
+    <div class="modal_overlay bg--transBlack" @onclick="CloseModal"></div>
+        <div class="blazor_modal modal_content">
+            <div class="modal_header">
+                <h3 class="modal_title">Are you sure?</h3>
+                <button type="button" class="modal_close bg--trans" data-dismiss="modal" aria-label="Close" @onclick="@CloseModal">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body align-content-center">
+            <div class="modal_body align-content-center">
                 <div>
                     <h5>Do you really want to delete @Name?</h5>
                     <div class="alert alert-danger" role="alert">This process can't be undone.</div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal_footer">
                 <div>
                     <button @onclick="@CloseModal" type="button" class="btn btn-primary">
                         Cancel

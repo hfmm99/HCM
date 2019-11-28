@@ -1,34 +1,34 @@
 ﻿@typeparam TItem
 @using Microsoft.AspNetCore.Components;
 
-<div class="multi-select">
-    <ul>
+<div class="multiSelect">
+    <ul class="multiSelect_list">
         @foreach (var value in Values)
         {
-            <li class="chip" @onclick="(e => ValueClicked(value))">
+            <li class="multiSelect_chip multiSelect_list_item multiSelect_dropdown_list_item bg--lightBlue" @onclick="(e => ValueClicked(value))">
                 @DisplayFieldSelector?.Invoke(value)
                 <span class="close" @onclick="(e => RemoveValue(value))">×</span>
             </li>
         }
-        <li class="multi-select-input">
-            <input type="search" placeholder="@Placeholder" @oninput="OnValueChanged" @bind="SearchText" @onfocus="OpenPopup" @onblur="ClosePopup" />
+        <li class="multiSelect_inputSpace multiSelect_list_item multiSelect_dropdown_list_item">
+            <input type="search" class="multiSelect_input" placeholder="@Placeholder" @oninput="OnValueChanged" @bind="SearchText" @onfocus="OpenPopup" @onblur="ClosePopup" />
         </li>
     </ul>
     @if (IsOpened && ((Items != null && Items.Count > 0) || !string.IsNullOrEmpty(SearchText)))
     {
-        <div class="dropdown">
-            <ul>
+        <div class="dropdown multiSelect_dropdown bg--white">
+            <ul class="multiSelect_list multiSelect_dropdown_list">
                 @{
                     var displayItems = GetFilteredItems(SearchText);
                     foreach (var item in displayItems)
                     {
-                        <li @onmousedown="@(e => ItemClick(item))">
+                        <li class="multiSelect_list_item multiSelect_dropdown_list_item" @onmousedown="@(e => ItemClick(item))">
                             @(DisplayFieldSelector?.Invoke(item) ?? item?.ToString())
                         </li>
                     }
                     if (displayItems.Count() == 0 && !string.IsNullOrEmpty(SearchText))
                     {
-                        <li class="text-center text-info">
+                        <li class="text-info multiSelect_list_item text-center multiSelect_dropdown_list_item">
                             <a @onmousedown="AddNewItem" href="#">Add New Value: @SearchText</a>
                         </li>
                     }

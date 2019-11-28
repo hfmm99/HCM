@@ -18,10 +18,10 @@
     </button>
 </div>
 
-<div class="filter-section">
+<div class="filter_section">
     <div role="region">
-        <h3 class="section-title">Filter</h3>
-            <div class="defining-content">
+        <h3 class="section_title">Filter</h3>
+            <div class="defining_content">
                 <MatNavMenu>
                     <div id="accordion" class="accordion">
                         <MatNavSubMenu class="card" @bind-Expanded="@subMenuOpen">
@@ -106,19 +106,19 @@
 <div class="paths_section">
     <DataList TItem="GqlLearningItem" Items="@Data" Style="DataListStyle.Cards">
         <Template Context="item">
-            <article class="card-content list-item">
-                <div class="card-header data-card-header">
-                    <figure class="card-header card-img-top">
-                        <img src="@item.Image" role="presentation" class="card-img" />
+            <article class="card_content list_item bg--trans">
+                <div class="card_header data_card_header">
+                    <figure class="card_header card_img_top">
+                        <img src="@item.Image" role="presentation" class="card_img" />
                     </figure>
                 </div>
-                <div class="card-body data-card-body">
-                    <p class="card-type">Demo card type</p>
+                <div class="card_body data_card_body">
+                    <p class="card_type">Demo card type</p>
                     <a href="/learning/pathname">
-                        <strong class="card-data-title">@item.Title</strong>
+                        <strong class="card_data_title">@item.Title</strong>
                     </a>
-                    <p class="card-metadata">@item.Description</p>
-                    <div class="data-tags tags">
+                    <p class="card_metadata">@item.Description</p>
+                    <div class="data_tags tags">
                         <div class="badge badge-secondary tag">
                             Demo tag
                         </div>
@@ -130,7 +130,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-footer data-card-footer"></div>
+                <div class="card_footer data_card_footer"></div>
             </article>
         </Template>
     </DataList>
