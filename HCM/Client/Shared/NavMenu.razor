@@ -1,20 +1,20 @@
 ﻿@using MatBlazor
 
-<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Human Capital Manager</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+<div class="bg--darkBlue pl-4 navbar navbar-dark">
+    <a class="navbar-brand font--medium" href="">Human Capital Manager</a>
+    <button class="navbar-toggler bg--white" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
 </div>
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <MatNavMenu class="nav flex-column">
-        <li class="nav-item px-2">
+        <li class="nav-item font--small px-2">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true" />Home
+                <span class="sidebar_oi oi oi-home font--medium" aria-hidden="true" />Home
             </NavLink>
         </li>
-        <li class="nav-item px-2">
+        <li class="nav-item font--small px-2">
             <div id="accordion" class="accordion">
                 <MatNavSubMenu class="card" @bind-Expanded="@subMenuOpen">
                     <MatNavSubMenuHeader class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
@@ -24,29 +24,29 @@
                     </MatNavSubMenuHeader>
                     <MatNavSubMenuList id="collapseOne" class="card-body collapse show" data-parent="#accordion">
                         <ul class="nav flex-column">
-                            <MatNavItem class="nav-item px-1">
+                            <MatNavItem class="nav-item font--small px-1">
                                 <NavLink class="nav-link" href="employees">
-                                    <span class="oi oi-list-rich" aria-hidden="true"></span> Employees
+                                    <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Employees
                                 </NavLink>
                             </MatNavItem>
-                            <MatNavItem class="nav-item px-1">
+                            <MatNavItem class="nav-item font--small px-1">
                                 <NavLink class="nav-link" href="teams">
-                                    <span class="oi oi-list-rich" aria-hidden="true"></span> Teams
+                                    <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Teams
                                 </NavLink>
                             </MatNavItem>
-                            <MatNavItem class="nav-item px-1">
+                            <MatNavItem class="nav-item font--small px-1">
                                 <NavLink class="nav-link" href="roles">
-                                    <span class="oi oi-list-rich" aria-hidden="true"></span> Roles
+                                    <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Roles
                                 </NavLink>
                             </MatNavItem>
-                            <MatNavItem class="nav-item px-1">
+                            <MatNavItem class="nav-item font--small px-1">
                                 <NavLink class="nav-link" href="expertises">
-                                    <span class="oi oi-list-rich" aria-hidden="true"></span> Expertises
+                                    <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Expertises
                                 </NavLink>
                             </MatNavItem>
-                            <MatNavItem class="nav-item px-1">
+                            <MatNavItem class="nav-item font--small px-1">
                                 <NavLink class="nav-link" href="learning_paths">
-                                    <span class="oi oi-list-rich" aria-hidden="true"></span> Learning System
+                                    <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Learning System
                                 </NavLink>
                             </MatNavItem>
                         </ul>
@@ -60,9 +60,9 @@
                     </MatNavSubMenuHeader>
                     <MatNavSubMenuList id="collapseOne" class="card-body collapse" data-parent="#accordion">
                         <ul class="nav flex-column">
-                            <MatNavItem class="nav-item px-1">
+                            <MatNavItem class="nav-item font--small px-1">
                                 <NavLink class="nav-link" href="learning">
-                                    <span class="oi oi-list-rich" aria-hidden="true"></span> Learning Paths
+                                    <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Learning Paths
                                 </NavLink>
                             </MatNavItem>
                         </ul>
