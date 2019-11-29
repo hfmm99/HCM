@@ -5,74 +5,76 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 
-<form class="newPath needs-validation">
-    <div class="form-row">
-        <div class="col">
-            <label for="txtName">Title:</label>
-            <input id="txtName" type="text" class="form-control" placeholder="Enter Path's title" required autofocus />
-            <div class="invalid-feedback">
-                You must enter a name.
+    <form class="newPath needs-validation">
+        <div class="form-row">
+            <div class="col">
+                <label for="txtName">Title:</label>
+                <input id="txtName" type="text" class="form-control" placeholder="Enter Path's title" required autofocus />
+                <div class="invalid-feedback">
+                    You must enter a name.
+                </div>
             </div>
         </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="txtName">Summary:</label>
-            <textarea id="txtName" type="text" class="form-control summary-form" placeholder="Enter a little summary" required autofocus />
-            <div class="invalid-feedback">
-                You must enter something.
+        <div class="form-row">
+            <div class="col">
+                <label for="txtName">Summary:</label>
+                <textarea id="txtName" type="text" class="form-control summary-form" placeholder="Enter a little summary" required autofocus />
+                <div class="invalid-feedback">
+                    You must enter something.
+                </div>
             </div>
         </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="txtName">Punctual objectives:</label>
-            <input id="txtName" type="text" class="form-control" placeholder="Enter an ojective" @oninput="OnValueChanged" required autofocus />
-            <button type="button" class="add-button btn btn-secondary" style="margin-top:1rem;" @onclick="AddObjective">
-                <span class="oi oi-plus" />
-                Add
-            </button>
-            <div>
-                <DataList TItem="GqlObjectives" Items="@PathObjectives" Style="DataListStyle.List">
-                    <Template Context="item">
-                        <li>
-                            <div class="path-objectives">
-                                <div><span>@item.objective</span></div>
-                            </div>
-                        </li>
-                    </Template>
-                </DataList>
-            </div>
-            <br />
-            <div class="invalid-feedback">
-                You must enter something.
-            </div>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <div class="form-group">
-                <label for="txtName">Add path's tags:</label>
-                <MultiSelect TItem="GqlTags" Placeholder="Type to Search" Items="TagsData" DisplayFieldSelector="@(i => i.name)" />
+        <div class="form-row">
+            <div class="col">
+                <label for="txtName">Punctual objectives:</label>
+                <input id="txtName" type="text" class="form-control" placeholder="Enter an ojective" @oninput="OnValueChanged" required autofocus />
+                <button type="button" class="add-button btn btn-secondary" style="margin-top:1rem;" @onclick="AddObjective">
+                    <span class="oi oi-plus" />
+                    Add
+                </button>
+                <div>
+                    <DataList TItem="GqlObjectives" Items="@PathObjectives" Style="DataListStyle.List">
+                        <Template Context="item">
+                            <li>
+                                <div class="path-objectives">
+                                    <div><span>@item.objective</span></div>
+                                </div>
+                            </li>
+                        </Template>
+                    </DataList>
+                </div>
+                <br />
+                <div class="invalid-feedback">
+                    You must enter something.
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row" style="padding:1rem">
-        <div class="col">
-            <label for="txtName">Items in this learning path:</label>
-            <Grid @ref="grid" Data="@LearningItems">
-                <GridColumns>
-                    <GridColumn Field="@nameof(GqlItems.title)"/>
-                </GridColumns>
-            </Grid>
-            <button type="button" class="add-button btn btn-secondary" style="margin-top:1rem;" @onclick="NewLearningItem">
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="txtName">Add path's tags:</label>
+                    <MultiSelect TItem="GqlTags" Placeholder="Type to Search" Items="TagsData" DisplayFieldSelector="@(i => i.name)" />
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding:1rem">
+            <div class="col">
+                <label for="txtName">Items in this learning path:</label>
+                <Grid @ref="grid" Data="@LearningItems">
+                    <GridColumns>
+                        <GridColumn Field="@nameof(GqlItems.title)" />
+                    </GridColumns>
+                </Grid>
+                <button type="button" class="add-button btn btn-secondary" style="margin-top:1rem;" @onclick="NewLearningItem">
                     <span class="oi oi-plus" />Add learning item
-            </button>
+                </button>
+            </div>
         </div>
-    </div>
-    <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s">Save</button>
-    <button class="btn btn-secondary underline-first-letter" accesskey="c">Cancel</button>
-</form>
+        <div class="btn-toolbar row margin-btm-small" role="toolbar">
+            <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s">Save</button>
+            <button class="btn btn-secondary underline-first-letter" accesskey="c">Cancel</button>
+        </div>
+    </form>
 
 @code {
 

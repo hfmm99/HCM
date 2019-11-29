@@ -9,7 +9,7 @@
     <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Path..." />
 </div>
 
-<div class="btn-toolbar row margin-bottom-small" role="toolbar">
+<div class="btn-toolbar row margin-btm-small" role="toolbar">
     <button type="button" class="btn btn-outline-secondary mr-1">
         Learning Paths
     </button>
@@ -107,7 +107,7 @@
     <DataList TItem="GqlLearningItem" Items="@Data" Style="DataListStyle.Cards">
         <Template Context="item">
             <article class="card_content list_item bg--trans">
-                <div class="card_header data_card_header">
+                <div class="card_header data_card_header bg--blue">
                     <figure class="card_header card_img_top">
                         <img src="@item.Image" role="presentation" class="card_img" />
                     </figure>

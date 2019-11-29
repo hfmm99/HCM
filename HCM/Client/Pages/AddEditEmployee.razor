@@ -69,8 +69,8 @@
             <label>Employee's Interest/Expertise Skills:</label>
             <MultiSelect TItem="GqlSkill" Placeholder="Type to Search" Items="Skills" Values="employee.Skills" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@SkillRemoved" OnAddNewItem="@AddNewSkill" />
         </div>
-        <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
-        <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
+            <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
+            <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
     }
 </form>
 

@@ -1,4 +1,5 @@
 ﻿@page "/learning/userpath"
+@using MatBlazor
 @using HCM.Client.Components
 @using HCM.Client.Components.DataList
 @inject HttpClient httpClient
@@ -8,7 +9,7 @@
     <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Path..." />
 </div>
 
-<div class="btn-toolbar row margin-bottom-small" role="toolbar">
+<div class="btn-toolbar row margin-btm-small" role="toolbar">
     <button type="button" class="btn btn-outline-secondary mr-1" @onclick="PathNav">
         Learning Paths
     </button>
@@ -17,22 +18,107 @@
     </button>
 </div>
 
+<div class="filter_section">
+    <div role="region">
+        <h3 class="section_title">Filter</h3>
+        <div class="defining_content">
+            <MatNavMenu>
+                <div id="accordion" class="accordion">
+                    <MatNavSubMenu class="card" @bind-Expanded="@subMenuOpen">
+                        <MatNavSubMenuHeader>
+                            <MatNavItem AllowSelection="false" class="mb-0">
+                                <a class="navMenuHeader">Level</a>
+                            </MatNavItem>
+                        </MatNavSubMenuHeader>
+                        <MatNavSubMenuList>
+                            <ul>
+                                <MatNavItem>
+                                    <span class="filter-title">Beginner</span><input type="checkbox" />
+                                </MatNavItem>
+                                <MatNavItem>
+                                    <span class="filter-title">Intermediate</span><input type="checkbox" />
+                                </MatNavItem>
+                                <MatNavItem>
+                                    <span class="filter-title">Advanced</span><input type="checkbox" />
+                                </MatNavItem>
+                            </ul>
+                        </MatNavSubMenuList>
+                    </MatNavSubMenu>
+                    <MatNavSubMenu class="card">
+                        <MatNavSubMenuHeader>
+                            <MatNavItem AllowSelection="false" class="mb-0">
+                                <a class="navMenuHeader">Expertises and skills</a>
+                            </MatNavItem>
+                        </MatNavSubMenuHeader>
+                        <MatNavSubMenuList>
+                            <ul>
+                                <MatNavSubMenu class="card">
+                                    <MatNavSubMenuHeader>
+                                        <MatNavItem AllowSelection="false" class="mb-0">
+                                            <a class="navMenuHeader">Soft skills</a>
+                                        </MatNavItem>
+                                    </MatNavSubMenuHeader>
+                                    <MatNavSubMenuList>
+                                        <ul>
+                                            <MatNavItem>
+                                                <span class="filter-title">Demo filter</span><input type="checkbox" />
+                                            </MatNavItem>
+                                        </ul>
+                                    </MatNavSubMenuList>
+                                </MatNavSubMenu>
+                                <MatNavSubMenu class="card">
+                                    <MatNavSubMenuHeader>
+                                        <MatNavItem AllowSelection="false" class="mb-0">
+                                            <a class="navMenuHeader">Expertises</a>
+                                        </MatNavItem>
+                                    </MatNavSubMenuHeader>
+                                    <MatNavSubMenuList>
+                                        <ul>
+                                            <MatNavItem>
+                                                <span class="filter-title">Demo filter</span><input type="checkbox" />
+                                            </MatNavItem>
+                                        </ul>
+                                    </MatNavSubMenuList>
+                                </MatNavSubMenu>
+                            </ul>
+                        </MatNavSubMenuList>
+                    </MatNavSubMenu>
+                    <MatNavSubMenu class="card">
+                        <MatNavSubMenuHeader>
+                            <MatNavItem AllowSelection="false" class="mb-0">
+                                <a class="navMenuHeader">Roles</a>
+                            </MatNavItem>
+                        </MatNavSubMenuHeader>
+                        <MatNavSubMenuList>
+                            <ul>
+                                <MatNavItem>
+                                    <span class="filter-title">Developer</span><input type="checkbox" />
+                                </MatNavItem>
+                            </ul>
+                        </MatNavSubMenuList>
+                    </MatNavSubMenu>
+                </div>
+            </MatNavMenu>
+        </div>
+    </div>
+</div>
+
 <div class="paths_section">
     <DataList TItem="GqlLearningItem" Items="@Data" Style="DataListStyle.Cards">
         <Template Context="item">
-            <article class="card-content list-item">
-                <div class="card-header data-card-header">
-                    <figure class="card-header card-img-top">
-                        <img src="@item.Image" role="presentation" class="card-img" />
+            <article class="card_content list_item bg--trans">
+                <div class="card_header data_card_header bg--blue">
+                    <figure class="card_header card_img_top">
+                        <img src="@item.Image" role="presentation" class="card_img" />
                     </figure>
                 </div>
-                <div class="card-body data-card-body">
-                    <p class="card-type">Demo card type</p>
-                    <a href="/learning/pathname">
-                        <strong class="card-data-title">@item.Title</strong>
-                    </a>
-                    <p class="card-metadata">@item.Description</p>
-                    <div class="data-tags tags">
+                <div class="card_body data_card_body">
+                    <p class="card_type">Demo card type</p>
+                     <a href="/learning/pathname">
+                        <strong class="card_data_title">@item.Title</strong>
+                     </a>
+                     <p class="card_metadata">@item.Description</p>
+                     <div class="data_tags tags">
                         <div class="badge badge-secondary tag">
                             Demo tag
                         </div>
@@ -44,8 +130,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-footer data-card-footer"></div>
-            </article>
+                <div class="card_footer data_card_footer"></div>
+</article>
         </Template>
     </DataList>
     <div class="mx-auto" style="width: 215px;">
@@ -81,4 +167,11 @@
         navigationManager.NavigateTo("/learning");
     }
 
+        bool subMenuOpen;
+    bool collapseNavMenu = true;
+
+    void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
 }

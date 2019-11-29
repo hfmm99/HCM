@@ -5,12 +5,12 @@
     <ul class="multiSelect_list">
         @foreach (var value in Values)
         {
-            <li class="multiSelect_chip multiSelect_list_item multiSelect_dropdown_list_item bg--lightBlue" @onclick="(e => ValueClicked(value))">
+            <li class="multiSelect_chip multiSelect_dropdown_list_item multiSelect_list_item bg--lightBlue" @onclick="(e => ValueClicked(value))">
                 @DisplayFieldSelector?.Invoke(value)
                 <span class="close" @onclick="(e => RemoveValue(value))">×</span>
             </li>
         }
-        <li class="multiSelect_inputSpace multiSelect_list_item multiSelect_dropdown_list_item">
+        <li class="multiSelect_inputSpace multiSelect_dropdown_list_item multiSelect_list_item">
             <input type="search" class="multiSelect_input" placeholder="@Placeholder" @oninput="OnValueChanged" @bind="SearchText" @onfocus="OpenPopup" @onblur="ClosePopup" />
         </li>
     </ul>

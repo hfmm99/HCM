@@ -3,24 +3,24 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 
-<form class="needs-validation">
-    @if (team != null)
-     {
-        <div class="form-group">
-            <label for="txtName">Name</label>
-            <input id="txtName" type="text" class="form-control" placeholder="Enter team's name" @bind="team.Name" required autofocus />
-            <div class="invalid-feedback">
-                You must enter a name.
+    <form class="needs-validation">
+        @if (team != null)
+        {
+            <div class="form-group">
+                <label for="txtName">Name</label>
+                <input id="txtName" type="text" class="form-control" placeholder="Enter team's name" @bind="team.Name" required autofocus />
+                <div class="invalid-feedback">
+                    You must enter a name.
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label>Members:</label>
-            <MultiSelect TItem="GqlEmployee"  Placeholder="Select Team's Members" Items="Employees" Values="team.Members" DisplayFieldSelector="@(i => i.Name)"/>
-        </div>
-        <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
-        <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
-     }
-</form>
+            <div class="form-group">
+                <label>Members:</label>
+                <MultiSelect TItem="GqlEmployee" Placeholder="Select Team's Members" Items="Employees" Values="team.Members" DisplayFieldSelector="@(i => i.Name)" />
+            </div>
+                <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
+                <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
+                }
+        </form>
 
 @code{
 
