@@ -340,7 +340,7 @@ h2 {
 
 .multiSelect_dropdown_list_item {
     display: block;
-    padding: .7rem;
+    padding: .4rem;
 }
 
     .multiSelect_dropdown_list_item:hover {
@@ -817,7 +817,7 @@ h2 {
     height:100%;
 }
 
-/* Modifiers Bg */
+/* Modifiers */
 
 .bg--lightGray {
     background-color: #e6e6e6;
@@ -861,4 +861,8 @@ h2 {
 
 .margin-btm-small {
     margin-bottom: 0.3rem;
+}
+
+.text--vertMiddle{
+    vertical-align:middle;
 }
