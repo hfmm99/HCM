@@ -1,10 +1,10 @@
 ﻿@page "/learning_item/{Id:int}"
-@using HCM.Client.Components
+@using HCM.Client.Components.Markdown
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 
 <div class="markdown-write box">
-    <MarkDown />
+    <MarkDownInput/>
 </div>
 
 @code {
