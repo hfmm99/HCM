@@ -1,77 +1,77 @@
 ﻿@using MatBlazor
 
-<div class="bg--darkBlue pl-4 navbar navbar-dark">
-    <a class="navbar-brand font--medium" href="">Human Capital Manager</a>
-    <button class="navbar-toggler bg--white" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+    <div class="bg--darkBlue pl-4 navbar navbar-dark">
+        <a class="navbar-brand font--medium" href="">Human Capital Manager</a>
+        <button class="navbar-toggler bg--white" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <MatNavMenu class="nav flex-column">
-        <li class="nav-item font--small px-2">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="sidebar_oi oi oi-home font--medium" aria-hidden="true" />Home
-            </NavLink>
-        </li>
-        <li class="nav-item font--small px-2">
-            <div id="accordion" class="accordion">
-                <MatNavSubMenu class="bg--trans" @bind-Expanded="@subMenuOpen">
-                    <MatNavSubMenuHeader class="card-head collapsed bg--white" data-toggle="collapse" href="#collapseOne">
-                        <MatNavItem AllowSelection="false" class="navMenuHeader mb-0">
-                            <a class="navMenuHeader">Manteinance</a> 
-                        </MatNavItem>
-                    </MatNavSubMenuHeader>
-                    <MatNavSubMenuList id="collapseOne" class="card-body collapse show" data-parent="#accordion">
-                        <ul class="nav flex-column">
-                            <MatNavItem class="nav-item font--small px-1">
-                                <NavLink class="nav-link" href="employees">
-                                    <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Employees
-                                </NavLink>
+    <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+        <MatNavMenu class="nav flex-column">
+            <li class="nav-item font--small px-2">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="sidebar_oi oi oi-home font--medium" aria-hidden="true" />Home
+                </NavLink>
+            </li>
+            <li class="nav-item font--small px-2">
+                <div id="accordion" class="accordion">
+                    <MatNavSubMenu class="bg--trans" @bind-Expanded="@subMenuOpen">
+                        <MatNavSubMenuHeader class="card-head collapsed bg--white" data-toggle="collapse" href="#collapseOne">
+                            <MatNavItem AllowSelection="false" class="navMenuHeader mb-0">
+                                <a class="navMenuHeader">Manteinance</a>
                             </MatNavItem>
-                            <MatNavItem class="nav-item font--small px-1">
-                                <NavLink class="nav-link" href="teams">
-                                    <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Teams
-                                </NavLink>
+                        </MatNavSubMenuHeader>
+                        <MatNavSubMenuList id="collapseOne" class="card-body collapse show" data-parent="#accordion">
+                            <ul class="nav flex-column">
+                                <MatNavItem class="nav-item font--small px-1">
+                                    <NavLink class="nav-link" href="employees">
+                                        <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Employees
+                                    </NavLink>
+                                </MatNavItem>
+                                <MatNavItem class="nav-item font--small px-1">
+                                    <NavLink class="nav-link" href="teams">
+                                        <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Teams
+                                    </NavLink>
+                                </MatNavItem>
+                                <MatNavItem class="nav-item font--small px-1">
+                                    <NavLink class="nav-link" href="roles">
+                                        <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Roles
+                                    </NavLink>
+                                </MatNavItem>
+                                <MatNavItem class="nav-item font--small px-1">
+                                    <NavLink class="nav-link" href="expertises">
+                                        <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Expertises
+                                    </NavLink>
+                                </MatNavItem>
+                                <MatNavItem class="nav-item font--small px-1">
+                                    <NavLink class="nav-link" href="learning_paths">
+                                        <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Learning System
+                                    </NavLink>
+                                </MatNavItem>
+                            </ul>
+                        </MatNavSubMenuList>
+                    </MatNavSubMenu>
+                    <MatNavSubMenu class="bg--trans">
+                        <MatNavSubMenuHeader class="card-header collapsed bg--white" data-toggle="collapse" href="#collapseOne">
+                            <MatNavItem AllowSelection="false" class="navMenuHeader mb-0">
+                                <a class="navMenuHeader">Courses</a>
                             </MatNavItem>
-                            <MatNavItem class="nav-item font--small px-1">
-                                <NavLink class="nav-link" href="roles">
-                                    <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Roles
-                                </NavLink>
-                            </MatNavItem>
-                            <MatNavItem class="nav-item font--small px-1">
-                                <NavLink class="nav-link" href="expertises">
-                                    <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Expertises
-                                </NavLink>
-                            </MatNavItem>
-                            <MatNavItem class="nav-item font--small px-1">
-                                <NavLink class="nav-link" href="learning_paths">
-                                    <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Learning System
-                                </NavLink>
-                            </MatNavItem>
-                        </ul>
-                    </MatNavSubMenuList>
-                </MatNavSubMenu>
-                <MatNavSubMenu class="bg--trans">
-                    <MatNavSubMenuHeader class="card-header collapsed bg--white" data-toggle="collapse" href="#collapseOne">
-                        <MatNavItem AllowSelection="false" class="navMenuHeader mb-0">
-                            <a  class="navMenuHeader">Courses</a>
-                        </MatNavItem>
-                    </MatNavSubMenuHeader>
-                    <MatNavSubMenuList id="collapseOne" class="card-body collapse" data-parent="#accordion">
-                        <ul class="nav flex-column">
-                            <MatNavItem class="nav-item font--small px-1">
-                                <NavLink class="nav-link" href="learning">
-                                    <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Learning Paths
-                                </NavLink>
-                            </MatNavItem>
-                        </ul>
-                    </MatNavSubMenuList>
-                </MatNavSubMenu>
-            </div>
-        </li>
-    </MatNavMenu>
-</div>
+                        </MatNavSubMenuHeader>
+                        <MatNavSubMenuList id="collapseOne" class="card-body collapse" data-parent="#accordion">
+                            <ul class="nav flex-column">
+                                <MatNavItem class="nav-item font--small px-1">
+                                    <NavLink class="nav-link" href="learning">
+                                        <span class="sidebar_oi oi oi-list-rich font--medium" aria-hidden="true"></span> Learning Paths
+                                    </NavLink>
+                                </MatNavItem>
+                            </ul>
+                        </MatNavSubMenuList>
+                    </MatNavSubMenu>
+                </div>
+            </li>
+        </MatNavMenu>
+    </div>
 
 @code {
     bool subMenuOpen;

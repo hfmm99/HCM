@@ -7,16 +7,16 @@
     <div class="markdown_write">
         <div class="box">
             <div class="pre_box">
-                <MarkdownInput />
+                <MarkdownInput OnTextChanged="@GetMarkdown"/>
             </div>
         </div>
     </div>
     <div class="markdown_preview">
         <div class="box">
             <div class="pre_box">
-                <span class="section_title">Preview</span>
+                <span class="form-text section_title">Preview</span>
                 <div class="markdown_preview_box">
-                    <MarkdownOutput />
+                    <MarkdownOutput Content="@MarkdownContent"/>
                 </div>
             </div>
         </div>
@@ -24,8 +24,21 @@
 </div>
 
 @code {
-
     [Parameter]
     public int Id { get; set; }
 
+    private MarkdownInput InputBox;
+
+    public string MarkdownContent { get; set; }
+
+    private void GetMarkdown(string text)
+    {
+        MarkdownContent = SetMarkdownContent(text);
+    }
+
+    private string SetMarkdownContent(string learningItem)
+    {
+        var renderedMarkdown = learningItem;
+        return renderedMarkdown;
+    }
 }

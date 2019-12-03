@@ -88,6 +88,13 @@ h2 {
         top: -2px;
     }
 
+.sidebar_show {
+    display: block;
+}
+.sidebar_hidden {
+    display: none;
+}
+
 .nav-item {
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
@@ -791,8 +798,8 @@ h2 {
 /* MarkDown form */
 
 .markdown_box_header{
-    height:15%;
-    max-height:15%;
+    height: 15%;
+    max-height: 15%;
     margin:1rem;
 }
 
@@ -805,7 +812,7 @@ h2 {
 .markdown_box_content {
     height: 75%;
     max-height: 75%;
-    min-height:500px;
+    min-height: 500px;
     margin: 1rem;
 }
 
@@ -815,11 +822,11 @@ h2 {
 }
 
 .learning_item_input{
-    min-height:450px;
-    max-height:800px;
-    height:100%;
-    width:100%;
-    display:block;
+    min-height: 450px;
+    max-height: 800px;
+    height: 100%;
+    width: 100%;
+    display: block;
 }
 
 .markdown_write {
@@ -849,6 +856,7 @@ h2 {
 }
 
 /* Modifiers */
+
 .bg--lightGray {
     background-color: #e6e6e6;
 }

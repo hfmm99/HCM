@@ -2,12 +2,13 @@
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 
-<div class="sidebar">
+<div class="sidebar @TogglinClass">
     <NavMenu />
 </div>
 
 <div class="main btm--gray">
     <div class="topRow bg--lightGray btm--gray px-4">
+        <button class="btn btn-primary" @onclick="NavToggler"><span class="@Icon"></span></button>
         <h2 style="text-transform: capitalize;">
             @Regex.Match(NavigationManager.Uri, "(?<=\\/)[a-z]*$")
         </h2>
@@ -18,3 +19,24 @@
         @Body
     </div>
 </div>
+
+@code{
+    private string TogglinClass = "sidebar_show";
+    private string Icon = "carousel-control-prev-icon";
+    private int Toggler = 1;
+
+    private void NavToggler()
+    {
+        Toggler = Toggler * -1;
+        if (Toggler == 1)
+        {
+            TogglinClass = "sidebar_show";
+            Icon = "carousel-control-prev-icon";
+        }
+        else
+        {
+            TogglinClass = "sidebar_hidden";
+            Icon = "carousel-control-next-icon";
+        }
+    }
+}

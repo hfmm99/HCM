@@ -1,16 +1,9 @@
 ﻿<div class="markdown_space">
     <div class="markdown_box">
         <form>
-            <div class="markdown_box_header row">
-                <span for="txtName" class="form-text section_title">Title:</span>
-                <input type="text" class="markdown_input learning_item_title form-control" placeholder="Example, variables" />
-                <div class="invalid-feedback">
-                    You must enter a title.
-                </div>
-            </div>
             <div class="markdown_box_content row">
                 <span for="txtName" class="form-text section_title">Content:</span><br/>
-                <textarea type="text" class="markdown_input learning_item_input form_control" placeholder="##Markdown content" />
+                <textarea type="text" class="markdown_input learning_item_input form_control" placeholder="##Markdown content" @oninput="OnValueChanged"/>
                 <div class="invalid-feedback">
                     You must create some content.
                 </div>
@@ -24,4 +17,26 @@
 </div>
 
 @code {
+
+    private string learningItem;
+
+    [Parameter]
+    public string LearningItem
+    {
+        get { return learningItem; }
+        set
+        {
+            learningItem = value;
+            OnTextChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<string> OnTextChanged { get; set; }
+
+    public void OnValueChanged(ChangeEventArgs ev)
+    {
+        LearningItem = (string)ev.Value;
+        StateHasChanged();
+    }
 }
