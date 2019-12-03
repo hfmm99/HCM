@@ -707,7 +707,9 @@ h2 {
     transition-delay: .4s;
     width: 100%;
 }
+
 /* Item Page */
+
 .top_row_container {
     max-width: 100%;
     padding: 0;
@@ -814,11 +816,39 @@ h2 {
 
 .learning_item_input{
     min-height:450px;
+    max-height:800px;
     height:100%;
+    width:100%;
+    display:block;
+}
+
+.markdown_write {
+    width: 50%;
+    height: 100%;
+    display: block;
+    float: left;
+}
+
+.markdown_preview {
+    width: 50%;
+    height: 100%;
+    display: block;
+    float: right;
+}
+
+.markdown_preview_box {
+    height: 100%;
+    border: 2px;
+    border-color: gray;
+}
+
+.add_learning_item {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
 }
 
 /* Modifiers */
-
 .bg--lightGray {
     background-color: #e6e6e6;
 }

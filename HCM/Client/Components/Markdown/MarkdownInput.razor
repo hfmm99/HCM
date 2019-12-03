@@ -1,9 +1,27 @@
-﻿<div class="pre_box">
-    <div class="box">
-        <div class="inputMarkdown_header"></div>
-        <div class="inputMarkdown_body"></div>
-        <div class="inputMarkdown_footer"></div>
+﻿<div class="markdown_space">
+    <div class="markdown_box">
+        <form>
+            <div class="markdown_box_header row">
+                <span for="txtName" class="form-text section_title">Title:</span>
+                <input type="text" class="markdown_input learning_item_title form-control" placeholder="Example, variables" />
+                <div class="invalid-feedback">
+                    You must enter a title.
+                </div>
+            </div>
+            <div class="markdown_box_content row">
+                <span for="txtName" class="form-text section_title">Content:</span><br/>
+                <textarea type="text" class="markdown_input learning_item_input form_control" placeholder="##Markdown content" />
+                <div class="invalid-feedback">
+                    You must create some content.
+                </div>
+            </div>
+            <div class="markdown_box_footer row">
+                <button class="btn btn-primary underline-first-letter button_mark">Save</button>
+                <button class="btn btn-secondary underline-first-letter button_mark">Cancel</button>
+            </div>
+        </form>
     </div>
 </div>
+
 @code {
 }

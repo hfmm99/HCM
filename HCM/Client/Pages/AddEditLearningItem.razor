@@ -3,8 +3,24 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 
-<div class="markdown-write box">
-    <MarkDownInput/>
+<div class="add_learning_item">
+    <div class="markdown_write">
+        <div class="box">
+            <div class="pre_box">
+                <MarkdownInput />
+            </div>
+        </div>
+    </div>
+    <div class="markdown_preview">
+        <div class="box">
+            <div class="pre_box">
+                <span class="section_title">Preview</span>
+                <div class="markdown_preview_box">
+                    <MarkdownOutput />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
