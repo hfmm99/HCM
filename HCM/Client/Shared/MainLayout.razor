@@ -8,7 +8,7 @@
 
 <div class="main btm--gray">
     <div class="topRow bg--lightGray btm--gray px-4">
-        <button class="btn btn-primary" @onclick="NavToggler"><span class="@Icon"></span></button>
+        <button class="btn btn-primary toggler-button" @onclick="NavToggler"><span class="@Icon"></span></button>
         <h2 style="text-transform: capitalize;">
             @Regex.Match(NavigationManager.Uri, "(?<=\\/)[a-z]*$")
         </h2>

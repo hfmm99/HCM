@@ -95,6 +95,15 @@ h2 {
     display: none;
 }
 
+.toggler-button {
+    height: 30px;
+    width: 30px;
+    vertical-align:middle;
+    text-align:left;
+    float:left;
+    border-radius:150px;
+}
+
 .nav-item {
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
@@ -903,4 +912,9 @@ h2 {
 
 .text--vertMiddle{
     vertical-align:middle;
+}
+
+.svg--15px {
+    width: 15px;
+    height: 15px;
 }
