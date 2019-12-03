@@ -1,8 +1,9 @@
 ﻿using Ganss.XSS;
 using Markdig;
+using System.Linq;
 using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Components;
-using HCM.Client.Services;
+using Markdig.SyntaxHighlighting;
 using System;
 
 namespace HCM.Client.Components.MarkDown
@@ -31,7 +32,7 @@ namespace HCM.Client.Components.MarkDown
             if (!string.IsNullOrWhiteSpace(_content))
             {
                 // Convert markdown string to HTML
-                var html = Markdig.Markdown.ToHtml(value, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
+                var html = Markdig.Markdown.ToHtml(value, new MarkdownPipelineBuilder().UseAdvancedExtensions().UseSyntaxHighlighting().Build());
 
                 // Sanitize HTML before rendering
                 var sanitizedHtml = HtmlSanitizer.Sanitize(html);
