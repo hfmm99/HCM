@@ -510,8 +510,6 @@ h2 {
 .card_header {
     padding-top: 0.3rem;
     padding-bottom: 0.3rem;
-    margin-top: 0.3rem;
-    margin-bottom: 0.3rem;
 }
 
 .data_card_body {
@@ -584,9 +582,15 @@ h2 {
 }
 
 .card_img_top {
-    width: 30%;
-    height: 15%;
-    margin-left: 10%
+    margin-left: 10%;
+    margin-bottom: 0%;
+}
+
+.card_img {
+    max-height: 75px;
+    max-width: 90px;
+    border-color: #c7cbd1;
+    border-width:10px;
 }
 
 /* Path Page */
