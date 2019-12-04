@@ -5,10 +5,19 @@
 <div class="sidebar @TogglinClass">
     <NavMenu />
 </div>
-
+<div class="middle-layer">
+    <div class="middle-layer_barline"></div>
+    <div>
+        <div>
+            <button class="button_nav toggler_button btn btn-primary" @onclick="NavToggler">
+                <div class="button_spacer"></div>
+                <span class="button_icon">@Icon</span>
+            </button>
+        </div>
+    </div>
+</div>
 <div class="main btm--gray">
     <div class="topRow bg--lightGray btm--gray px-4">
-        <button class="btn btn-primary toggler-button" @onclick="NavToggler"><span class="@Icon"></span></button>
         <h2 style="text-transform: capitalize;">
             @Regex.Match(NavigationManager.Uri, "(?<=\\/)[a-z]*$")
         </h2>
@@ -22,7 +31,7 @@
 
 @code{
     private string TogglinClass = "sidebar_show";
-    private string Icon = "carousel-control-prev-icon";
+    private string Icon = "❮";
     private int Toggler = 1;
 
     private void NavToggler()
@@ -31,12 +40,12 @@
         if (Toggler == 1)
         {
             TogglinClass = "sidebar_show";
-            Icon = "carousel-control-prev-icon";
+            Icon = "❮";
         }
         else
         {
             TogglinClass = "sidebar_hidden";
-            Icon = "carousel-control-next-icon";
+            Icon = "❯";
         }
     }
 }
