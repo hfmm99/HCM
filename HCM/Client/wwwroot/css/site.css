@@ -2,6 +2,7 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    height:100%;
 }
 
 app {
@@ -85,7 +86,7 @@ h2 {
     transition-duration: 0.22s;
     transition-property: left, opacity, width;
     transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
-    width: 3px;
+    width: 10px;
     background: linear-gradient(to left, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0.2) 1px, rgba(0, 0, 0, 0.1) 1px, rgba(0, 0, 0, 0) 100%);
 }
 
@@ -103,21 +104,18 @@ h2 {
 }
 
 .button_nav {
-    color: white;
-    cursor: pointer;
-    height: 24px;
+    cursor: col-resize;
+    height: 100%;
     opacity: 0;
     position: absolute;
-    top: 32px;
     transform: translate(-50%);
-    width: 24px;
+    width: 15px;
     border-radius: 50%;
     outline: 0px;
     padding: 0px;
     transition: none;
     color: #fff;
     background-color: #007bff;
-    border-color: #007bff
 }
 
 .button_icon {
@@ -126,6 +124,10 @@ h2 {
     fill: rgb(255, 255, 255);
     flex-shrink: 0;
     line-height: 1;
+}
+
+.needs-validation{
+    margin:1rem;
 }
 
 /* Main layout */
@@ -853,6 +855,30 @@ h2 {
     padding: 1.5rem;
     flex: none;
     display: block;
+    float:left;
+    width:25%;
+    max-width:25%;
+    height:100%;
+}
+
+.paths_section {
+    padding: 1.5rem;
+    flex: none;
+    display: block;
+    width:75%;
+    max-width:75%;
+    float:right;
+}
+
+.filter_title{
+    width:80%;
+    float: left;
+}
+
+.filter_checkbox {
+    width: 20%;
+    margin: .5rem;
+    float: right;
 }
 
 /* Add Edit Path */

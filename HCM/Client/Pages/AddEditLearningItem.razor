@@ -7,7 +7,11 @@
     <div class="markdown_write">
         <div class="box">
             <div class="pre_box">
-                <MarkdownInput OnTextChanged="@GetMarkdown"/>
+                <MarkdownInput OnTextChanged="@GetMarkdown" />
+                <div class="markdown_box_footer row">
+                    <button class="btn btn-primary underline-first-letter button_mark">Save</button>
+                    <button class="btn btn-secondary underline-first-letter button_mark">Cancel</button>
+                </div>
             </div>
         </div>
     </div>

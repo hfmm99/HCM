@@ -23,7 +23,7 @@
         <h3 class="section_title">Filter</h3>
             <div class="defining_content">
                 <MatNavMenu>
-                    <div id="accordion" class="accordion">
+                    <div id="accordion" class="accordion font--small">
                         <MatNavSubMenu class="card" @bind-Expanded="@subMenuOpen">
                             <MatNavSubMenuHeader>
                                 <MatNavItem AllowSelection="false" class="mb-0">
@@ -33,13 +33,13 @@
                             <MatNavSubMenuList>
                                 <ul>
                                     <MatNavItem>
-                                        <span class="filter-title">Beginner</span><input type="checkbox" />
+                                        <span class="filter_title">Beginner</span><input class="filter_checkbox" type="checkbox" />
                                     </MatNavItem>
                                     <MatNavItem>
-                                        <span class="filter-title">Intermediate</span><input type="checkbox" />
+                                        <span class="filter_title">Intermediate</span><input class="filter_checkbox" type="checkbox" />
                                     </MatNavItem>
                                     <MatNavItem>
-                                        <span class="filter-title">Advanced</span><input type="checkbox" />
+                                        <span class="filter_title">Advanced</span><input class="filter_checkbox" type="checkbox" />
                                     </MatNavItem>
                                 </ul>
                             </MatNavSubMenuList>
@@ -47,7 +47,7 @@
                         <MatNavSubMenu class="card">
                             <MatNavSubMenuHeader>
                                 <MatNavItem AllowSelection="false" class="mb-0">
-                                    <a class="navMenuHeader">Expertises and skills</a>
+                                    <a class="navMenuHeader">Expertises</a>
                                 </MatNavItem>
                             </MatNavSubMenuHeader>
                             <MatNavSubMenuList>
@@ -55,13 +55,16 @@
                                     <MatNavSubMenu class="card">
                                         <MatNavSubMenuHeader>
                                             <MatNavItem AllowSelection="false" class="mb-0">
-                                                <a class="navMenuHeader">Soft skills</a>
+                                                <a class="navMenuHeader filter_title">Soft skills</a>
                                             </MatNavItem>
                                         </MatNavSubMenuHeader>
                                         <MatNavSubMenuList>
                                             <ul>
                                                 <MatNavItem>
-                                                    <span class="filter-title">Demo filter</span><input type="checkbox" />
+                                                    <span class="filter_title">Leadership</span><input class="filter_checkbox" type="checkbox" />
+                                                </MatNavItem>
+                                                <MatNavItem>
+                                                    <span class="filter_title">Team relations</span><input class="filter_checkbox" type="checkbox" />
                                                 </MatNavItem>
                                             </ul>
                                         </MatNavSubMenuList>
@@ -69,13 +72,13 @@
                                     <MatNavSubMenu class="card">
                                         <MatNavSubMenuHeader>
                                             <MatNavItem AllowSelection="false" class="mb-0">
-                                                <a class="navMenuHeader">Experiences</a>
+                                                <a class="navMenuHeader filter_title">Experiences</a>
                                             </MatNavItem>
                                         </MatNavSubMenuHeader>
                                         <MatNavSubMenuList>
                                             <ul>
                                                 <MatNavItem>
-                                                    <span class="filter-title">Demo filter</span><input type="checkbox" />
+                                                    <span class="filter_title">.NET</span><input class="filter_checkbox" type="checkbox" />
                                                 </MatNavItem>
                                             </ul>
                                         </MatNavSubMenuList>
@@ -92,7 +95,7 @@
                             <MatNavSubMenuList>
                                 <ul>
                                     <MatNavItem>
-                                        <span class="filter-title">Developer</span><input type="checkbox" />
+                                        <span class="filter_title">Developer</span><input class="filter_checkbox" type="checkbox" />
                                     </MatNavItem>
                                 </ul>
                             </MatNavSubMenuList>
@@ -164,6 +167,9 @@
         public string Title { get; set; } = "Upgrade Microsoft Office for IT at scale";
         public string Description { get; set; } = "Demo metadata";
     }
+
+    public class GqlTags
+    {};
 
     private void PathNav()
     {
