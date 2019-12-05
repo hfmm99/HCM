@@ -32,17 +32,17 @@
                     <span class="oi oi-plus" />
                     Add
                 </button>
-                <div>
-                    <DataList TItem="GqlObjectives" Items="@PathObjectives" Style="DataListStyle.List">
-                        <Template Context="item">
-                            <li>
-                                <div class="path-objectives">
-                                    <div><span>@item.objective</span></div>
-                                </div>
+                <div class="form-group">
+                    <label>Objectives:</label>
+                    <ul class="list-group d-flex flex-row flex-wrap">
+                        @foreach (var emp in learningPath.objectives)
+                        {
+                            <li class="list-group-item list-group-item-info p-1 w-25" style="margin:1rem;display:block;">
+                                <div><span>@emp.objective</span></div>
                             </li>
-                        </Template>
-                    </DataList>
-                </div>
+                        }
+                    </ul>
+                </div>  
                 <br />
                 <div class="invalid-feedback">
                     You must enter something.
@@ -82,9 +82,14 @@
     private bool IsVisible { get; set; }
     private string newObjective;
 
+    private GqlLearningPath learningPath = null;
     private Grid grid;
 
     private List<GqlItems> LearningItems = null;
+
+    private List<GqlTags> TagsData = new List<GqlTags>{
+        new GqlTags{name = "Advanced"}
+    };
 
     [Parameter]
     public string NewObjective
@@ -100,21 +105,22 @@
     protected override void OnInitialized()
     {
         LearningItems = new List<GqlItems> {
-            new GqlItems{title = "Variables and constants"}
+                new GqlItems{title = "Variables and constants"}
+            };
+
+        learningPath = new GqlLearningPath
+        {
+            name = "ASP.NET MVC",
+            objectives = new List<GqlObjectives> { 
+                new GqlObjectives{objective = "aaaa"},
+                new GqlObjectives{objective = "bbbb"},
+                new GqlObjectives{objective = "cccc"}
+            }
+
         };
 
         StateHasChanged();
     }
-
-    private List<GqlTags> TagsData = new List<GqlTags>{
-        new GqlTags{name = "Advanced"}
-    };
-
-    private List<GqlObjectives> PathObjectives = new List<GqlObjectives>
-    {
-        new GqlObjectives{objective = "Understanding javascript basics"},
-        new GqlObjectives{objective = "Learning normalized rules"}
-    };
 
     [Parameter]
     public EventCallback<string> OnTextChanged { get; set; }
@@ -127,9 +133,8 @@
     public void OnAddNewItem(string text)
     {
         var newObjective = new GqlObjectives { objective = text };
-        PathObjectives.Add(newObjective);
-        navigationManager.NavigateTo("/learning_path/-1");
-        NewObjective = string.Empty;
+        Console.WriteLine(newObjective);
+        learningPath.objectives.Add(newObjective);
     }
 
     public void OnValueChanged(ChangeEventArgs ev)
@@ -142,6 +147,12 @@
     {
         navigationManager.NavigateTo("/learning_item/-1");
     }
+
+    public class GqlLearningPath
+    {
+        public string name;
+        public List<GqlObjectives> objectives;
+    };
 
     public class GqlTags
     {

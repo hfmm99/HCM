@@ -9,7 +9,7 @@
     <div class="middle-layer_barline"></div>
     <div>
         <div>
-            <div class="button_nav toggler_button" @onmouseover="NavToggler">
+            <div class="button_nav toggler_button" @onclick="NavToggler">
                 <div class="button_spacer"></div>
                 <span class="button_icon"></span>
             </div>
@@ -30,7 +30,7 @@
 </div>
 
 @code{
-    private string TogglinClass = "sidebar_hidden";
+    private string TogglinClass = "sidebar_show";
     private int Toggler = 1;
 
     private void NavToggler()
@@ -38,11 +38,11 @@
         Toggler = Toggler * -1;
         if (Toggler == 1)
         {
-            TogglinClass = "sidebar_hidden";
+            TogglinClass = "sidebar_show";
         }
         else
         {
-            TogglinClass = "sidebar_show";
+            TogglinClass = "sidebar_hidden";
         }
     }
 }
