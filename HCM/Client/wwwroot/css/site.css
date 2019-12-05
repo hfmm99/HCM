@@ -883,8 +883,10 @@ h2 {
 
 /* Add Edit Path */
 
-.summary_form{
-    min-height:150px;
+.summary_form {
+    min-height: 200px;
+    max-height: 200px;
+    overflow-y: scroll;
 }
 
 .path_objectives{
