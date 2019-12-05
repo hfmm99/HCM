@@ -53,6 +53,10 @@ public partial class GqlEmployee
 	[GraphQLField("email")]
 	public string Email { get; set; }
 
+	/// <summary>Employee experience Experience</summary>
+	[GraphQLField("experience")]
+	public List<GqlExperience> Experience { get; set; }
+
 	/// <summary>gender of  Employee</summary>
 	[GraphQLField("gender")]
 	public string Gender { get; set; }
@@ -77,10 +81,6 @@ public partial class GqlEmployee
 	[GraphQLField("phone")]
 	public string Phone { get; set; }
 
-	/// <summary>Employee skills Skill</summary>
-	[GraphQLField("skills")]
-	public List<GqlSkill> Skills { get; set; }
-
 	/// <summary>Employee worksAs Role</summary>
 	[GraphQLField("worksAs")]
 	public List<GqlRole> WorksAs { get; set; }
@@ -88,6 +88,22 @@ public partial class GqlEmployee
 	/// <summary>Employee worksFor Client</summary>
 	[GraphQLField("worksFor")]
 	public GqlClient WorksFor { get; set; }
+
+}
+
+public partial class GqlExperience
+{
+	/// <summary>internal node id</summary>
+	[GraphQLField("_id")]
+	public long? _id { get; set; }
+
+	/// <summary>Experience employees Employee</summary>
+	[GraphQLField("employees")]
+	public List<GqlEmployee> Employees { get; set; }
+
+	/// <summary>name of  Experience</summary>
+	[GraphQLField("name")]
+	public string Name { get; set; }
 
 }
 
@@ -106,22 +122,6 @@ public partial class GqlRole
 	public List<GqlTeam> IsRequiredBy { get; set; }
 
 	/// <summary>name of  Role</summary>
-	[GraphQLField("name")]
-	public string Name { get; set; }
-
-}
-
-public partial class GqlSkill
-{
-	/// <summary>internal node id</summary>
-	[GraphQLField("_id")]
-	public long? _id { get; set; }
-
-	/// <summary>Skill employees Employee</summary>
-	[GraphQLField("employees")]
-	public List<GqlEmployee> Employees { get; set; }
-
-	/// <summary>name of  Skill</summary>
 	[GraphQLField("name")]
 	public string Name { get; set; }
 
@@ -463,6 +463,38 @@ public class Gql_EmployeeFilter
 	[JsonProperty(PropertyName = "email_starts_with", NullValueHandling = NullValueHandling.Ignore)]
 	public string Email_starts_with { get; set; }
 
+	/// <summary>experience</summary>
+	[JsonProperty(PropertyName = "experience", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Experience { get; set; }
+
+	/// <summary>experience_every</summary>
+	[JsonProperty(PropertyName = "experience_every", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Experience_every { get; set; }
+
+	/// <summary>experience_in</summary>
+	[JsonProperty(PropertyName = "experience_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Experience_in { get; set; }
+
+	/// <summary>experience_none</summary>
+	[JsonProperty(PropertyName = "experience_none", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Experience_none { get; set; }
+
+	/// <summary>experience_not</summary>
+	[JsonProperty(PropertyName = "experience_not", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Experience_not { get; set; }
+
+	/// <summary>experience_not_in</summary>
+	[JsonProperty(PropertyName = "experience_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Experience_not_in { get; set; }
+
+	/// <summary>experience_single</summary>
+	[JsonProperty(PropertyName = "experience_single", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Experience_single { get; set; }
+
+	/// <summary>experience_some</summary>
+	[JsonProperty(PropertyName = "experience_some", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Experience_some { get; set; }
+
 	/// <summary>gender</summary>
 	[JsonProperty(PropertyName = "gender", NullValueHandling = NullValueHandling.Ignore)]
 	public string Gender { get; set; }
@@ -735,38 +767,6 @@ public class Gql_EmployeeFilter
 	[JsonProperty(PropertyName = "phone_starts_with", NullValueHandling = NullValueHandling.Ignore)]
 	public string Phone_starts_with { get; set; }
 
-	/// <summary>skills</summary>
-	[JsonProperty(PropertyName = "skills", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_SkillFilter Skills { get; set; }
-
-	/// <summary>skills_every</summary>
-	[JsonProperty(PropertyName = "skills_every", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_SkillFilter Skills_every { get; set; }
-
-	/// <summary>skills_in</summary>
-	[JsonProperty(PropertyName = "skills_in", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_SkillFilter Skills_in { get; set; }
-
-	/// <summary>skills_none</summary>
-	[JsonProperty(PropertyName = "skills_none", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_SkillFilter Skills_none { get; set; }
-
-	/// <summary>skills_not</summary>
-	[JsonProperty(PropertyName = "skills_not", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_SkillFilter Skills_not { get; set; }
-
-	/// <summary>skills_not_in</summary>
-	[JsonProperty(PropertyName = "skills_not_in", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_SkillFilter Skills_not_in { get; set; }
-
-	/// <summary>skills_single</summary>
-	[JsonProperty(PropertyName = "skills_single", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_SkillFilter Skills_single { get; set; }
-
-	/// <summary>skills_some</summary>
-	[JsonProperty(PropertyName = "skills_some", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_SkillFilter Skills_some { get; set; }
-
 	/// <summary>worksAs</summary>
 	[JsonProperty(PropertyName = "worksAs", NullValueHandling = NullValueHandling.Ignore)]
 	public Gql_RoleFilter WorksAs { get; set; }
@@ -844,6 +844,115 @@ public enum Gql_EmployeeOrdering
 	phone_asc,
 	/// <summary>Descending sort for phone</summary>
 	phone_desc
+}
+
+public class Gql_ExperienceFilter
+{
+	/// <summary>AND</summary>
+	[JsonProperty(PropertyName = "AND", NullValueHandling = NullValueHandling.Ignore)]
+	public List<Gql_ExperienceFilter> AND { get; set; }
+
+	/// <summary>OR</summary>
+	[JsonProperty(PropertyName = "OR", NullValueHandling = NullValueHandling.Ignore)]
+	public List<Gql_ExperienceFilter> OR { get; set; }
+
+	/// <summary>employees</summary>
+	[JsonProperty(PropertyName = "employees", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Employees { get; set; }
+
+	/// <summary>employees_every</summary>
+	[JsonProperty(PropertyName = "employees_every", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Employees_every { get; set; }
+
+	/// <summary>employees_in</summary>
+	[JsonProperty(PropertyName = "employees_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Employees_in { get; set; }
+
+	/// <summary>employees_none</summary>
+	[JsonProperty(PropertyName = "employees_none", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Employees_none { get; set; }
+
+	/// <summary>employees_not</summary>
+	[JsonProperty(PropertyName = "employees_not", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Employees_not { get; set; }
+
+	/// <summary>employees_not_in</summary>
+	[JsonProperty(PropertyName = "employees_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Employees_not_in { get; set; }
+
+	/// <summary>employees_single</summary>
+	[JsonProperty(PropertyName = "employees_single", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Employees_single { get; set; }
+
+	/// <summary>employees_some</summary>
+	[JsonProperty(PropertyName = "employees_some", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Employees_some { get; set; }
+
+	/// <summary>name</summary>
+	[JsonProperty(PropertyName = "name", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name { get; set; }
+
+	/// <summary>name_contains</summary>
+	[JsonProperty(PropertyName = "name_contains", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_contains { get; set; }
+
+	/// <summary>name_ends_with</summary>
+	[JsonProperty(PropertyName = "name_ends_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_ends_with { get; set; }
+
+	/// <summary>name_gt</summary>
+	[JsonProperty(PropertyName = "name_gt", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_gt { get; set; }
+
+	/// <summary>name_gte</summary>
+	[JsonProperty(PropertyName = "name_gte", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_gte { get; set; }
+
+	/// <summary>name_in</summary>
+	[JsonProperty(PropertyName = "name_in", NullValueHandling = NullValueHandling.Ignore)]
+	public List<string> Name_in { get; set; }
+
+	/// <summary>name_lt</summary>
+	[JsonProperty(PropertyName = "name_lt", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_lt { get; set; }
+
+	/// <summary>name_lte</summary>
+	[JsonProperty(PropertyName = "name_lte", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_lte { get; set; }
+
+	/// <summary>name_not</summary>
+	[JsonProperty(PropertyName = "name_not", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_not { get; set; }
+
+	/// <summary>name_not_contains</summary>
+	[JsonProperty(PropertyName = "name_not_contains", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_not_contains { get; set; }
+
+	/// <summary>name_not_ends_with</summary>
+	[JsonProperty(PropertyName = "name_not_ends_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_not_ends_with { get; set; }
+
+	/// <summary>name_not_in</summary>
+	[JsonProperty(PropertyName = "name_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public List<string> Name_not_in { get; set; }
+
+	/// <summary>name_not_starts_with</summary>
+	[JsonProperty(PropertyName = "name_not_starts_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_not_starts_with { get; set; }
+
+	/// <summary>name_starts_with</summary>
+	[JsonProperty(PropertyName = "name_starts_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_starts_with { get; set; }
+
+}
+
+[JsonConverter(typeof(GraphQLEnumConverter))]
+public enum Gql_ExperienceOrdering
+{
+	/// <summary>Ascending sort for name</summary>
+	name_asc,
+	/// <summary>Descending sort for name</summary>
+	name_desc
 }
 
 public class Gql_RoleFilter
@@ -980,115 +1089,6 @@ public class Gql_RoleFilter
 
 [JsonConverter(typeof(GraphQLEnumConverter))]
 public enum Gql_RoleOrdering
-{
-	/// <summary>Ascending sort for name</summary>
-	name_asc,
-	/// <summary>Descending sort for name</summary>
-	name_desc
-}
-
-public class Gql_SkillFilter
-{
-	/// <summary>AND</summary>
-	[JsonProperty(PropertyName = "AND", NullValueHandling = NullValueHandling.Ignore)]
-	public List<Gql_SkillFilter> AND { get; set; }
-
-	/// <summary>OR</summary>
-	[JsonProperty(PropertyName = "OR", NullValueHandling = NullValueHandling.Ignore)]
-	public List<Gql_SkillFilter> OR { get; set; }
-
-	/// <summary>employees</summary>
-	[JsonProperty(PropertyName = "employees", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EmployeeFilter Employees { get; set; }
-
-	/// <summary>employees_every</summary>
-	[JsonProperty(PropertyName = "employees_every", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EmployeeFilter Employees_every { get; set; }
-
-	/// <summary>employees_in</summary>
-	[JsonProperty(PropertyName = "employees_in", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EmployeeFilter Employees_in { get; set; }
-
-	/// <summary>employees_none</summary>
-	[JsonProperty(PropertyName = "employees_none", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EmployeeFilter Employees_none { get; set; }
-
-	/// <summary>employees_not</summary>
-	[JsonProperty(PropertyName = "employees_not", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EmployeeFilter Employees_not { get; set; }
-
-	/// <summary>employees_not_in</summary>
-	[JsonProperty(PropertyName = "employees_not_in", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EmployeeFilter Employees_not_in { get; set; }
-
-	/// <summary>employees_single</summary>
-	[JsonProperty(PropertyName = "employees_single", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EmployeeFilter Employees_single { get; set; }
-
-	/// <summary>employees_some</summary>
-	[JsonProperty(PropertyName = "employees_some", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EmployeeFilter Employees_some { get; set; }
-
-	/// <summary>name</summary>
-	[JsonProperty(PropertyName = "name", NullValueHandling = NullValueHandling.Ignore)]
-	public string Name { get; set; }
-
-	/// <summary>name_contains</summary>
-	[JsonProperty(PropertyName = "name_contains", NullValueHandling = NullValueHandling.Ignore)]
-	public string Name_contains { get; set; }
-
-	/// <summary>name_ends_with</summary>
-	[JsonProperty(PropertyName = "name_ends_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string Name_ends_with { get; set; }
-
-	/// <summary>name_gt</summary>
-	[JsonProperty(PropertyName = "name_gt", NullValueHandling = NullValueHandling.Ignore)]
-	public string Name_gt { get; set; }
-
-	/// <summary>name_gte</summary>
-	[JsonProperty(PropertyName = "name_gte", NullValueHandling = NullValueHandling.Ignore)]
-	public string Name_gte { get; set; }
-
-	/// <summary>name_in</summary>
-	[JsonProperty(PropertyName = "name_in", NullValueHandling = NullValueHandling.Ignore)]
-	public List<string> Name_in { get; set; }
-
-	/// <summary>name_lt</summary>
-	[JsonProperty(PropertyName = "name_lt", NullValueHandling = NullValueHandling.Ignore)]
-	public string Name_lt { get; set; }
-
-	/// <summary>name_lte</summary>
-	[JsonProperty(PropertyName = "name_lte", NullValueHandling = NullValueHandling.Ignore)]
-	public string Name_lte { get; set; }
-
-	/// <summary>name_not</summary>
-	[JsonProperty(PropertyName = "name_not", NullValueHandling = NullValueHandling.Ignore)]
-	public string Name_not { get; set; }
-
-	/// <summary>name_not_contains</summary>
-	[JsonProperty(PropertyName = "name_not_contains", NullValueHandling = NullValueHandling.Ignore)]
-	public string Name_not_contains { get; set; }
-
-	/// <summary>name_not_ends_with</summary>
-	[JsonProperty(PropertyName = "name_not_ends_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string Name_not_ends_with { get; set; }
-
-	/// <summary>name_not_in</summary>
-	[JsonProperty(PropertyName = "name_not_in", NullValueHandling = NullValueHandling.Ignore)]
-	public List<string> Name_not_in { get; set; }
-
-	/// <summary>name_not_starts_with</summary>
-	[JsonProperty(PropertyName = "name_not_starts_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string Name_not_starts_with { get; set; }
-
-	/// <summary>name_starts_with</summary>
-	[JsonProperty(PropertyName = "name_starts_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string Name_starts_with { get; set; }
-
-}
-
-[JsonConverter(typeof(GraphQLEnumConverter))]
-public enum Gql_SkillOrdering
 {
 	/// <summary>Ascending sort for name</summary>
 	name_asc,
@@ -1297,6 +1297,16 @@ _id, _ids, dateOfBirth, dateOfBirths, email, emails, filter, first, gender, gend
 );
 	}
 
+	/// <param name="name">name of Experience</param>
+	/// <param name="names">names is list variant of name of Experience</param>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("Experience")]
+	public GraphQLQuery<GqlExperience> Experience (string sessionToken, long? _id = null, long?[] _ids = null, Gql_ExperienceFilter filter = null, int? first = null, string name = null, string[] names = null, int? offset = null, Gql_ExperienceOrdering[] orderBy = null, Func<GqlExperience, GqlExperience> fields = null ) 
+	{
+		return new GraphQLQuery<GqlExperience>(_httpClient, _endpoint, true, false, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+_id, _ids, filter, first, name, names, offset, orderBy);
+	}
+
 	/// <param name="name">name of Role</param>
 	/// <param name="names">names is list variant of name of Role</param>
 	/// <param name="sessionToken">Token Used on production</param>
@@ -1313,16 +1323,6 @@ _id, _ids, filter, first, name, names, offset, orderBy);
 	{
 		return new GraphQLQuery<int?>(_httpClient, _endpoint, false, false, MethodBase.GetCurrentMethod(), fields, sessionToken
 );
-	}
-
-	/// <param name="name">name of Skill</param>
-	/// <param name="names">names is list variant of name of Skill</param>
-	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("Skill")]
-	public GraphQLQuery<GqlSkill> Skill (string sessionToken, long? _id = null, long?[] _ids = null, Gql_SkillFilter filter = null, int? first = null, string name = null, string[] names = null, int? offset = null, Gql_SkillOrdering[] orderBy = null, Func<GqlSkill, GqlSkill> fields = null ) 
-	{
-		return new GraphQLQuery<GqlSkill>(_httpClient, _endpoint, true, false, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-_id, _ids, filter, first, name, names, offset, orderBy);
 	}
 
 	/// <param name="name">name of Team</param>
@@ -1362,6 +1362,15 @@ employees, name);
 employees, name);
 	}
 
+	/// <summary>Adds Experience to Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addEmployeeExperience")]
+	public GraphQLQuery<string> AddEmployeeExperience (string sessionToken, string[] experience, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+experience, name);
+	}
+
 	/// <summary>Adds IsMemberOf to Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addEmployeeIsMemberOf")]
@@ -1378,15 +1387,6 @@ isMemberOf, name);
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 livesIn, name);
-	}
-
-	/// <summary>Adds Skills to Employee entity</summary>
-	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("addEmployeeSkills")]
-	public GraphQLQuery<string> AddEmployeeSkills (string sessionToken, string name, string[] skills, Func<string, string> fields = null ) 
-	{
-		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-name, skills);
 	}
 
 	/// <summary>Adds WorksAs to Employee entity</summary>
@@ -1407,6 +1407,15 @@ name, worksAs);
 name, worksFor);
 	}
 
+	/// <summary>Adds Employees to Experience entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addExperienceEmployees")]
+	public GraphQLQuery<string> AddExperienceEmployees (string sessionToken, string[] employees, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+employees, name);
+	}
+
 	/// <summary>Adds Employees to Role entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addRoleEmployees")]
@@ -1423,15 +1432,6 @@ employees, name);
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 isRequiredBy, name);
-	}
-
-	/// <summary>Adds Employees to Skill entity</summary>
-	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("addSkillEmployees")]
-	public GraphQLQuery<string> AddSkillEmployees (string sessionToken, string[] employees, string name, Func<string, string> fields = null ) 
-	{
-		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-employees, name);
 	}
 
 	/// <summary>Adds Members to Team entity</summary>
@@ -1479,19 +1479,19 @@ name);
 name, dateOfBirth, email, gender, image, phone);
 	}
 
-	/// <summary>Creates a Role entity</summary>
+	/// <summary>Creates a Experience entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("createRole")]
-	public GraphQLQuery<string> CreateRole (string sessionToken, string name, Func<string, string> fields = null ) 
+	[GraphQLField("createExperience")]
+	public GraphQLQuery<string> CreateExperience (string sessionToken, string name, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 name);
 	}
 
-	/// <summary>Creates a Skill entity</summary>
+	/// <summary>Creates a Role entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("createSkill")]
-	public GraphQLQuery<string> CreateSkill (string sessionToken, string name, Func<string, string> fields = null ) 
+	[GraphQLField("createRole")]
+	public GraphQLQuery<string> CreateRole (string sessionToken, string name, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 name);
@@ -1551,6 +1551,15 @@ employees, name);
 name);
 	}
 
+	/// <summary>Deletes Experience from Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteEmployeeExperience")]
+	public GraphQLQuery<string> DeleteEmployeeExperience (string sessionToken, string[] experience, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+experience, name);
+	}
+
 	/// <summary>Deletes IsMemberOf from Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteEmployeeIsMemberOf")]
@@ -1569,15 +1578,6 @@ isMemberOf, name);
 livesIn, name);
 	}
 
-	/// <summary>Deletes Skills from Employee entity</summary>
-	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("deleteEmployeeSkills")]
-	public GraphQLQuery<string> DeleteEmployeeSkills (string sessionToken, string name, string[] skills, Func<string, string> fields = null ) 
-	{
-		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-name, skills);
-	}
-
 	/// <summary>Deletes WorksAs from Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteEmployeeWorksAs")]
@@ -1594,6 +1594,24 @@ name, worksAs);
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 name, worksFor);
+	}
+
+	/// <summary>Deletes a Experience entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteExperience")]
+	public GraphQLQuery<string> DeleteExperience (string sessionToken, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name);
+	}
+
+	/// <summary>Deletes Employees from Experience entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteExperienceEmployees")]
+	public GraphQLQuery<string> DeleteExperienceEmployees (string sessionToken, string[] employees, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+employees, name);
 	}
 
 	/// <summary>Deletes a Role entity</summary>
@@ -1621,24 +1639,6 @@ employees, name);
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 isRequiredBy, name);
-	}
-
-	/// <summary>Deletes a Skill entity</summary>
-	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("deleteSkill")]
-	public GraphQLQuery<string> DeleteSkill (string sessionToken, string name, Func<string, string> fields = null ) 
-	{
-		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-name);
-	}
-
-	/// <summary>Deletes Employees from Skill entity</summary>
-	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("deleteSkillEmployees")]
-	public GraphQLQuery<string> DeleteSkillEmployees (string sessionToken, string[] employees, string name, Func<string, string> fields = null ) 
-	{
-		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-employees, name);
 	}
 
 	/// <summary>Deletes a Team entity</summary>
@@ -1695,19 +1695,19 @@ name);
 name, dateOfBirth, email, gender, image, phone);
 	}
 
-	/// <summary>Merge a Role entity</summary>
+	/// <summary>Merge a Experience entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("mergeRole")]
-	public GraphQLQuery<string> MergeRole (string sessionToken, string name, Func<string, string> fields = null ) 
+	[GraphQLField("mergeExperience")]
+	public GraphQLQuery<string> MergeExperience (string sessionToken, string name, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 name);
 	}
 
-	/// <summary>Merge a Skill entity</summary>
+	/// <summary>Merge a Role entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("mergeSkill")]
-	public GraphQLQuery<string> MergeSkill (string sessionToken, string name, Func<string, string> fields = null ) 
+	[GraphQLField("mergeRole")]
+	public GraphQLQuery<string> MergeRole (string sessionToken, string name, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 name);
@@ -1749,19 +1749,19 @@ name);
 name, dateOfBirth, email, gender, image, phone);
 	}
 
-	/// <summary>Updates a Role entity</summary>
+	/// <summary>Updates a Experience entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("updateRole")]
-	public GraphQLQuery<string> UpdateRole (string sessionToken, string name, Func<string, string> fields = null ) 
+	[GraphQLField("updateExperience")]
+	public GraphQLQuery<string> UpdateExperience (string sessionToken, string name, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 name);
 	}
 
-	/// <summary>Updates a Skill entity</summary>
+	/// <summary>Updates a Role entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("updateSkill")]
-	public GraphQLQuery<string> UpdateSkill (string sessionToken, string name, Func<string, string> fields = null ) 
+	[GraphQLField("updateRole")]
+	public GraphQLQuery<string> UpdateRole (string sessionToken, string name, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 name);

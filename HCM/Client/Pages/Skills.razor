@@ -1,4 +1,4 @@
-﻿@page "/expertises"
+﻿@page "/experiences"
 @using HCM.Client.Components
 @using HCM.Client.Components.Grid
 @using HCM.Client.Components.Modals
@@ -6,14 +6,14 @@
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
 
-<DeleteModal OnDelete="@DeleteSkill" />
+<DeleteModal OnDelete="@DeleteExperience" />
 
 <div class="btn-toolbar row margin-btm-small" role="toolbar">
-    <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewSkill">
+    <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewExperience">
         <span class="oi oi-plus" />
         New
     </button>
-    <button type="button" class="btn btn-outline-secondary mr-1" @onclick="EditSkill">
+    <button type="button" class="btn btn-outline-secondary mr-1" @onclick="EditExperience">
         <span class="oi oi-pencil" />
         Edit
     </button>
@@ -24,11 +24,11 @@
 </div>
 
 <div class="row margin-bottom-small">
-    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Expertise..." />
+    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Experience..." />
 </div>
 
 <div class="row">
-    <Grid @ref="grid" Data="@skills" OnDoubleClick="@EditSkill" OnSort="@OnGridSort">
+    <Grid @ref="grid" Data="@experiences" OnDoubleClick="@EditExperience" OnSort="@OnGridSort">
         <GridColumns>
             <GridColumn Field="@nameof(GqlEmployee.Name)" />
         </GridColumns>
@@ -40,9 +40,9 @@
 
 @code {
     private GraphQLApiClient gql = null;
-    private List<GqlSkill> skills = null;
+    private List<GqlExperience> experiences = null;
 
-    private Gql_SkillOrdering sorting = Gql_SkillOrdering.name_asc;
+    private Gql_ExperienceOrdering sorting = Gql_ExperienceOrdering.name_asc;
 
     private int page = 1;
     private int pages = 0;
@@ -65,13 +65,13 @@
     {
         gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
 
-        var query = gql.Skill(string.Empty, first: 10, offset: (page - 1) * 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_SkillFilter { OR = new List<Gql_SkillFilter> { new Gql_SkillFilter { Name_contains = SearchTerm } } }, orderBy: new[] { sorting }, fields: e => new GqlSkill
+        var query = gql.Experience(string.Empty, first: 10, offset: (page - 1) * 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_ExperienceFilter { OR = new List<Gql_ExperienceFilter> { new Gql_ExperienceFilter { Name_contains = SearchTerm } } }, orderBy: new[] { sorting }, fields: e => new GqlExperience
         {
             _id = e._id,
             Name = e.Name,
         });
 
-        skills = await query.RunAsync();
+        experiences = await query.RunAsync();
 
         pages = 10; // (await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault().Value;
 
@@ -82,8 +82,8 @@
     {
         switch (e.ColumnName)
         {
-            case nameof(GqlSkill.Name):
-                sorting = e.SortingAscending ? Gql_SkillOrdering.name_asc : Gql_SkillOrdering.name_desc;
+            case nameof(GqlExperience.Name):
+                sorting = e.SortingAscending ? Gql_ExperienceOrdering.name_asc : Gql_ExperienceOrdering.name_desc;
                 break;
         }
 
@@ -96,30 +96,30 @@
         Search();
     }
 
-    public void NewSkill()
+    public void NewExperience()
     {
-        navigationManager.NavigateTo("/skill/" + -1);
+        navigationManager.NavigateTo("/experience/" + -1);
     }
 
-    public void EditSkill()
+    public void EditExperience()
     {
         if (grid.SelectedItem != null)
-            navigationManager.NavigateTo("/skill/" + (grid.SelectedItem as GqlSkill)._id);
+            navigationManager.NavigateTo("/experience/" + (grid.SelectedItem as GqlExperience)._id);
     }
 
     public void ConfirmDelete()
     {
         if (grid.SelectedItem != null)
         {
-            string deleteItemName = (grid.SelectedItem as GqlSkill).Name;
+            string deleteItemName = (grid.SelectedItem as GqlExperience).Name;
             bool showModal = true;
             ModalService.ShowModal(showModal, deleteItemName);
         }
     }
 
-    public void DeleteSkill()
+    public void DeleteExperience()
     {
-        gql.DeleteSkill(string.Empty, (grid.SelectedItem as GqlSkill).Name).RunAsync();
+        gql.DeleteExperience(string.Empty, (grid.SelectedItem as GqlExperience).Name).RunAsync();
         ModalService.CloseModal();
         Search();
     }

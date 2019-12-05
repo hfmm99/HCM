@@ -9,7 +9,7 @@ type Employee {
   worksAs: [Role] @relation(name: "WOKS_AS", direction: out)
   worksFor: Client @relation(name: "WOKS_FOR", direction: out)
   livesIn: Country @relation(name: "LIVES_IN", direction: out)
-  skills: [Skill] @relation(name: "KNOWS", direction: out)
+  experience: [Experience] @relation(name: "KNOWS", direction: out)
 }
 
 type Team {
@@ -34,7 +34,7 @@ type Client {
   employees: [Employee] @relation(name: "WORKS_FOR", direction: in)
 }
 
-type Skill {
+type Experience {
   name: ID!
   employees: [Employee] @relation(name: "KNOWS", direction: in)
 }

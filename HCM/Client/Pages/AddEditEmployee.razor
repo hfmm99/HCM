@@ -66,11 +66,11 @@
             </div>
         </div>
         <div class="form-group">
-            <label>Employee's Interest/Expertise Skills:</label>
-            <MultiSelect TItem="GqlSkill" Placeholder="Type to Search" Items="Skills" Values="employee.Skills" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@SkillRemoved" OnAddNewItem="@AddNewSkill" />
+            <label>Employee's experience:</label>
+            <MultiSelect TItem="GqlExperience" Placeholder="Type to Search" Items="Experiences" Values="employee.Experience" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ExperienceRemoved" OnAddNewItem="@AddNewExperience" />
         </div>
-            <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
-            <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
+        <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
+        <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
     }
 </form>
 
@@ -82,8 +82,8 @@
     private GraphQLApiClient gql = null;
     private GqlEmployee employee = null;
 
-    private List<GqlSkill> Skills;
-    private List<GqlSkill> RemovedSkills;
+    private List<GqlExperience> Experiences;
+    private List<GqlExperience> RemovedExperiences;
 
     protected override async Task OnInitializedAsync()
     {
@@ -100,29 +100,28 @@
                 Email = e.Email,
                 Image = e.Image,
                 DateOfBirth = e.DateOfBirth,
-                Skills = new List<GqlSkill>
+                Experience = new List<GqlExperience>
 {
-                    new GqlSkill
+                    new GqlExperience
                     {
-                        Name = e.Skills[0].Name
+                        Name = e.Experience[0].Name
                     }
                 }
             });
 
             employee = (await query.RunAsync()).FirstOrDefault();
-            //employee.Skills = new List<GqlSkill>();
         }
         else
             employee = new GqlEmployee();
 
-        //Load Roles
-        Skills = await gql.Skill(string.Empty, fields: r => new GqlSkill
+        //Load Experiences
+        Experiences = await gql.Experience(string.Empty, fields: r => new GqlExperience
         {
             _id = r._id,
             Name = r.Name
         }).RunAsync();
 
-        RemovedSkills = new List<GqlSkill>();
+        RemovedExperiences = new List<GqlExperience>();
     }
 
     public void ChangeImage()
@@ -134,25 +133,25 @@
         // Save Employee
         gql.MergeEmployee(string.Empty, employee.Name, employee.DateOfBirth, employee.Email, employee.Gender, phone: employee.Phone).RunAsync();
 
-        SaveSkills();
+        SaveExperiences();
 
         Cancel();
     }
 
-    private void SaveSkills()
+    private void SaveExperiences()
     {
-        // Insert newly created skills, if any
-        foreach (var skill in Skills.Where(s => !s._id.HasValue))
-            gql.CreateSkill(string.Empty, skill.Name).RunAsync();
+        // Insert newly created experiences, if any
+        foreach (var experience in Experiences.Where(s => !s._id.HasValue))
+            gql.CreateExperience(string.Empty, experience.Name).RunAsync();
 
-        // Save employee skills
-        gql.AddEmployeeSkills(string.Empty, employee.Name, employee.Skills.Select(s => s.Name).ToArray()).RunAsync();
+        // Save employee experiences
+        gql.AddEmployeeExperience(string.Empty, name: employee.Name, experience: employee.Experience.Select(s => s.Name).ToArray()).RunAsync();
 
-        // Delete removed skills, if any
-        var skillsToRemove = RemovedSkills.Select(s => s.Name).Except(employee.Skills.Select(es => es.Name));
+        // Delete removed experiences, if any
+        var experiencesToRemove = RemovedExperiences.Select(s => s.Name).Except(employee.Experience.Select(es => es.Name));
 
-        if (skillsToRemove.Any())
-            gql.DeleteEmployeeSkills(string.Empty, employee.Name, skillsToRemove.ToArray()).RunAsync();
+        if (experiencesToRemove.Any())
+            gql.DeleteEmployeeExperience(string.Empty, name: employee.Name, experience: experiencesToRemove.ToArray()).RunAsync();
     }
 
     public void Cancel()
@@ -160,16 +159,16 @@
         navigationManager.NavigateTo("/employees");
     }
 
-    public void AddNewSkill(string text)
+    public void AddNewExperience(string text)
     {
-        var newSkill = new GqlSkill { Name = text };
-        Skills.Add(newSkill);
-        employee.Skills.Add(newSkill);
+        var newExperience = new GqlExperience { Name = text };
+        Experiences.Add(newExperience);
+        employee.Experience.Add(newExperience);
     }
 
-    public void SkillRemoved(GqlSkill skill)
+    public void ExperienceRemoved(GqlExperience experience)
     {
-        RemovedSkills.Add(skill);
-        employee.Skills.Remove(skill);
+        RemovedExperiences.Add(experience);
+        employee.Experience.Remove(experience);
     }
 }
