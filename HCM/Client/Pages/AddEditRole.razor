@@ -15,9 +15,25 @@
                 </div>
             </div>
             <div class="form-group">
+                <label>Employee's in this role:</label>
+                <MultiSelect TItem="GqlEmployee" Placeholder="Select Team's Members" Items="Employees" Values="role.Employees" DisplayFieldSelector="@(i => i.Name)" />
             </div>
-                <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
-                <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
+            <div class="form-group">
+                <label>Previous roles:</label>
+                <ul class="list-group d-flex flex-row flex-wrap">
+                        @foreach (var role in previousRoles)
+                        {
+                            if (role._id != Id)
+                            {
+                                <li class="list-group-item list-group-item-info text--vertMiddle p-1 w-25">
+                                    <span class="table_td" style="width:100%;min-width:100%;">@role.Name</span><span class="close">×</span>
+                                </li>
+                            }
+                        }
+                </ul>
+            </div>
+            <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
+            <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
         }
     </form>
 
@@ -28,6 +44,9 @@
 
     private GraphQLApiClient gql = null;
     private GqlRole role = null;
+
+    private List<GqlRole> previousRoles;
+    private List<GqlEmployee> Employees;
 
     protected override async Task OnInitializedAsync()
     {
@@ -42,9 +61,23 @@
             });
 
             role = (await query.RunAsync()).FirstOrDefault();
+            role.Employees = new List<GqlEmployee>();
         }
         else
             role = new GqlRole();
+
+        //Load Employees
+        Employees = await gql.Employee(string.Empty, fields: e => new GqlEmployee
+        {
+            _id = e._id,
+            Name = e.Name
+        }).RunAsync();
+
+        previousRoles = await gql.Role(string.Empty, fields: e => new GqlRole
+        {
+            _id = e._id,
+            Name = e.Name
+        }).RunAsync();
     }
 
     public void Save()

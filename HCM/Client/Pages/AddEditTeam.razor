@@ -17,10 +17,26 @@
                 <label>Members:</label>
                 <MultiSelect TItem="GqlEmployee" Placeholder="Select Team's Members" Items="Employees" Values="team.Members" DisplayFieldSelector="@(i => i.Name)" />
             </div>
-                <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
-                <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
-                }
-        </form>
+            <div class="form-group">
+                <label>Employees required:</label>
+                <table class="table table-bordered table-hover table-striped">
+                    <tbody>
+                        @foreach (var role in rolesRequired)
+                        {
+                            if (role._id != Id)
+                            {
+                                <tr class="text--vertMiddle">
+                                    <td class="table_td required_role text--vertMiddle">@role.Name</td><td><input class="table_td required_amount text--vertMiddle" type="number" placeholder="0"/></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
+            <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
+        }
+    </form>
 
 @code{
 
@@ -29,6 +45,7 @@
 
     private GraphQLApiClient gql = null;
     private GqlTeam team = null;
+    private List<GqlRole> rolesRequired = null;
 
     private List<GqlEmployee> Employees;
 
@@ -52,6 +69,12 @@
 
         //Load Employees
         Employees = await gql.Employee(string.Empty, fields: e => new GqlEmployee
+        {
+            _id = e._id,
+            Name = e.Name
+        }).RunAsync();
+
+        rolesRequired = await gql.Role(string.Empty, fields: e => new GqlRole
         {
             _id = e._id,
             Name = e.Name

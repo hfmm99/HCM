@@ -344,7 +344,7 @@ h2 {
     position: relative;
 }
 
-    .multi-select:focus-within {
+    .multiSelect:focus-within {
         border-color: #80bdff;
         outline: 0;
         box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
@@ -852,7 +852,7 @@ h2 {
 /* Paths filter */
 
 .filter_section {
-    padding: 1.5rem;
+    padding: .5rem;
     flex: none;
     display: block;
     float:left;
@@ -862,7 +862,7 @@ h2 {
 }
 
 .paths_section {
-    padding: 1.5rem;
+    padding: 1rem;
     flex: none;
     display: block;
     width:75%;
@@ -957,8 +957,31 @@ h2 {
     width: 100%;
 }
 
-/* Modifiers */
+/* Specific ones */
 
+.required_role{
+    width:80%;
+    vertical-align:middle;
+}
+
+.required_amount {
+    width: 20%;
+    vertical-align: middle;
+}
+
+.table_button{
+    float:right;
+    position:absolute;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* Modifiers */
 .bg--lightGray {
     background-color: #e6e6e6;
 }
