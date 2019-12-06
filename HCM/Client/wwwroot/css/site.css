@@ -964,6 +964,11 @@ h2 {
     vertical-align:middle;
 }
 
+.required_experience {
+    width: 100%;
+    vertical-align: middle;
+}
+
 .required_amount {
     width: 20%;
     vertical-align: middle;
@@ -972,6 +977,10 @@ h2 {
 .table_button{
     float:right;
     position:absolute;
+}
+
+.eliminate_previousRole{
+    float:right;
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -1037,4 +1046,10 @@ input[type=number]::-webkit-outer-spin-button {
 .svg--15px {
     width: 15px;
     height: 15px;
+}
+
+.hover--shine:hover {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }

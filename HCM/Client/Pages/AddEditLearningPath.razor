@@ -28,20 +28,26 @@
             <div class="col">
                 <label for="txtName">Punctual objectives:</label>
                 <input id="txtName" type="text" class="form-control" placeholder="Enter an ojective" @oninput="OnValueChanged" required autofocus />
-                <button type="button" class="add-button btn btn-secondary" style="margin-top:1rem;" @onclick="AddObjective">
+                <button type="button" class="add-button btn btn-secondary" style="margin-top:1rem;margin-bottom:1rem;" @onclick="AddObjective">
                     <span class="oi oi-plus" />
                     Add
                 </button>
                 <div class="form-group">
-                    <label>Objectives:</label>
-                    <ul class="list-group d-flex flex-row flex-wrap">
-                        @foreach (var emp in learningPath.objectives)
-                        {
-                            <li class="list-group-item list-group-item-info p-1 w-25" style="margin:.5rem;display:block;">
-                                <div><span>@emp.objective</span></div>
-                            </li>
-                        }
-                    </ul>
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                            <tr class="text--vertMiddle">
+                                <th>Objectives in this learning path</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var obj in learningPath.objectives)
+                            {
+                                <tr class="text--vertMiddle">
+                                    <td class="table_td required_experience text--vertMiddle">@obj.objective</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>  
                 <br />
                 <div class="invalid-feedback">
@@ -57,17 +63,26 @@
                 </div>
             </div>
         </div>
-        <div class="row" style="padding:1rem">
+        <div class="row">
             <div class="col">
-                <label for="txtName">Items in this learning path:</label>
-                <Grid @ref="grid" Data="@LearningItems">
-                    <GridColumns>
-                        <GridColumn Field="@nameof(GqlItems.title)" />
-                    </GridColumns>
-                </Grid>
-                <button type="button" class="add-button btn btn-secondary" style="margin-top:1rem;" @onclick="NewLearningItem">
-                    <span class="oi oi-plus" />Add learning item
-                </button>
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr class="text--vertMiddle">
+                            <th>Items in this learning path</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in LearningItems)
+                        {
+                            <tr class="text--vertMiddle">
+                                <td class="table_td required_experience text--vertMiddle">@item.Title</td>
+                            </tr>
+                        }
+                        <tr class="text--vertMiddle"  @onclick="NewLearningItem">
+                            <td class="table_td required_experience text--vertMiddle bg--lightBlue hover--shine">+Add new learning item</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
             <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s">Save</button>
@@ -105,8 +120,8 @@
     protected override void OnInitialized()
     {
         LearningItems = new List<GqlItems> {
-            new GqlItems{title = "Variables and constants"},
-            new GqlItems{title = "Functions"}
+            new GqlItems{Title = "Variables and constants"},
+            new GqlItems{Title = "Functions"}
         };
 
         learningPath = new GqlLearningPath
@@ -167,6 +182,6 @@
 
     public class GqlItems
     {
-        public string title { get; set; }
+        public string Title { get; set; }
     };
 }

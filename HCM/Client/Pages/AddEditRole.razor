@@ -26,7 +26,10 @@
                             if (role._id != Id)
                             {
                                 <li class="list-group-item list-group-item-info text--vertMiddle p-1 w-25">
-                                    <span class="table_td" style="width:100%;min-width:100%;">@role.Name</span><span class="close">×</span>
+                                    <span class="table_td" style="width:100%;min-width:100%;">@role.Name</span>
+                                    <button type="button" class="close eliminate_previousRole" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </li>
                             }
                         }

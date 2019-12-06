@@ -18,18 +18,47 @@
                 <MultiSelect TItem="GqlEmployee" Placeholder="Select Team's Members" Items="Employees" Values="team.Members" DisplayFieldSelector="@(i => i.Name)" />
             </div>
             <div class="form-group">
-                <label>Employees required:</label>
                 <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr class="text--vertMiddle">
+                            <th>Role</th>
+                            <th>Employees Required</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         @foreach (var role in rolesRequired)
                         {
                             if (role._id != Id)
                             {
                                 <tr class="text--vertMiddle">
-                                    <td class="table_td required_role text--vertMiddle">@role.Name</td><td><input class="table_td required_amount text--vertMiddle" type="number" placeholder="0"/></td>
+                                    <td class="table_td required_role text--vertMiddle">@role.Name</td>
+                                    <td><input class="table_td required_amount text--vertMiddle" type="number" placeholder="0" /></td>
                                 </tr>
                             }
                         }
+                        <tr class="text--vertMiddle">
+                            <td class="table_td required_role text--vertMiddle bg--lightBlue hover--shine">+Add new required role</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr class="text--vertMiddle">
+                            <th>Experiences required in this team</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var exp in experiencesRequired)
+                        {
+                                <tr class="text--vertMiddle">
+                                    <td class="table_td required_experience text--vertMiddle">@exp.Name</td>
+                                </tr>
+                        }
+                        <tr class="text--vertMiddle">
+                            <td class="table_td required_experience text--vertMiddle bg--lightBlue hover--shine">+Add new required experience</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -45,8 +74,9 @@
 
     private GraphQLApiClient gql = null;
     private GqlTeam team = null;
-    private List<GqlRole> rolesRequired = null;
 
+    private List<GqlRole> rolesRequired = null;
+    private List<GqlExperience> experiencesRequired = null;
     private List<GqlEmployee> Employees;
 
     protected override async Task OnInitializedAsync()
@@ -79,6 +109,12 @@
             _id = e._id,
             Name = e.Name
         }).RunAsync();
+
+        experiencesRequired = await gql.Experience(string.Empty, first:5, fields: e => new GqlExperience
+        {
+            _id = e._id,
+            Name = e.Name
+        }).RunAsync();
     }
 
     public void Save()
@@ -90,5 +126,10 @@
     public void Cancel()
     {
         navigationManager.NavigateTo("/teams");
+    }
+
+    public void NewExperience()
+    {
+        navigationManager.NavigateTo("/experience/" + -1);
     }
 }
