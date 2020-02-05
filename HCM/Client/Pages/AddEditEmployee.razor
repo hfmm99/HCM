@@ -65,6 +65,19 @@
                 </div>
             </div>
         </div>
+        <!--User and pass-->
+        <div class="form-row">
+            <div class="col">
+                <label for="lblUser">User:</label>
+                <input id="txtUser" type="text" class="form-control" placeholder="User" @bind="employee._user" required autofocus />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <label for="lblPass">Password:</label>
+                <input id="txtPass" type="password" class="form-control" placeholder="Password" @bind="employee._password" required autofocus />
+            </div>
+        </div>
         <div class="form-group">
             <label>Employee's experience:</label>
             <MultiSelect TItem="GqlExperience" Placeholder="Type to Search" Items="Experiences" Values="employee.Experience" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ExperienceRemoved" OnAddNewItem="@AddNewExperience" />
@@ -101,12 +114,15 @@
                 Image = e.Image,
                 DateOfBirth = e.DateOfBirth,
                 Experience = new List<GqlExperience>
-{
-                    new GqlExperience
-                    {
-                        Name = e.Experience[0].Name
-                    }
+                {
+                new GqlExperience
+                {
+                    Name = e.Experience[0].Name
                 }
+                 },
+                _password= e._password,
+                _user = e._user
+               
             });
 
             employee = (await query.RunAsync()).FirstOrDefault();
@@ -114,7 +130,7 @@
         else
             employee = new GqlEmployee();
 
-        //Load Experiences
+        ////Load Experiences
         Experiences = await gql.Experience(string.Empty, fields: r => new GqlExperience
         {
             _id = r._id,
@@ -131,7 +147,7 @@
     public void Save()
     {
         // Save Employee
-        gql.MergeEmployee(string.Empty, employee.Name, employee.DateOfBirth, employee.Email, employee.Gender, phone: employee.Phone).RunAsync();
+        gql.MergeEmployee(string.Empty, name: employee.Name, dateOfBirth: employee.DateOfBirth, email: employee.Email, gender: employee.Gender, phone: employee.Phone, _user: employee._user, _password: employee._password).RunAsync();
 
         SaveExperiences();
 

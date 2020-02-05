@@ -1,0 +1,95 @@
+﻿@page "/projects"
+@using HCM.Client.Components
+@using HCM.Client.Components.Grid
+@using HCM.Client.Components.Modals
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+@inject ModalService ModalService
+
+
+<div class="btn-toolbar row margin-btm-small" role="toolbar">
+    <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewProject">
+        <span class="oi oi-plus" />
+        New
+    </button>
+    <button type="button" class="btn btn-outline-secondary mr-1">
+        <span class="oi oi-pencil" />
+        Edit
+    </button>
+    <button type="button" class="btn btn-outline-danger mr-1">
+        <span class="oi oi-x" />
+        Delete
+    </button>
+</div>
+
+<div class="row margin-btm-small">
+    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Project..." />
+</div>
+
+<div class="row">
+    <Grid @ref="grid" Data="@projects" OnDoubleClick="@EditProject">
+        <GridColumns>          
+            <GridColumn Field="@nameof(GqlProject.Name)" />
+        </GridColumns>
+    </Grid>
+    <div class="mx-auto" style="width: 215px;">
+        <Pager Pages="@pages" OnPageChange="OnPageChange" />
+    </div>
+</div>
+
+
+@code {
+    private List<GqlProject> projects = null;
+    private GraphQLApiClient gql = null;
+
+    private int page = 1;
+    private int pages = 0;
+
+    private Grid grid;
+
+     public void OnPageChange(PageChangeEventArgs e)
+        {
+            page = e.Page;
+            Search();
+        }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Search();
+    }
+
+    private string searchTerm;
+    public string SearchTerm
+    {
+        get { return searchTerm; }
+        set { searchTerm = value; Search(); }
+    }
+
+    protected async Task Search()
+    {
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+        var query = gql.Project(string.Empty, fields: e => new GqlProject
+        {
+            _id = e._id,
+            Name = e.Name
+        });
+
+        projects = await query.RunAsync();
+
+        pages = 10; // (await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault().Value;
+
+        StateHasChanged();
+    }
+
+    public void EditProject()
+        {
+          if (grid.SelectedItem != null)
+                navigationManager.NavigateTo("/project/" + (grid.SelectedItem as GqlProject)._id);
+        }
+
+     public void NewProject()
+        {
+            navigationManager.NavigateTo("/project/" + -1);
+        }
+}

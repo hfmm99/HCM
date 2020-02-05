@@ -1,0 +1,61 @@
+﻿@page "/project/{Id:int}"
+@using HCM.Client.Components
+@using HCM.Client.Components.Modals
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+@inject ModalService ModalService
+    <form class="needs-validation">
+
+        @if (project != null)
+        {
+            <div class="form-row">
+                <div class="col">
+                    <label for="txtName">Name:</label>
+                    <input id="txtName" type="text" class="form-control" placeholder="Enter employee's name" @bind="project.Name" required autofocus />
+                    <div class="invalid-feedback">
+                        You must enter a name.
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
+            <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
+        }
+    </form>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private GraphQLApiClient gql = null;
+    private GqlProject project = null;
+
+     protected override async Task OnInitializedAsync()
+    {
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+        if (Id > 0)
+        {
+            var query = gql.Project(string.Empty, _id: Id, fields: e => new GqlProject
+            {
+                _id = e._id,
+                Name = e.Name,                          
+            });
+
+            project = (await query.RunAsync()).FirstOrDefault();
+        }
+        else
+            project = new GqlProject();     
+    }
+
+    public void Cancel()
+    {
+        navigationManager.NavigateTo("/projects");
+    }
+
+    public void Save()
+    {
+        // Save Employee
+        gql.MergeProject(string.Empty, name: project.Name).RunAsync();
+        Cancel();
+    }
+}

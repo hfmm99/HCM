@@ -6,7 +6,6 @@
 @inject NavigationManager navigationManager
 
 <DeleteModal OnDelete="@DeletePath" />
-
 <div class="btn-toolbar row margin-btm-small" role="toolbar">
     <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewPath">
         <span class="oi oi-plus" />
@@ -23,13 +22,13 @@
 </div>
 
 <div class="row margin-bottom-small">
-    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Role" />
+    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Learning Path" />
 </div>
 
 <div class="row">
-    <Grid @ref="grid" Data="@testData" OnDoubleClick="@EditPath" OnSort="@OnGridSort">
+    <Grid @ref="grid" Data="@learningPaths" OnDoubleClick="@EditPath" OnSort="@OnGridSort">
         <GridColumns>
-            <GridColumn Field="@nameof(GqlRole.Name)" />
+            <GridColumn Field="@nameof(GqlLearningPath.Name)" />
         </GridColumns>
     </Grid>
     <div class="mx-auto" style="width: 215px;">
@@ -37,21 +36,62 @@
     </div>
 </div>
 
-
 @code {
 
-    private string SearchTerm;
-    private int pages;
-    private List<GqlEmployee> testData;
+    private GraphQLApiClient gql = null;
+    private List<GqlLearningPath> learningPaths = null;
 
     private Grid grid;
+
+    private Gql_LearningPathOrdering sorting = Gql_LearningPathOrdering.name_asc;
+
+    private int page = 1;
+    private int pages = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Search();
+    }
+
+    private string searchTerm;
+    public string SearchTerm
+    {
+        get { return searchTerm; }
+        set { searchTerm = value; Search(); }
+    }
+
+    protected async Task Search()
+    {
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+        var query = gql.LearningPath(string.Empty, first: 10, offset: (page - 1) * 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_LearningPathFilter { OR = new List<Gql_LearningPathFilter> { new Gql_LearningPathFilter { Name_contains = SearchTerm } } }, orderBy: new[] { sorting }, fields: e => new GqlLearningPath
+        {
+            _id = e._id,
+            Name = e.Name,
+            Description = e.Description
+        });
+
+        learningPaths = await query.RunAsync();
+
+        pages = 10;
+
+        StateHasChanged();
+    }
+
 
     private void OnPageChange()
     {
     }
 
-    private void OnGridSort()
+    public void OnGridSort(SortEventArgs e)
     {
+        switch (e.ColumnName)
+        {
+            case nameof(GqlLearningPath.Name):
+                sorting = e.SortingAscending ? Gql_LearningPathOrdering.name_asc : Gql_LearningPathOrdering.name_desc;
+                break;
+        }
+        Search();
     }
 
     protected void NewPath()

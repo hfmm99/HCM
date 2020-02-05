@@ -6,140 +6,145 @@
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
 
+
 <DeleteModal OnDelete="@DeleteEmployee" />
-
-<div class="btn-toolbar row margin-btm-small" role="toolbar">
-    <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewEmployee">
-        <span class="oi oi-plus" />
-        New
-    </button>
-    <button type="button" class="btn btn-outline-secondary mr-1" @onclick="EditEmployee">
-        <span class="oi oi-pencil" />
-        Edit
-    </button>
-    <button type="button" class="btn btn-outline-danger mr-1" @onclick="ConfirmDelete">
-        <span class="oi oi-x" />
-        Delete
-    </button>
-</div>
-
-<div class="row margin-btm-small">
-    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Employee..." />
-</div>
-
-<div class="row">
-    <Grid @ref="grid" Data="@employees" OnDoubleClick="@EditEmployee" OnSort="@OnGridSort">
-        <GridColumns>
-            <GridColumn Title="Image">
-                <Template>
-                    @{
-                        var employee = context as GqlEmployee;
-
-                        if (!string.IsNullOrEmpty(employee.Image))
-                        {
-                            <center><img src="/Images/@employee.Image" alt="@employee.Name" height="64" /></center>
-                        }
-                    }
-                </Template>
-            </GridColumn>
-            <GridColumn Field="@nameof(GqlEmployee.Name)" />
-            <GridColumn Field="@nameof(GqlEmployee.Email)" />
-            <GridColumn Field="@nameof(GqlEmployee.Phone)" />
-        </GridColumns>
-    </Grid>
-    <div class="mx-auto" style="width: 215px;">
-        <Pager Pages="@pages" OnPageChange="OnPageChange" />
+    <div class="btn-toolbar row margin-btm-small" role="toolbar">
+        <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewEmployee">
+            <span class="oi oi-plus" />
+            New
+        </button>
+        <button type="button" class="btn btn-outline-secondary mr-1" @onclick="EditEmployee">
+            <span class="oi oi-pencil" />
+            Edit
+        </button>
+        <button type="button" class="btn btn-outline-danger mr-1" @onclick="ConfirmDelete">
+            <span class="oi oi-x" />
+            Delete
+        </button>
     </div>
-</div>
 
-@code{
-    private GraphQLApiClient gql = null;
-    private List<GqlEmployee> employees = null;
+    <div class="row margin-btm-small">
+        <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Employee..." />
+    </div>
 
-    private Gql_EmployeeOrdering sorting = Gql_EmployeeOrdering.name_asc;
+    <div class="row">
+        <Grid @ref="grid" Data="@employees" OnDoubleClick="@EditEmployee" OnSort="@OnGridSort">
+            <GridColumns>
+                <GridColumn Title="Image">
+                    <Template>
+                        @{
+                            var employee = context as GqlEmployee;
 
-    private int page = 1;
-    private int pages = 0;
+                            if (!string.IsNullOrEmpty(employee.Image))
+                            {
+                                <center><img src="/Images/@employee.Image" alt="@employee.Name" height="64" /></center>
+                            }
+                        }
+                    </Template>
+                </GridColumn>
 
-    private Grid grid;
+                <GridColumn Field="@nameof(GqlEmployee.Name)" />
+                <GridColumn Field="@nameof(GqlEmployee.Email)" />
+                <GridColumn Field="@nameof(GqlEmployee.Phone)" />
+            </GridColumns>
+        </Grid>
+        <div class="mx-auto" style="width: 215px;">
+            <Pager Pages="@pages" OnPageChange="OnPageChange" />
+        </div>
+    </div>
 
-    protected override async Task OnInitializedAsync()
-    {
-        await Search();
-    }
+    @code{
+        private GraphQLApiClient gql = null;
+        private List<GqlEmployee> employees = null;
 
-    private string searchTerm;
-    public string SearchTerm
-    {
-        get { return searchTerm; }
-        set { searchTerm = value; Search(); }
-    }
+        private Gql_EmployeeOrdering sorting = Gql_EmployeeOrdering.name_asc;
 
-    protected async Task Search()
-    {
-        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+        private int page = 1;
+        private int pages = 0;
 
-        var query = gql.Employee(string.Empty, first: 10, offset: (page - 1) * 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_EmployeeFilter { OR = new List<Gql_EmployeeFilter> { new Gql_EmployeeFilter { Name_contains = SearchTerm }, new Gql_EmployeeFilter { Email_contains = SearchTerm } } }, orderBy: new[] { sorting }, fields: e => new GqlEmployee
+        private Grid grid;
+
+        protected override async Task OnInitializedAsync()
         {
-            _id = e._id,
-            Name = e.Name,
-            Email = e.Email,
-            Phone = e.Phone,
-            Image = e.Image
-        }); 
-
-        employees = await query.RunAsync();
-
-        pages = 10; // (await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault().Value;
-
-        StateHasChanged();
-    }
-
-    public void OnGridSort(SortEventArgs e)
-    {
-        switch (e.ColumnName)
-        {
-            case nameof(GqlEmployee.Name):
-                sorting = e.SortingAscending ? Gql_EmployeeOrdering.name_asc : Gql_EmployeeOrdering.name_desc;
-                break;
-            case nameof(GqlEmployee.Email):
-                sorting = e.SortingAscending ? Gql_EmployeeOrdering.email_asc : Gql_EmployeeOrdering.email_desc;
-                break;
+            await Search();
         }
 
-        Search();
-    }
+        private string searchTerm;
+        public string SearchTerm
+        {
+            get { return searchTerm; }
+            set { searchTerm = value; Search(); }
+        }
 
-    public void OnPageChange(PageChangeEventArgs e)
-    {
-        page = e.Page;
-        Search();
-    }
+        protected async Task Search()
+        {
+            gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
 
-    public void NewEmployee()
-    {
-        navigationManager.NavigateTo("/employee/" + -1);
-    }
+            var query = gql.Employee(string.Empty, first: 10, offset: (page - 1) * 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_EmployeeFilter { OR = new List<Gql_EmployeeFilter> { new Gql_EmployeeFilter { Name_contains = SearchTerm }, new Gql_EmployeeFilter { Email_contains = SearchTerm } } }, orderBy: new[] { sorting }, fields: e => new GqlEmployee
+            {
+                _id = e._id,
+                Name = e.Name,
+                Email = e.Email,
+                Phone = e.Phone,
+                Image = e.Image
+            });
 
-    public void EditEmployee()
-    {
-        if (grid.SelectedItem != null)
-            navigationManager.NavigateTo("/employee/" + (grid.SelectedItem as GqlEmployee)._id);
-    }
+            employees = await query.RunAsync();
 
-    public void ConfirmDelete()
-    {
-        if (grid.SelectedItem != null) {
-            string deleteItemName = (grid.SelectedItem as GqlEmployee).Name;
-            bool showModal = true;
-            ModalService.ShowModal(showModal, deleteItemName);
+            pages = 10; // (await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault().Value;
+
+            StateHasChanged();
+        }
+
+        public void OnGridSort(SortEventArgs e)
+        {
+            switch (e.ColumnName)
+            {
+                case nameof(GqlEmployee.Name):
+                    sorting = e.SortingAscending ? Gql_EmployeeOrdering.name_asc : Gql_EmployeeOrdering.name_desc;
+                    break;
+                case nameof(GqlEmployee.Email):
+                    sorting = e.SortingAscending ? Gql_EmployeeOrdering.email_asc : Gql_EmployeeOrdering.email_desc;
+                    break;
+                case nameof(GqlEmployee.Gender):
+                    sorting = e.SortingAscending ? Gql_EmployeeOrdering.gender_asc : Gql_EmployeeOrdering.gender_desc;
+                    break;
+            }
+
+            Search();
+        }
+
+        public void OnPageChange(PageChangeEventArgs e)
+        {
+            page = e.Page;
+            Search();
+        }
+
+        public void NewEmployee()
+        {
+            navigationManager.NavigateTo("/employee/" + -1);
+        }
+
+        public void EditEmployee()
+        {
+            if (grid.SelectedItem != null)
+                navigationManager.NavigateTo("/employee/" + (grid.SelectedItem as GqlEmployee)._id);
+        }
+
+        public void ConfirmDelete()
+        {
+            if (grid.SelectedItem != null)
+            {
+                string deleteItemName = (grid.SelectedItem as GqlEmployee).Name;
+                bool showModal = true;
+                ModalService.ShowModal(showModal, deleteItemName);
+            }
+        }
+
+        public async void DeleteEmployee()
+        {
+            gql.DeleteEmployee(string.Empty, (grid.SelectedItem as GqlEmployee).Name).RunAsync();
+            ModalService.CloseModal();
+            await Search();
         }
     }
-
-    public async void DeleteEmployee()
-    {
-        gql.DeleteEmployee(string.Empty, (grid.SelectedItem as GqlEmployee).Name).RunAsync();
-        ModalService.CloseModal();
-        await Search();
-    }
-}

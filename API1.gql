@@ -3,6 +3,8 @@ type Employee {
   gender: String
   email: String
   phone: String
+  _user: String
+  _password: String
   dateOfBirth: DateTime
   image: String
   isMemberOf: [Team] @relation(name: "IS_MEMBER_OF", direction: out)
@@ -10,6 +12,47 @@ type Employee {
   worksFor: Client @relation(name: "WOKS_FOR", direction: out)
   livesIn: Country @relation(name: "LIVES_IN", direction: out)
   experience: [Experience] @relation(name: "KNOWS", direction: out)
+  is_from: [Logbook] @relation(name: "FROM", direction: in)
+}
+
+type Scope{
+name: ID!
+isScopeOf:[Logbook] @relation(name: "SCOPE_OF", direction: out)
+}
+
+type Logbook{
+score: Int
+project: String
+subject: ID!
+date: DateTime
+description: String
+is_to: [Employee] @relation(name: "TO", direction: out)
+scopes: [Scope] @relation(name: "SCOPE_OF", direction: in)
+}
+
+type Project{
+name: ID!
+}
+
+type LearningItem{
+  name: ID!
+  duration: String
+  content: [LearningPath] @relation(name: "CONTENT", direction: in)
+  next: [LearningItem] @relation(name: "NEXT", direction: out)
+}
+
+type LearningPath{
+  name: ID!
+  description: String
+  tags: [Tag] @relation(name: "TAG", direction: in)
+  learnings: [LearningItem] @relation(name: "CONTENT", direction: out)
+  prerequisite: [LearningPath] @relation(name: "IS_PREREQUISITE", direction: out)
+}
+
+
+type Tag{
+  name: ID!
+  isTagOf:[LearningPath] @relation(name: "TAG", direction: out)
 }
 
 type Team {
@@ -45,7 +88,9 @@ type QueryType {
   TeamCount: Int
     @cypher(statement: "MATCH (t:Team) RETURN COUNT(t) AS Teams"),
   RoleCount: Int
-    @cypher(statement: "MATCH (r:Role) RETURN COUNT(r) AS Roles")
+    @cypher(statement: "MATCH (r:Role) RETURN COUNT(r) AS Roles"),
+  LearningItemsList: LearningItem
+  @cypher(statement: "match (m:LearningItem)-[:NEXT *]-(v:LearningItem) where m.name= $name return v as Items")
 }
 
 schema {

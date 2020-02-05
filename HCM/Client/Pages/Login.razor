@@ -1,0 +1,57 @@
+﻿@page "/login"
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+@inject ModalService ModalService
+            <div class="text-center mb-4">
+                <img class="mb-4" src="/Images/logo-ex2.png" width="300" height="180">
+                <h1 class="h3 mb-3 font-weight-normal">CARRER PATH</h1>
+            </div>
+
+            <div class="form-label-group">
+                <input type="text" name="txt_User" id="inputUser" class="form-control" placeholder="User ID" @bind="Input_user" required autofocus>
+                <label for="inputUser">User ID</label>
+            </div>
+            <div class="form-label-group">
+                <input type="password" name="txt_Pass" id="inputPassword" class="form-control" placeholder="Password" @bind="Input_password" required>
+                <label for="inputPassword">Password</label>
+            </div>
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" @onclick="Login_user">Sign in</button>
+        
+@code {
+    private GraphQLApiClient gql = null;
+    private GqlEmployee employee = null;
+
+    public string Input_user { get; set; }
+    public string Input_password { get; set; }
+
+
+    public async Task Login_user()
+    {
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+        var query = gql.Employee(string.Empty, _user: Input_user, fields: e => new GqlEmployee
+        {
+            _id = e._id,
+            _user = e._user,
+            _password = e._password,
+            Name = e.Name
+
+        });
+
+        employee = (await query.RunAsync()).FirstOrDefault();
+        if (employee._user == Input_user && employee._password == Input_password)
+        {
+            navigationManager.NavigateTo("/");
+
+        }
+        else
+            Console.WriteLine("Mal");
+    }
+
+
+}

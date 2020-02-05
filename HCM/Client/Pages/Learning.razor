@@ -18,162 +18,183 @@
     </button>
 </div>
 
+<!--Menu filter-->
 <div class="filter_section">
     <div role="region">
         <h3 class="section_title">Filter</h3>
-            <div class="defining_content">
-                <MatNavMenu>
-                    <div id="accordion" class="accordion font--small">
-                        <MatNavSubMenu class="card" @bind-Expanded="@subMenuOpen">
-                            <MatNavSubMenuHeader>
-                                <MatNavItem AllowSelection="false" class="mb-0">
-                                    <a class="navMenuHeader">Level</a>
+        <div class="defining_content">
+            <MatNavMenu>
+                <div id="accordion" class="accordion">
+                    <MatNavSubMenu class="card" @bind-Expanded="@subMenuOpen">
+                        <MatNavSubMenuHeader>
+                            <MatNavItem AllowSelection="false" class="mb-0">
+                                <a class="navMenuHeader">Level</a>
+                            </MatNavItem>
+                        </MatNavSubMenuHeader>
+                        <MatNavSubMenuList>
+                            <ul>
+                                <MatNavItem>
+                                    <span class="filter-title">Beginner</span><input type="checkbox" />
                                 </MatNavItem>
-                            </MatNavSubMenuHeader>
-                            <MatNavSubMenuList>
-                                <ul>
-                                    <MatNavItem>
-                                        <span class="filter_title">Beginner</span><input class="filter_checkbox" type="checkbox" />
-                                    </MatNavItem>
-                                    <MatNavItem>
-                                        <span class="filter_title">Intermediate</span><input class="filter_checkbox" type="checkbox" />
-                                    </MatNavItem>
-                                    <MatNavItem>
-                                        <span class="filter_title">Advanced</span><input class="filter_checkbox" type="checkbox" />
-                                    </MatNavItem>
-                                </ul>
-                            </MatNavSubMenuList>
-                        </MatNavSubMenu>
-                        <MatNavSubMenu class="card">
-                            <MatNavSubMenuHeader>
-                                <MatNavItem AllowSelection="false" class="mb-0">
-                                    <a class="navMenuHeader">Expertises</a>
+                                <MatNavItem>
+                                    <span class="filter-title">Intermediate</span><input type="checkbox" />
                                 </MatNavItem>
-                            </MatNavSubMenuHeader>
-                            <MatNavSubMenuList>
-                                <ul>
-                                    <MatNavSubMenu class="card">
-                                        <MatNavSubMenuHeader>
-                                            <MatNavItem AllowSelection="false" class="mb-0">
-                                                <a class="navMenuHeader filter_title">Soft skills</a>
+                                <MatNavItem>
+                                    <span class="filter-title">Advanced</span><input type="checkbox" />
+                                </MatNavItem>
+                            </ul>
+                        </MatNavSubMenuList>
+                    </MatNavSubMenu>
+                    <MatNavSubMenu class="card">
+                        <MatNavSubMenuHeader>
+                            <MatNavItem AllowSelection="false" class="mb-0">
+                                <a class="navMenuHeader">Expertises and skills</a>
+                            </MatNavItem>
+                        </MatNavSubMenuHeader>
+                        <MatNavSubMenuList>
+                            <ul>
+                                <MatNavSubMenu class="card">
+                                    <MatNavSubMenuHeader>
+                                        <MatNavItem AllowSelection="false" class="mb-0">
+                                            <a class="navMenuHeader">Soft skills</a>
+                                        </MatNavItem>
+                                    </MatNavSubMenuHeader>
+                                    <MatNavSubMenuList>
+                                        <ul>
+                                            <MatNavItem>
+                                                <span class="filter-title">Demo filter</span><input type="checkbox" />
                                             </MatNavItem>
-                                        </MatNavSubMenuHeader>
-                                        <MatNavSubMenuList>
-                                            <ul>
-                                                <MatNavItem>
-                                                    <span class="filter_title">Leadership</span><input class="filter_checkbox" type="checkbox" />
-                                                </MatNavItem>
-                                                <MatNavItem>
-                                                    <span class="filter_title">Team relations</span><input class="filter_checkbox" type="checkbox" />
-                                                </MatNavItem>
-                                            </ul>
-                                        </MatNavSubMenuList>
-                                    </MatNavSubMenu>
-                                    <MatNavSubMenu class="card">
-                                        <MatNavSubMenuHeader>
-                                            <MatNavItem AllowSelection="false" class="mb-0">
-                                                <a class="navMenuHeader filter_title">Experiences</a>
+                                        </ul>
+                                    </MatNavSubMenuList>
+                                </MatNavSubMenu>
+                                <MatNavSubMenu class="card">
+                                    <MatNavSubMenuHeader>
+                                        <MatNavItem AllowSelection="false" class="mb-0">
+                                            <a class="navMenuHeader">Expertises</a>
+                                        </MatNavItem>
+                                    </MatNavSubMenuHeader>
+                                    <MatNavSubMenuList>
+                                        <ul>
+                                            <MatNavItem>
+                                                <span class="filter-title">Demo filter</span><input type="checkbox" />
                                             </MatNavItem>
-                                        </MatNavSubMenuHeader>
-                                        <MatNavSubMenuList>
-                                            <ul>
-                                                <MatNavItem>
-                                                    <span class="filter_title">.NET</span><input class="filter_checkbox" type="checkbox" />
-                                                </MatNavItem>
-                                            </ul>
-                                        </MatNavSubMenuList>
-                                    </MatNavSubMenu>
-                                </ul>
-                            </MatNavSubMenuList>
-                        </MatNavSubMenu>
-                        <MatNavSubMenu class="card">
-                            <MatNavSubMenuHeader>
-                                <MatNavItem AllowSelection="false" class="mb-0">
-                                    <a class="navMenuHeader">Roles</a>
+                                        </ul>
+                                    </MatNavSubMenuList>
+                                </MatNavSubMenu>
+                            </ul>
+                        </MatNavSubMenuList>
+                    </MatNavSubMenu>
+                    <MatNavSubMenu class="card">
+                        <MatNavSubMenuHeader>
+                            <MatNavItem AllowSelection="false" class="mb-0">
+                                <a class="navMenuHeader">Roles</a>
+                            </MatNavItem>
+                        </MatNavSubMenuHeader>
+                        <MatNavSubMenuList>
+                            <ul>
+                                <MatNavItem>
+                                    <span class="filter-title">Developer</span><input type="checkbox" />
                                 </MatNavItem>
-                            </MatNavSubMenuHeader>
-                            <MatNavSubMenuList>
-                                <ul>
-                                    <MatNavItem>
-                                        <span class="filter_title">Developer</span><input class="filter_checkbox" type="checkbox" />
-                                    </MatNavItem>
-                                </ul>
-                            </MatNavSubMenuList>
-                        </MatNavSubMenu>
-                    </div>
-                </MatNavMenu>
-            </div>
+                            </ul>
+                        </MatNavSubMenuList>
+                    </MatNavSubMenu>
+                </div>
+            </MatNavMenu>
+        </div>
     </div>
 </div>
-
+<!--End menu filter -->
+<!--Cards Courses-->
 <div class="paths_section">
-    <DataList TItem="GqlLearningItem" Items="@Data" Style="DataListStyle.Cards">
-        <Template Context="item">
+    <DataList TItem="GqlLearningPath" Items="@learningPaths" Style="DataListStyle.Cards" @ref="datalist"  >
+        <Template Context="learningPaths">
             <article class="card_content list_item bg--trans">
                 <div class="card_header data_card_header bg--blue">
                     <figure class="card_header card_img_top">
-                        <img src="@item.Image" role="presentation" class="card_img" />
+                        @*<img src="@item.Image" role="presentation" class="card_img" />*@
                     </figure>
                 </div>
                 <div class="card_body data_card_body">
                     <p class="card_type">Demo card type</p>
-                    <a href="/learning/pathname">
-                        <strong class="card_data_title">@item.Title</strong>
+                    <a>
+                        <strong class="card_data_title" @onclick="Go">@learningPaths.Name</strong>
                     </a>
-                    <p class="card_metadata">@item.Description</p>
+                    <p class="card_metadata">@learningPaths.Description</p>
                     <div class="data_tags tags">
-                        <div class="badge badge-secondary tag">
-                            Demo tag
-                        </div>
-                        <div class="badge badge-secondary tag">
-                            Demo tag
-                        </div>
-                        <div class="badge badge-secondary tag">
-                            Demo tag
-                        </div>
+                        @{if (learningPaths != null)
+                            {
+                                foreach (var tag in learningPaths.Tags)
+                                {
+                                    <div class="badge badge-secondary tag">
+                                        @tag.Name
+                                    </div>
+                                }
+                            }
+                        }
                     </div>
                 </div>
                 <div class="card_footer data_card_footer"></div>
             </article>
+
         </Template>
     </DataList>
     <div class="mx-auto" style="width: 215px;">
         <Pager Pages="@pages" OnPageChange="OnPageChange" />
     </div>
 </div>
+<!--End Courses-->
 
 @code {
+    private GraphQLApiClient gql = null;
+    private List<GqlLearningPath> learningPaths = null;
+    private Gql_LearningPathOrdering sorting = Gql_LearningPathOrdering.name_asc;
 
-    private string SearchTerm;
-    private int pages;
+    private int page = 1;
+    private int pages = 0;
 
-    protected List<GqlLearningItem> Data = new List<GqlLearningItem>
-{
-        new GqlLearningItem(),
-        new GqlLearningItem { Title = "Another Card", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac." },
-        new GqlLearningItem { Title = "Third Card", Description = "Lorem ipsum dolor sit amet." },
-        new GqlLearningItem { Title = "Fourth Card", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac." },
-        new GqlLearningItem { Title = "Last Card", Description = "Lorem ipsum dolor sit amet." }
-    };
+    protected override async Task OnInitializedAsync()
+    {
+        await Search();
+    }
+
+    private string searchTerm;
+    public string SearchTerm
+    {
+        get { return searchTerm; }
+        set { searchTerm = value; Search(); }
+    }
+
+
+    protected async Task Search()
+    {
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+        var query = gql.LearningPath(string.Empty, fields: e => new GqlLearningPath
+        {
+            _id = e._id,
+            Name = e.Name,
+            Description = e.Description,
+            Tags = new List<GqlTag>
+            {
+                new GqlTag
+                {
+                    Name = e.Tags[0].Name
+                }
+            }
+        });
+        learningPaths = await query.RunAsync();
+        pages = 10;
+
+        StateHasChanged();
+    }
 
     private void OnPageChange()
     {
-
     }
-
-    public class GqlLearningItem
-    {
-        public string Image { get; set; } = "/css/js.png";
-        public string Title { get; set; } = "Upgrade Microsoft Office for IT at scale";
-        public string Description { get; set; } = "Demo metadata";
-    }
-
-    public class GqlTags
-    {};
 
     private void PathNav()
     {
-        navigationManager.NavigateTo("/learning/userpath");
+        navigationManager.NavigateTo("/learning");
     }
 
     bool subMenuOpen;
@@ -182,5 +203,13 @@
     void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private DataList<GqlLearningPath> datalist;
+
+    private void Go()
+    {
+        if (datalist.SelectedItem != null)
+            navigationManager.NavigateTo("/learning/pathname/" + datalist.SelectedItem._id);
     }
 }

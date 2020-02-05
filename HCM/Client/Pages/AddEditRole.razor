@@ -14,11 +14,13 @@
                     You must enter a name.
                 </div>
             </div>
-            <div class="form-group">
+            <!--Load role members-->
+            <div class="form-group" style="z-index: 0;">
                 <label>Employee's in this role:</label>
                 <MultiSelect TItem="GqlEmployee" Placeholder="Select Team's Members" Items="Employees" Values="role.Employees" DisplayFieldSelector="@(i => i.Name)" />
             </div>
-            <div class="form-group">
+            <!--Load previou roles-->
+            <div class="form-group" style="z-index: 2;">
                 <label>Previous roles:</label>
                 <ul class="list-group d-flex flex-row flex-wrap">
                         @foreach (var role in previousRoles)

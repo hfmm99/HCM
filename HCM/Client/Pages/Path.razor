@@ -1,13 +1,13 @@
-﻿@page "/learning/pathname"
+﻿@page "/learning/pathname/{Id:int}"
 @using HCM.Client.Components
 @using HCM.Client.Components.DataList
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
-
 <div class="btn-toolbar row margin-btm-small" role="toolbar">
     <button class="btn btn-dark" @onclick="GoBack">Go back</button>
 </div>
 
+<!--Div info selected learning path-->
 <div class="box">
     <div class="path_info_space">
         <div class="pre_box">
@@ -16,15 +16,17 @@
                     <img class="img_path_page" role="presentation" src="/css/js.png" />
                 </figure>
                 <div class="info_column">
-                    <div class="progress_data">
-                        <strong>Your progress</strong>
-                        <div class="progress bg--lightGray">
-                            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
+                    <!--Name-->
                     <div class="heading_container">
                         <div class="heading_sub_container">
-                            <h1 class="path_info_header">Demo Path Name</h1>
+                            @{if (learningPath != null)
+                                {
+                                    
+                                        <h1 class="path_info_header">@learningPath.Name</h1>
+                                        <br />
+                                        <p>@learningPath.Description</p>
+                                    }
+                                }
                             <ul class="path_metadata">
                                 <li class="path_duration">Demo Duration</li> ·
                                 <li class="metadata_title"> Path</li> ·
@@ -32,34 +34,47 @@
                             </ul>
                         </div>
                     </div>
+                    <!--Tags-->
                     <div class="path_tags tags">
-                        <div class="badge badge-secondary tag">
-                            Demo tag
-                        </div>
-                        <div class="badge badge-secondary tag">
-                            Demo tag
-                        </div>
-                        <div class="badge badge-secondary tag">
-                            Demo tag
+                        @{if (learningPath != null)
+                            {
+                                foreach (var tag in learningPath.Tags)
+                                {
+                                    <div class="badge badge-secondary tag">
+                                        @tag.Name
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                    <br />
+                    <!--Progress bar-->
+                    <div class="progress_data">
+                        <strong>Your progress</strong>
+                        <div class="progress bg--lightGray">
+                            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
-                    <div class="path_summary">
-                        <p>Demo Summary</p>
-                    </div>
+                    <!--In this path U will...-->
+                    <br />
                     <div class="path_specific_summary">
-                        <p>In this path you will:</p>
+                        <h3>In this path you will:</h3>
                         <ul class="specific_summary_list">
+                            <li class="specific_summary_list_item">Demo Specific Summary</li>
+                            <li class="specific_summary_list_item">Demo Specific Summary</li>
                             <li class="specific_summary_list_item">Demo Specific Summary</li>
                         </ul>
                     </div>
+                    <!--Button start-->
                     <p class="start_space">
                         <a href="learning/pathname/itemname" class="btn btn-primary start_button">
                             <span class="start_button_text">Start</span>
                             <span class="carousel_control_next-icon" />
                         </a>
                     </p>
+                    <!--Div prerequisites-->
                     <div class="prerequisites">
-                        <h3 class="prerequisites_title section_title">Prerequisites</h3>
+                        <h3>Prerequisites</h3>
                         <ul id="item_pathid" class="items_list">
                             <li class="path_item" id="item_id">
                                 <div class="barLink">
@@ -71,83 +86,133 @@
                             </li>
                         </ul>
                     </div>
+                    <!--Learning items-->
                     <div class="header_learning_items">
                         <h3 class="learning_items_title section_title">This path consists of the next items</h3>
                     </div>
                     <ul id="item_pathid" class="items_list">
-                        <li class="path_item" id="item_id">
-                            <div class="barLink">
-                                <div class="barLinkContent">
-                                    <p><a href="#" class="item_title">Item Name</a></p>
-                                    <span class="unit_duration">Item Duration</span>
-                                </div>
-                            </div>
-                        </li>
+                        @{if (learningPath != null)
+                            {
+                                foreach (var item in learningPath.Learnings)
+                                {
+                                    <li class="path_item" id="item_id">
+                                        <div class="barLink">
+                                            <div class="barLinkContent">
+                                                <p><a href="#" class="item_title">@item.Name</a></p>
+                                                <span class="unit_duration">@item.Duration</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                        }
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div name="similar_paths" class="box">
-        <div class="similar_paths">
-            <h3 class="similar_paths_title section_title">Similar Paths</h3>
-        </div>
-        <DataList TItem="GqlLearningItem" Items="@Data" Style="DataListStyle.Cards">
-            <Template Context="item">
-                <article class="card_content list_item bg--trans">
-                    <div class="card_header data_card_header bg--blue">
-                        <figure class="card_header card_img_top">
-                            <img src="@item.Image" role="presentation" class="card_img" />
-                        </figure>
-                    </div>
-                    <div class="card_body data_card_body">
-                        <p class="card_type">Demo card type</p>
-                        <a href="/learning/pathname">
-                            <strong class="card_data_title">@item.Title</strong>
-                        </a>
-                        <p class="card_metadata">@item.Description</p>
-                        <div class="data_tags tags">
-                            <div class="badge badge-secondary tag">
-                                Demo tag
-                            </div>
-                            <div class="badge badge-secondary tag">
-                                Demo tag
-                            </div>
-                            <div class="badge badge-secondary tag">
-                                Demo tag
-                            </div>
+<!--Div info selected learning path-->
+<!--Similar Paths div-->
+@*<div name="similar_paths" class="box">
+    <div class="similar_paths">
+        <h3 class="similar_paths_title section_title">Similar Paths</h3>
+    </div>
+    <DataList TItem="GqlLearningItem" Items="@Data" Style="DataListStyle.Cards">
+        <Template Context="item">
+            <article class="card_content list_item bg--trans">
+                <div class="card_header data_card_header bg--blue">
+                    <figure class="card_header card_img_top">
+                        <img src="@item.Image" role="presentation" class="card_img" />
+                    </figure>
+                </div>
+                <div class="card_body data_card_body">
+                    <p class="card_type">Demo card type</p>
+                    <a href="/learning/pathname">
+                        <strong class="card_data_title">@item.Title</strong>
+                    </a>
+                    <p class="card_metadata">@item.Description</p>
+                    <div class="data_tags tags">
+                        <div class="badge badge-secondary tag">
+                            Demo tag
+                        </div>
+                        <div class="badge badge-secondary tag">
+                            Demo tag
+                        </div>
+                        <div class="badge badge-secondary tag">
+                            Demo tag
                         </div>
                     </div>
-                    <div class="card_footer data_card_footer"></div>
-                </article>
-            </Template>
-        </DataList>
-    </div>
+                </div>
+                <div class="card_footer data_card_footer"></div>
+            </article>
+        </Template>
+    </DataList>
+</div>*@
+<!--Similar Paths div end-->
 
-    @code {
+@code {
+    [Parameter]
+    public int Id { get; set; }
 
-        private void GoBack()
-        {
-            navigationManager.NavigateTo("/learning");
-        }
+    private GraphQLApiClient gql = null;
+    private GqlLearningPath learningPath = null;
 
-        protected List<GqlLearningItem> Data = new List<GqlLearningItem>
-{
-        new GqlLearningItem(),
-        new GqlLearningItem { Title = "Another Card", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac." },
-        new GqlLearningItem { Title = "Third Card", Description = "Lorem ipsum dolor sit amet." }
-    };
-
-        private void OnPageChange()
-        {
-
-        }
-
-        public class GqlLearningItem
-        {
-            public string Image { get; set; } = "/css/js.png";
-            public string Title { get; set; } = "Upgrade Microsoft Office for IT at scale";
-            public string Description { get; set; } = "Demo metadata";
-        }
+    protected override async Task OnInitializedAsync()
+    {
+        await Search();
     }
+
+    protected async Task Search()
+    {
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+        var query = gql.LearningPath(string.Empty, _id: Id, fields: e => new GqlLearningPath
+        {
+            _id = e._id,
+            Name = e.Name,
+            Description = e.Description,
+            Tags = new List<GqlTag>
+            {
+                new GqlTag
+                {
+                    Name = e.Tags[0].Name
+                }
+            },
+            Learnings = new List<GqlLearningItem>
+            {
+                new GqlLearningItem
+                {
+                    Name = e.Learnings[0].Name,
+                    Duration = e.Learnings[0].Duration
+                }
+            }
+        });
+        learningPath = (await query.RunAsync()).FirstOrDefault();
+        StateHasChanged();
+    }
+
+    private void GoBack()
+    {
+        navigationManager.NavigateTo("/learning");
+    }
+
+    private void OnPageChange()
+    {
+
+    }
+
+    //    protected List<GqlLearningItem> Data = new List<GqlLearningItem>
+    //{
+    //        new GqlLearningItem(),
+    //        new GqlLearningItem { Title = "Another Card", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac." },
+    //        new GqlLearningItem { Title = "Third Card", Description = "Lorem ipsum dolor sit amet." }
+    //    };
+
+    //    public class GqlLearningItem
+    //    {
+    //        public string Image { get; set; } = "/css/js.png";
+    //        public string Title { get; set; } = "Upgrade Microsoft Office for IT at scale";
+    //        public string Description { get; set; } = "Demo metadata";
+    //    }
+}

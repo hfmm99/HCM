@@ -1,14 +1,17 @@
 ﻿@typeparam TItem
 @using Microsoft.AspNetCore.Components;
 
-<ul class="data_list list_group list">
-    @foreach (var item in Items)
-    {
-        <li class=@(Style == DataListStyle.Cards ? "data_card card grid_item" : string.Empty)>
-            @Template(item)
-        </li>
-    }
-</ul>
+@if (Items != null)
+{
+    <ul class="data_list list_group list">
+        @foreach (var item in Items)
+        {
+            <li class=@(Style == DataListStyle.Cards ? "data_card card grid_item" : string.Empty) @onclick="@(e => ChangeSelection(e, item))">
+                @Template(item)
+            </li>
+        }
+    </ul>
+}
 
 @code {
 
@@ -21,4 +24,31 @@
     [Parameter]
     public RenderFragment<TItem> Template { get; set; }
 
+    //-----------Prueba Selected Item-----------
+
+    public TItem SelectedItem { get; private set; }
+
+    private bool IsSelected(object item) => item.Equals(SelectedItem);
+
+    private void ChangeSelection(EventArgs e, TItem item)
+    {
+        if (IsSelected(item))
+        {
+            return;
+        }
+
+        SelectedItem = item;
+
+        Click(SelectedItem);
+    }
+
+    protected void Click(object item)
+    {
+        OnClick.InvokeAsync(new OnClickEventArgs { SelectedItem = item });
+    }
+
+    [Parameter]
+    public EventCallback<OnClickEventArgs> OnClick { get; set; }
+
+    //-----------Prueba Selected Item fin-----------
 }
