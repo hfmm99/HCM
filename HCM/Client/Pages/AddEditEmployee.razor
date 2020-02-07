@@ -114,15 +114,15 @@
                 Image = e.Image,
                 DateOfBirth = e.DateOfBirth,
                 Experience = new List<GqlExperience>
-                {
+            {
                 new GqlExperience
                 {
                     Name = e.Experience[0].Name
                 }
                  },
-                _password= e._password,
+                _password = e._password,
                 _user = e._user
-               
+
             });
 
             employee = (await query.RunAsync()).FirstOrDefault();
@@ -186,5 +186,6 @@
     {
         RemovedExperiences.Add(experience);
         employee.Experience.Remove(experience);
+        Console.WriteLine(RemovedExperiences.Count);
     }
 }

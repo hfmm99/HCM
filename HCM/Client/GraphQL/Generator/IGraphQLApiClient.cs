@@ -258,6 +258,12 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> AddTagIsTagOf (string sessionToken, string[] isTagOf, string name, Func<string, string> fields = null );
 	
 
+	/// <summary>Adds Exp_requires to Team entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addTeamExp_requires")]
+	GraphQLQuery<string> AddTeamExp_requires (string sessionToken, string[] exp_requires, string name, Func<string, string> fields = null );
+	
+
 	/// <summary>Adds Members to Team entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addTeamMembers")]
@@ -532,6 +538,12 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteTeam")]
 	GraphQLQuery<string> DeleteTeam (string sessionToken, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Deletes Exp_requires from Team entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteTeamExp_requires")]
+	GraphQLQuery<string> DeleteTeamExp_requires (string sessionToken, string[] exp_requires, string name, Func<string, string> fields = null );
 	
 
 	/// <summary>Deletes Members from Team entity</summary>

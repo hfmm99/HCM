@@ -277,6 +277,10 @@ public partial class GqlTeam
 	[GraphQLField("_id")]
 	public long? _id { get; set; }
 
+	/// <summary>Team exp_requires Experience</summary>
+	[GraphQLField("exp_requires")]
+	public List<GqlExperience> Exp_requires { get; set; }
+
 	/// <summary>Team members Employee</summary>
 	[GraphQLField("members")]
 	public List<GqlEmployee> Members { get; set; }
@@ -2464,6 +2468,38 @@ public class Gql_TeamFilter
 	[JsonProperty(PropertyName = "OR", NullValueHandling = NullValueHandling.Ignore)]
 	public List<Gql_TeamFilter> OR { get; set; }
 
+	/// <summary>exp_requires</summary>
+	[JsonProperty(PropertyName = "exp_requires", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Exp_requires { get; set; }
+
+	/// <summary>exp_requires_every</summary>
+	[JsonProperty(PropertyName = "exp_requires_every", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Exp_requires_every { get; set; }
+
+	/// <summary>exp_requires_in</summary>
+	[JsonProperty(PropertyName = "exp_requires_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Exp_requires_in { get; set; }
+
+	/// <summary>exp_requires_none</summary>
+	[JsonProperty(PropertyName = "exp_requires_none", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Exp_requires_none { get; set; }
+
+	/// <summary>exp_requires_not</summary>
+	[JsonProperty(PropertyName = "exp_requires_not", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Exp_requires_not { get; set; }
+
+	/// <summary>exp_requires_not_in</summary>
+	[JsonProperty(PropertyName = "exp_requires_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Exp_requires_not_in { get; set; }
+
+	/// <summary>exp_requires_single</summary>
+	[JsonProperty(PropertyName = "exp_requires_single", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Exp_requires_single { get; set; }
+
+	/// <summary>exp_requires_some</summary>
+	[JsonProperty(PropertyName = "exp_requires_some", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ExperienceFilter Exp_requires_some { get; set; }
+
 	/// <summary>members</summary>
 	[JsonProperty(PropertyName = "members", NullValueHandling = NullValueHandling.Ignore)]
 	public Gql_EmployeeFilter Members { get; set; }
@@ -2966,6 +3002,15 @@ isScopeOf, name);
 isTagOf, name);
 	}
 
+	/// <summary>Adds Exp_requires to Team entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addTeamExp_requires")]
+	public GraphQLQuery<string> AddTeamExp_requires (string sessionToken, string[] exp_requires, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+exp_requires, name);
+	}
+
 	/// <summary>Adds Members to Team entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addTeamMembers")]
@@ -3378,6 +3423,15 @@ isTagOf, name);
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 name);
+	}
+
+	/// <summary>Deletes Exp_requires from Team entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteTeamExp_requires")]
+	public GraphQLQuery<string> DeleteTeamExp_requires (string sessionToken, string[] exp_requires, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+exp_requires, name);
 	}
 
 	/// <summary>Deletes Members from Team entity</summary>

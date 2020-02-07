@@ -59,6 +59,7 @@ type Team {
   name: ID!
   roles: [Role] @relation(name: "REQUIRES", direction: out)
   members: [Employee] @relation(name: "IS_MEMBER_OF", direction: in)
+  exp_requeres: [Experience] @relation (name: "REQUIRES_EXP", direction: out)
 }
 
 type Role {

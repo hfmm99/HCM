@@ -17,54 +17,12 @@
             <div class="form-group">
                 <label>Members:</label>
                 <MultiSelect TItem="GqlEmployee" Placeholder="Select Team's Members" Items="Employees" Values="team.Members" DisplayFieldSelector="@(i => i.Name)" />
-            </div>
+            </div>         
             <div class="form-group">
-                <!--Table roles and members-->
-                <table class="table table-bordered table-hover table-striped">
-                    <thead>
-                        <tr class="text--vertMiddle">
-                            <th>Role</th>
-                            <th>Employees Required</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var role in rolesRequired)
-                        {
-                            if (role._id != Id)
-                            {
-                                <tr class="text--vertMiddle">
-                                    <td class="table_td required_role text--vertMiddle">@role.Name</td>
-                                    <td><input class="table_td required_amount text--vertMiddle" type="number" placeholder="0" /></td>
-                                </tr>
-                            }
-                        }
-                        <tr class="text--vertMiddle">
-                            <td class="table_td required_role text--vertMiddle bg--lightBlue hover--shine">+Add new required role</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <label>Needed experience :</label>
+                <MultiSelect TItem="GqlExperience" Placeholder="Type to Search" Items="Experiences" Values="team.Exp_requires" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ExperienceRemoved" OnAddNewItem="@AddNewExperience"/>
             </div>
-            <div class="form-group">
-                <!--Table Experiences required team-->
-                <table class="table table-bordered table-hover table-striped">
-                    <thead>
-                        <tr class="text--vertMiddle">
-                            <th>Experiences required in this team</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var exp in experiencesRequired)
-                        {
-                                <tr class="text--vertMiddle">
-                                    <td class="table_td required_experience text--vertMiddle">@exp.Name</td>
-                                </tr>
-                        }
-                        <tr class="text--vertMiddle">
-                            <td class="table_td required_experience text--vertMiddle bg--lightBlue hover--shine">+Add new required experience</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+
             <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
             <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
         }
@@ -79,8 +37,10 @@
     private GqlTeam team = null;
 
     private List<GqlRole> rolesRequired = null;
-    private List<GqlExperience> experiencesRequired = null;
     private List<GqlEmployee> Employees;
+
+    private List<GqlExperience> Experiences;
+    private List<GqlExperience> RemovedExperiences;
 
     protected override async Task OnInitializedAsync()
     {
@@ -92,6 +52,13 @@
             {
                 _id = e._id,
                 Name = e.Name,
+                Exp_requires = new List<GqlExperience>
+                {
+                    new GqlExperience
+                    {
+                        Name = e.Exp_requires[0].Name
+                    }
+                }
             });
 
             team = (await query.RunAsync()).FirstOrDefault();
@@ -114,17 +81,19 @@
             Name = e.Name
         }).RunAsync();
 
-        //Load experiences required
-        experiencesRequired = await gql.Experience(string.Empty, first:5, fields: e => new GqlExperience
+        //Load Exp
+        Experiences = await gql.Experience(string.Empty, fields: e => new GqlExperience
         {
             _id = e._id,
             Name = e.Name
         }).RunAsync();
+        RemovedExperiences = new List<GqlExperience>();
     }
 
     public void Save()
     {
         gql.MergeTeam(string.Empty, team.Name).RunAsync();
+        SaveExperiences();
         Cancel();
     }
 
@@ -133,8 +102,33 @@
         navigationManager.NavigateTo("/teams");
     }
 
-    public void NewExperience()
+    public void AddNewExperience(string text)
     {
-        navigationManager.NavigateTo("/experience/" + -1);
+        var newExperience = new GqlExperience { Name = text };
+        Experiences.Add(newExperience);
+        team.Exp_requires.Add(newExperience);
+    }
+
+    public void ExperienceRemoved(GqlExperience experience)
+    {
+        RemovedExperiences.Add(experience);
+        team.Exp_requires.Remove(experience);
+        Console.WriteLine(RemovedExperiences.Count);
+    }
+
+    private void SaveExperiences()
+    {
+        // Insert newly created experiences, if any
+        foreach (var experience in Experiences.Where(s => !s._id.HasValue))
+            gql.CreateExperience(string.Empty, experience.Name).RunAsync();
+
+        // Save team needed exp
+        gql.AddTeamExp_requires(string.Empty, name: team.Name, exp_requires: team.Exp_requires.Select(s => s.Name).ToArray()).RunAsync();
+
+        // Delete removed experiences, if any
+        var experiencesToRemove = RemovedExperiences.Select(s => s.Name).Except(team.Exp_requires.Select(es => es.Name));
+
+        if (experiencesToRemove.Any())
+            gql.DeleteTeamExp_requires(string.Empty, name: team.Name, exp_requires: experiencesToRemove.ToArray()).RunAsync();
     }
 }

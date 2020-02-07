@@ -143,7 +143,7 @@
 
     protected void RemoveValue(TItem item)
     {
-        Console.WriteLine(OnValueRemoved);
+        Console.WriteLine(item);
         Values.Remove(item);
         OnValueRemoved.InvokeAsync(item);
     }

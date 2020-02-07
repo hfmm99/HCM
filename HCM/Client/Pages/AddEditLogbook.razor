@@ -132,6 +132,7 @@
             _id = s._id,
             Name = s.Name
         }).RunAsync();
+        Removedscopes = new List<GqlScope>();
     }
 
     public void ToEmployeeRemoved(GqlEmployee employee)
@@ -149,9 +150,10 @@
 
     public void ScopesRemoved(GqlScope scope)
     {    
-        Console.WriteLine(Removedscopes.Count);
+        
         Removedscopes.Add(scope);
         logbook.Scopes.Remove(scope);
+        Console.WriteLine(Removedscopes.Count);
     }
 
     public void AddNewScope(string text)
@@ -187,6 +189,6 @@
 
     public void Cancel()
     {
-        navigationManager.NavigateTo("/bitacora");
+        navigationManager.NavigateTo("/logbooks");
     }
 }

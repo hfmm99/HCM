@@ -90,7 +90,7 @@
 
         employees = await query.RunAsync();
 
-        pages = 10; // (await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault().Value;
+        pages = 8; // (await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault().Value;
 
         StateHasChanged();
     }
@@ -99,14 +99,14 @@
     {
         switch (e.ColumnName)
         {
+            case nameof(GqlEmployee.Phone):
+                sorting = e.SortingAscending ? Gql_EmployeeOrdering.phone_asc : Gql_EmployeeOrdering.phone_desc;
+                break;
             case nameof(GqlEmployee.Name):
                 sorting = e.SortingAscending ? Gql_EmployeeOrdering.name_asc : Gql_EmployeeOrdering.name_desc;
                 break;
             case nameof(GqlEmployee.Email):
                 sorting = e.SortingAscending ? Gql_EmployeeOrdering.email_asc : Gql_EmployeeOrdering.email_desc;
-                break;
-            case nameof(GqlEmployee.Gender):
-                sorting = e.SortingAscending ? Gql_EmployeeOrdering.gender_asc : Gql_EmployeeOrdering.gender_desc;
                 break;
         }
 
