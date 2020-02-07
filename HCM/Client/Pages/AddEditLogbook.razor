@@ -41,16 +41,16 @@
             <div class="form-row" style="z-index:-1">
                 <div class="col">
                     <label for="dtpDate">Date:</label>
-                    <input id="dtpDate" type="date" class="form-control" placeholder="Date" @bind="logbook.Date"/>
+                    <input id="dtpDate" type="date" class="form-control" placeholder="Date" @bind="logbook.Date" />
                 </div>
                 <div class="col">
                     <label for="num_score">Score:</label>
-                    <input id="num_score" type="number" class="form-control" min="0" max="10" @bind="logbook.Score"/>
+                    <input id="num_score" type="number" class="form-control" min="0" max="10" @bind="logbook.Score" />
                 </div>
             </div>
             <textarea placeholder="Description of the logbook" style="width:100%" @bind="logbook.Description"></textarea>
             <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
-            <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>           
+            <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
         }
 
         <datalist id="listamodelos">
@@ -61,7 +61,7 @@
                     <option value="@project.Name" />
                 }
             }
-        </datalist>
+        </datalist>  
     </form>
 @code {
     [Parameter]
@@ -152,7 +152,6 @@
         Console.WriteLine(Removedscopes.Count);
         Removedscopes.Add(scope);
         logbook.Scopes.Remove(scope);
-  
     }
 
     public void AddNewScope(string text)

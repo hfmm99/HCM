@@ -1,4 +1,4 @@
-﻿@page "/bitacora"
+﻿@page "/logbooks"
 
 @using HCM.Client.Components
 @using HCM.Client.Components.Modals
@@ -6,17 +6,18 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
-@*<Bitacora_Modal />*@
+
+    <DeleteModal OnDelete="@DeleteLogbook" />
 <div class="btn-toolbar row margin-btm-small" role="toolbar">
     <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewLogbook">
         <span class="oi oi-plus" />
         New
     </button>
-    <button type="button" class="btn btn-outline-secondary mr-1">
+    <button type="button" class="btn btn-outline-secondary mr-1" @onclick="EditLogbook">
         <span class="oi oi-pencil" />
         Edit
     </button>
-    <button type="button" class="btn btn-outline-danger mr-1">
+    <button type="button" class="btn btn-outline-danger mr-1" @onclick="ConfirmDelete">
         <span class="oi oi-x" />
         Delete
     </button>
@@ -27,10 +28,10 @@
 </div>
 
 <div class="row">
-    <Grid @ref="grid" Data="@logbooks" OnDoubleClick="@EditLogbook">
+    <Grid @ref="grid" Data="@logbooks" OnDoubleClick="@EditLogbook" OnSort="@OnGridSort">
         <GridColumns>
             <GridColumn Field="@nameof(GqlLogbook.Subject)" />
-            <GridColumn Field="@nameof(GqlLogbook.Description)" />
+            <GridColumn Field="@nameof(GqlLogbook.Date)" />
         </GridColumns>
     </Grid>
     <div class="mx-auto" style="width: 215px;">
@@ -39,18 +40,18 @@
 </div>
 
 @code {
-    bool ShowPopup = false;
+        bool ShowPopup = false;
     private int page = 1;
     private int pages = 0;
     private Grid grid;
     private GraphQLApiClient gql = null;
     private List<GqlLogbook> logbooks = null;
-    private Gql_EmployeeOrdering sorting = Gql_EmployeeOrdering.name_asc;
+    private Gql_LogbookOrdering sorting = Gql_LogbookOrdering.date_asc;
 
-     protected override async Task OnInitializedAsync()
-        {
-            await Search();
-        }
+    protected override async Task OnInitializedAsync()
+    {
+        await Search();
+    }
 
     void NewLogbook()
     {
@@ -64,34 +65,66 @@
         set { searchTerm = value; Search(); }
     }
 
-      protected async Task Search()
+    protected async Task Search()
+    {
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+        var query = gql.Logbook(string.Empty, first:10, offset: (page - 1) * 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_LogbookFilter { OR = new List<Gql_LogbookFilter> { new Gql_LogbookFilter { Subject_contains = SearchTerm } } }, orderBy: new[] { sorting }, fields: e => new GqlLogbook
         {
-            gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+            _id = e._id,
+            Subject = e.Subject,
+            Date = e.Date
+        });
 
-            var query = gql.Logbook(string.Empty, fields: e => new GqlLogbook
-            {
-                _id = e._id,
-                Subject = e.Subject,
-                Description = e.Description
-            });
+        logbooks = await query.RunAsync();
 
-            logbooks = await query.RunAsync();
+        pages = 10; // (await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault().Value;
 
-            pages = 10; // (await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault().Value;
-
-            StateHasChanged();
-        }
+        StateHasChanged();
+    }
 
     public void OnPageChange(PageChangeEventArgs e)
-        {
-            page = e.Page;
-            Search();
-        }
+    {
+        page = e.Page;
+        Search();
+    }
 
     public void EditLogbook()
+    {
+        if (grid.SelectedItem != null)
+            navigationManager.NavigateTo("/logbook/" + (grid.SelectedItem as GqlLogbook)._id);
+    }
+
+    public void OnGridSort(SortEventArgs e)
+    {
+        switch (e.ColumnName)
         {
-            if (grid.SelectedItem != null)
-                navigationManager.NavigateTo("/logbook/" + (grid.SelectedItem as GqlLogbook)._id);
+            case nameof(GqlLogbook.Subject):
+                sorting = e.SortingAscending ? Gql_LogbookOrdering.subject_asc : Gql_LogbookOrdering.subject_desc;
+                break;
+            case nameof(GqlLogbook.Date):
+                sorting = e.SortingAscending ? Gql_LogbookOrdering.date_asc : Gql_LogbookOrdering.date_desc;
+                break;
         }
+
+        Search();
+    }
+
+    public void ConfirmDelete()
+    {
+        if (grid.SelectedItem != null)
+        {
+            string deleteItemName = (grid.SelectedItem as GqlLogbook).Subject;
+            bool showModal = true;
+            ModalService.ShowModal(showModal, deleteItemName);
+        }
+    }
+
+     public async void DeleteLogbook()
+    {
+        gql.DeleteLogbook(string.Empty, (grid.SelectedItem as GqlLogbook).Subject).RunAsync();
+        ModalService.CloseModal();
+        await Search();
+    }
 
 }
