@@ -1,3 +1,4 @@
+using Blazored.SessionStorage;
 using Ganss.XSS;
 using HCM.Client.Auth;
 using Microsoft.AspNetCore.Components.Builder;
@@ -17,6 +18,7 @@ namespace HCM.Client
             });
             services.AddAuthorizationCore();
             services.AddScoped<Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider, Prueba>();
+            services.AddBlazoredSessionStorage();
         }
 
 

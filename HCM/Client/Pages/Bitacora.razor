@@ -1,4 +1,4 @@
-﻿@page "/logbooks"
+﻿@page "/events"
 
 @using HCM.Client.Components
 @using HCM.Client.Components.Modals
@@ -6,8 +6,9 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
-    <DeleteModal OnDelete="@DeleteLogbook" />
+<DeleteModal OnDelete="@DeleteLogbook" />
 <div class="btn-toolbar row margin-btm-small" role="toolbar">
     <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewLogbook">
         <span class="oi oi-plus" />
@@ -24,7 +25,7 @@
 </div>
 
 <div class="row margin-btm-small">
-    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Employee..." />
+    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search event..." />
 </div>
 
 <div class="row">
@@ -50,12 +51,21 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Search();
+        var name = await sessionStorage.GetItemAsync<string>("name");
+
+        if (name == null)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            await Search();
+        }
     }
 
     void NewLogbook()
     {
-        navigationManager.NavigateTo("/logbook/" + -1);
+        navigationManager.NavigateTo("/event/" + -1);
     }
 
     private string searchTerm;
@@ -69,7 +79,7 @@
     {
         gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
 
-        var query = gql.Logbook(string.Empty, first:10, offset: (page - 1) * 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_LogbookFilter { OR = new List<Gql_LogbookFilter> { new Gql_LogbookFilter { Subject_contains = SearchTerm } } }, orderBy: new[] { sorting }, fields: e => new GqlLogbook
+        var query = gql.Logbook(string.Empty, first: 10, offset: (page - 1) * 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_LogbookFilter { OR = new List<Gql_LogbookFilter> { new Gql_LogbookFilter { Subject_contains = SearchTerm } } }, orderBy: new[] { sorting }, fields: e => new GqlLogbook
         {
             _id = e._id,
             Subject = e.Subject,
@@ -92,7 +102,7 @@
     public void EditLogbook()
     {
         if (grid.SelectedItem != null)
-            navigationManager.NavigateTo("/logbook/" + (grid.SelectedItem as GqlLogbook)._id);
+            navigationManager.NavigateTo("/event/" + (grid.SelectedItem as GqlLogbook)._id);
     }
 
     public void OnGridSort(SortEventArgs e)
@@ -120,7 +130,7 @@
         }
     }
 
-     public async void DeleteLogbook()
+    public async void DeleteLogbook()
     {
         gql.DeleteLogbook(string.Empty, (grid.SelectedItem as GqlLogbook).Subject).RunAsync();
         ModalService.CloseModal();

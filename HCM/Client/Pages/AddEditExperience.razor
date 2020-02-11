@@ -2,6 +2,7 @@
 @using HCM.Client.Components
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 
 <form class="needs-validation">
@@ -40,26 +41,35 @@
 
     protected override async Task OnInitializedAsync()
     {
-        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+        var name = await sessionStorage.GetItemAsync<string>("name");
 
-        if (Id > 0)
+        if (name == null)
         {
-            var query = gql.Experience(string.Empty, _id: Id, fields: s => new GqlExperience
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+            if (Id > 0)
             {
-                _id = s._id,
-                Name = s.Name,
-                Employees = new List<GqlEmployee>
+                var query = gql.Experience(string.Empty, _id: Id, fields: s => new GqlExperience
+                {
+                    _id = s._id,
+                    Name = s.Name,
+                    Employees = new List<GqlEmployee>
 {
                     new GqlEmployee { _id = s.Employees[0]._id, Name = s.Employees[0].Name }
             }
-            });
-            experience = (await query.RunAsync()).FirstOrDefault();
+                });
+                experience = (await query.RunAsync()).FirstOrDefault();
+            }
+            else
+                experience = new GqlExperience
+                {
+                    Employees = new List<GqlEmployee>()
+                };
         }
-        else
-            experience = new GqlExperience
-            {
-                Employees = new List<GqlEmployee>()
-            };
     }
 
     public void Save()

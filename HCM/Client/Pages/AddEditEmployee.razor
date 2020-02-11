@@ -4,6 +4,7 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 <RolePropertiesModal />
 
@@ -100,44 +101,53 @@
 
     protected override async Task OnInitializedAsync()
     {
-        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+        var name = await sessionStorage.GetItemAsync<string>("name");
 
-        if (Id > 0)
+        if (name == null)
         {
-            var query = gql.Employee(string.Empty, _id: Id, fields: e => new GqlEmployee
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+            if (Id > 0)
             {
-                _id = e._id,
-                Name = e.Name,
-                Gender = e.Gender,
-                Phone = e.Phone,
-                Email = e.Email,
-                Image = e.Image,
-                DateOfBirth = e.DateOfBirth,
-                Experience = new List<GqlExperience>
-            {
+                var query = gql.Employee(string.Empty, _id: Id, fields: e => new GqlEmployee
+                {
+                    _id = e._id,
+                    Name = e.Name,
+                    Gender = e.Gender,
+                    Phone = e.Phone,
+                    Email = e.Email,
+                    Image = e.Image,
+                    DateOfBirth = e.DateOfBirth,
+                    Experience = new List<GqlExperience>
+                {
                 new GqlExperience
                 {
                     Name = e.Experience[0].Name
                 }
                  },
-                _password = e._password,
-                _user = e._user
+                    _password = e._password,
+                    _user = e._user
 
-            });
+                });
 
-            employee = (await query.RunAsync()).FirstOrDefault();
+                employee = (await query.RunAsync()).FirstOrDefault();
+            }
+            else
+                employee = new GqlEmployee();
+
+            ////Load Experiences
+            Experiences = await gql.Experience(string.Empty, fields: r => new GqlExperience
+            {
+                _id = r._id,
+                Name = r.Name
+            }).RunAsync();
+
+            RemovedExperiences = new List<GqlExperience>();
         }
-        else
-            employee = new GqlEmployee();
-
-        ////Load Experiences
-        Experiences = await gql.Experience(string.Empty, fields: r => new GqlExperience
-        {
-            _id = r._id,
-            Name = r.Name
-        }).RunAsync();
-
-        RemovedExperiences = new List<GqlExperience>();
     }
 
     public void ChangeImage()
@@ -150,7 +160,6 @@
         gql.MergeEmployee(string.Empty, name: employee.Name, dateOfBirth: employee.DateOfBirth, email: employee.Email, gender: employee.Gender, phone: employee.Phone, _user: employee._user, _password: employee._password).RunAsync();
 
         SaveExperiences();
-
         Cancel();
     }
 
@@ -159,13 +168,14 @@
         // Insert newly created experiences, if any
         foreach (var experience in Experiences.Where(s => !s._id.HasValue))
             gql.CreateExperience(string.Empty, experience.Name).RunAsync();
+        Console.WriteLine("cree nueva");
 
         // Save employee experiences
         gql.AddEmployeeExperience(string.Empty, name: employee.Name, experience: employee.Experience.Select(s => s.Name).ToArray()).RunAsync();
+        Console.WriteLine("Salve exp");
 
         // Delete removed experiences, if any
         var experiencesToRemove = RemovedExperiences.Select(s => s.Name).Except(employee.Experience.Select(es => es.Name));
-
         if (experiencesToRemove.Any())
             gql.DeleteEmployeeExperience(string.Empty, name: employee.Name, experience: experiencesToRemove.ToArray()).RunAsync();
     }
@@ -186,6 +196,5 @@
     {
         RemovedExperiences.Add(experience);
         employee.Experience.Remove(experience);
-        Console.WriteLine(RemovedExperiences.Count);
     }
 }

@@ -3,6 +3,8 @@
 @using HCM.Client.Components.DataList
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
 <div class="btn-toolbar row margin-btm-small" role="toolbar">
     <button class="btn btn-dark" @onclick="GoBack">Go back</button>
 </div>
@@ -21,12 +23,12 @@
                         <div class="heading_sub_container">
                             @{if (learningPath != null)
                                 {
-                                    
-                                        <h1 class="path_info_header">@learningPath.Name</h1>
-                                        <br />
-                                        <p>@learningPath.Description</p>
-                                    }
+
+                                    <h1 class="path_info_header">@learningPath.Name</h1>
+                                    <br />
+                                    <p>@learningPath.Description</p>
                                 }
+                            }
                             <ul class="path_metadata">
                                 <li class="path_duration">Demo Duration</li> ·
                                 <li class="metadata_title"> Path</li> ·
@@ -115,40 +117,40 @@
 <!--Div info selected learning path-->
 <!--Similar Paths div-->
 @*<div name="similar_paths" class="box">
-    <div class="similar_paths">
-        <h3 class="similar_paths_title section_title">Similar Paths</h3>
-    </div>
-    <DataList TItem="GqlLearningItem" Items="@Data" Style="DataListStyle.Cards">
-        <Template Context="item">
-            <article class="card_content list_item bg--trans">
-                <div class="card_header data_card_header bg--blue">
-                    <figure class="card_header card_img_top">
-                        <img src="@item.Image" role="presentation" class="card_img" />
-                    </figure>
-                </div>
-                <div class="card_body data_card_body">
-                    <p class="card_type">Demo card type</p>
-                    <a href="/learning/pathname">
-                        <strong class="card_data_title">@item.Title</strong>
-                    </a>
-                    <p class="card_metadata">@item.Description</p>
-                    <div class="data_tags tags">
-                        <div class="badge badge-secondary tag">
-                            Demo tag
-                        </div>
-                        <div class="badge badge-secondary tag">
-                            Demo tag
-                        </div>
-                        <div class="badge badge-secondary tag">
-                            Demo tag
+        <div class="similar_paths">
+            <h3 class="similar_paths_title section_title">Similar Paths</h3>
+        </div>
+        <DataList TItem="GqlLearningItem" Items="@Data" Style="DataListStyle.Cards">
+            <Template Context="item">
+                <article class="card_content list_item bg--trans">
+                    <div class="card_header data_card_header bg--blue">
+                        <figure class="card_header card_img_top">
+                            <img src="@item.Image" role="presentation" class="card_img" />
+                        </figure>
+                    </div>
+                    <div class="card_body data_card_body">
+                        <p class="card_type">Demo card type</p>
+                        <a href="/learning/pathname">
+                            <strong class="card_data_title">@item.Title</strong>
+                        </a>
+                        <p class="card_metadata">@item.Description</p>
+                        <div class="data_tags tags">
+                            <div class="badge badge-secondary tag">
+                                Demo tag
+                            </div>
+                            <div class="badge badge-secondary tag">
+                                Demo tag
+                            </div>
+                            <div class="badge badge-secondary tag">
+                                Demo tag
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card_footer data_card_footer"></div>
-            </article>
-        </Template>
-    </DataList>
-</div>*@
+                    <div class="card_footer data_card_footer"></div>
+                </article>
+            </Template>
+        </DataList>
+    </div>*@
 <!--Similar Paths div end-->
 
 @code {
@@ -160,7 +162,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Search();
+        var name = await sessionStorage.GetItemAsync<string>("name");
+
+        if (name == null)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            await Search();
+        }
     }
 
     protected async Task Search()
@@ -173,14 +184,14 @@
             Name = e.Name,
             Description = e.Description,
             Tags = new List<GqlTag>
-            {
+        {
                 new GqlTag
                 {
                     Name = e.Tags[0].Name
                 }
             },
             Learnings = new List<GqlLearningItem>
-            {
+        {
                 new GqlLearningItem
                 {
                     Name = e.Learnings[0].Name,

@@ -5,4 +5,8 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Blazored.SessionStorage" Version="1.0.11" />
+  </ItemGroup>
+
 </Project>

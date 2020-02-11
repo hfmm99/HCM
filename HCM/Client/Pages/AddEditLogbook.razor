@@ -1,8 +1,9 @@
-﻿@page "/logbook/{Id:int}"
+﻿@page "/event/{Id:int}"
 @inject HttpClient httpClient
 @using HCM.Client.Components
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 
     <form class="needs-validation">
@@ -61,7 +62,7 @@
                     <option value="@project.Name" />
                 }
             }
-        </datalist>  
+        </datalist>      
     </form>
 @code {
     [Parameter]
@@ -78,61 +79,72 @@
 
     protected override async Task OnInitializedAsync()
     {
-        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+        var name = await sessionStorage.GetItemAsync<string>("name");
 
-        if (Id > 0)
+        if (name == null)
         {
-            var query = gql.Logbook(string.Empty, _id: Id, fields: e => new GqlLogbook
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+            if (Id > 0)
             {
-                Subject = e.Subject,
-                Description = e.Description,
-                Is_to = new List<GqlEmployee>
-            {
+                var query = gql.Logbook(string.Empty, _id: Id, fields: e => new GqlLogbook
+                {
+                    Subject = e.Subject,
+                    Description = e.Description,
+                    Is_to = new List<GqlEmployee>
+        {
                     new GqlEmployee
                     {
                         Name = e.Is_to[0].Name
                     }
                 },
-                Scopes = new List<GqlScope>
-                {
+                    Scopes = new List<GqlScope>
+            {
                     new GqlScope
                     {
                         Name =e.Scopes[0].Name
                     }
                 },
-                Date = e.Date,
-                Score = e.Score,
-                Project = e.Project
+                    Date = e.Date,
+                    Score = e.Score,
+                    Project = e.Project
 
-            });
+                });
 
-            logbook = (await query.RunAsync()).FirstOrDefault();
+                logbook = (await query.RunAsync()).FirstOrDefault();
+            }
+            else
+                logbook = new GqlLogbook();
+
+            ////Load Employees
+            Employees = await gql.Employee(string.Empty, fields: r => new GqlEmployee
+            {
+                _id = r._id,
+                Name = r.Name
+            }).RunAsync();
+
+            RemovedEmployees = new List<GqlEmployee>();
+
+            //Load Projecs
+            projects = await gql.Project(string.Empty, fields: p => new GqlProject
+            {
+                _id = p._id,
+                Name = p.Name
+            }).RunAsync();
+
+            scopes = await gql.Scope(string.Empty, fields: s => new GqlScope
+            {
+                _id = s._id,
+                Name = s.Name
+            }).RunAsync();
+            Removedscopes = new List<GqlScope>();
+
+            Console.WriteLine(Employees.Count);
         }
-        else
-            logbook = new GqlLogbook();
-
-        ////Load Employees
-        Employees = await gql.Employee(string.Empty, fields: r => new GqlEmployee
-        {
-            _id = r._id,
-            Name = r.Name
-        }).RunAsync();
-
-        RemovedEmployees = new List<GqlEmployee>();
-
-        //Load Projecs
-        projects = await gql.Project(string.Empty, fields: p => new GqlProject
-        {
-            _id = p._id,
-            Name = p.Name
-        }).RunAsync();
-
-        scopes = await gql.Scope(string.Empty, fields: s => new GqlScope
-        {
-            _id = s._id,
-            Name = s.Name
-        }).RunAsync();
-        Removedscopes = new List<GqlScope>();
     }
 
     public void ToEmployeeRemoved(GqlEmployee employee)
@@ -149,8 +161,8 @@
     }
 
     public void ScopesRemoved(GqlScope scope)
-    {    
-        
+    {
+
         Removedscopes.Add(scope);
         logbook.Scopes.Remove(scope);
         Console.WriteLine(Removedscopes.Count);

@@ -4,90 +4,91 @@
 @using HCM.Client.Components.DataList
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
-    <form class="newPath needs-validation">
-        <div class="form-row">
-            <div class="col">
-                <label for="txtName">Title:</label>
-                <input id="txtName" type="text" class="form-control" placeholder="Enter Path's title" required autofocus />
-                <div class="invalid-feedback">
-                    You must enter a name.
-                </div>
+<form class="newPath needs-validation">
+    <div class="form-row">
+        <div class="col">
+            <label for="txtName">Title:</label>
+            <input id="txtName" type="text" class="form-control" placeholder="Enter Path's title" required autofocus />
+            <div class="invalid-feedback">
+                You must enter a name.
             </div>
         </div>
-        <div class="form-row">
-            <div class="col">
-                <label for="txtName">Summary:</label>
-                <textarea id="txtName" type="text" class="form-control summary_form" placeholder="Enter a little summary" required autofocus />
-                <div class="invalid-feedback">
-                    You must enter something.
-                </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label for="txtName">Summary:</label>
+            <textarea id="txtName" type="text" class="form-control summary_form" placeholder="Enter a little summary" required autofocus />
+            <div class="invalid-feedback">
+                You must enter something.
             </div>
         </div>
-        <div class="form-row">
-            <div class="col">
-                <label for="txtName">Punctual objectives:</label>
-                <input id="txtName" type="text" class="form-control" placeholder="Enter an ojective" @oninput="OnValueChanged" required autofocus />
-                <button type="button" class="add-button btn btn-secondary" style="margin-top:1rem;margin-bottom:1rem;" @onclick="AddObjective">
-                    <span class="oi oi-plus" />
-                    Add
-                </button>
-                <div class="form-group">
-                    <table class="table table-bordered table-hover table-striped">
-                        <thead>
-                            <tr class="text--vertMiddle">
-                                <th>Objectives in this learning path</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var obj in learningPath.objectives)
-                            {
-                                <tr class="text--vertMiddle">
-                                    <td class="table_td required_experience text--vertMiddle">@obj.objective</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>  
-                <br />
-                <div class="invalid-feedback">
-                    You must enter something.
-                </div>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col">
-                <div class="form-group">
-                    <label for="txtName">Add path's tags:</label>
-                    <MultiSelect TItem="GqlTags" Placeholder="Type to Search" Items="TagsData" DisplayFieldSelector="@(i => i.name)" />
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label for="txtName">Punctual objectives:</label>
+            <input id="txtName" type="text" class="form-control" placeholder="Enter an ojective" @oninput="OnValueChanged" required autofocus />
+            <button type="button" class="add-button btn btn-secondary" style="margin-top:1rem;margin-bottom:1rem;" @onclick="AddObjective">
+                <span class="oi oi-plus" />
+                Add
+            </button>
+            <div class="form-group">
                 <table class="table table-bordered table-hover table-striped">
                     <thead>
                         <tr class="text--vertMiddle">
-                            <th>Items in this learning path</th>
+                            <th>Objectives in this learning path</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in LearningItems)
+                        @foreach (var obj in learningPath.objectives)
                         {
                             <tr class="text--vertMiddle">
-                                <td class="table_td required_experience text--vertMiddle">@item.Title</td>
+                                <td class="table_td required_experience text--vertMiddle">@obj.objective</td>
                             </tr>
                         }
-                        <tr class="text--vertMiddle"  @onclick="NewLearningItem">
-                            <td class="table_td required_experience text--vertMiddle bg--lightBlue hover--shine">+Add new learning item</td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
+            <br />
+            <div class="invalid-feedback">
+                You must enter something.
+            </div>
         </div>
-            <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s">Save</button>
-            <button class="btn btn-secondary underline-first-letter" accesskey="c">Cancel</button>
-    </form>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <div class="form-group">
+                <label for="txtName">Add path's tags:</label>
+                <MultiSelect TItem="GqlTags" Placeholder="Type to Search" Items="TagsData" DisplayFieldSelector="@(i => i.name)" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr class="text--vertMiddle">
+                        <th>Items in this learning path</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in LearningItems)
+                    {
+                        <tr class="text--vertMiddle">
+                            <td class="table_td required_experience text--vertMiddle">@item.Title</td>
+                        </tr>
+                    }
+                    <tr class="text--vertMiddle" @onclick="NewLearningItem">
+                        <td class="table_td required_experience text--vertMiddle bg--lightBlue hover--shine">+Add new learning item</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s">Save</button>
+    <button class="btn btn-secondary underline-first-letter" accesskey="c">Cancel</button>
+</form>
 
 @code {
 
@@ -117,8 +118,16 @@
         }
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        var name = await sessionStorage.GetItemAsync<string>("name");
+
+        if (name == null)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {    
         LearningItems = new List<GqlItems> {
             new GqlItems{Title = "Variables and constants"},
             new GqlItems{Title = "Functions"}
@@ -127,7 +136,7 @@
         learningPath = new GqlLearningPath
         {
             name = "ASP.NET MVC",
-            objectives = new List<GqlObjectives> { 
+            objectives = new List<GqlObjectives> {
                 new GqlObjectives{objective = "aaaa"},
                 new GqlObjectives{objective = "bbbb"},
                 new GqlObjectives{objective = "cccc"}
@@ -136,6 +145,7 @@
         };
 
         StateHasChanged();
+            }
     }
 
     [Parameter]

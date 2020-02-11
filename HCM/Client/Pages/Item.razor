@@ -3,45 +3,46 @@
 @inherits ItemModel
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
-    <div class="box">
-        <div class="pre_box">
-            <div class="top_row_container">
-                <nav class="pagination_space">
-                    <a id="previous_item" class="pagination_root previous_button" href="#">
-                        <span class="carousel-control-prev-icon" />
-                        <span>Previous</span>
-                    </a>
-                    <a id="next-item" class="pagination_root next_button" href="#">
-                        <span>Next</span>
-                        <span class="carousel-control-next-icon" />
-                    </a>
-                </nav>
-            </div>
-            <div class="learning_item">
-                    <ul class="path_metadata">
-                        <li>Demo metadata</li>
-                    </ul>
-                <article>
-                    <MarkdownOutput Content="@MarkdownContent"/>
-                </article>
-                <div class="item_footer">
+<div class="box">
+    <div class="pre_box">
+        <div class="top_row_container">
+            <nav class="pagination_space">
+                <a id="previous_item" class="pagination_root previous_button" href="#">
+                    <span class="carousel-control-prev-icon" />
+                    <span>Previous</span>
+                </a>
+                <a id="next-item" class="pagination_root next_button" href="#">
+                    <span>Next</span>
+                    <span class="carousel-control-next-icon" />
+                </a>
+            </nav>
+        </div>
+        <div class="learning_item">
+            <ul class="path_metadata">
+                <li>Demo metadata</li>
+            </ul>
+            <article>
+                <MarkdownOutput Content="@MarkdownContent" />
+            </article>
+            <div class="item_footer">
+                <div>
+                    <hr class="hr" />
                     <div>
-                        <hr class="hr"/>
-                        <div>
-                            <strong><p class="next_item_title">Next item: next item title</p></strong>
-                            <p class="start_space">
-                                <a href="learning/pathname/itemname" class="btn btn-primary start-button">
-                                    <span class="start_button-text">Continue</span>
-                                    <span class="carousel-control-next-icon" />
-                                </a>
-                            </p>
-                        </div>
+                        <strong><p class="next_item_title">Next item: next item title</p></strong>
+                        <p class="start_space">
+                            <a href="learning/pathname/itemname" class="btn btn-primary start-button">
+                                <span class="start_button-text">Continue</span>
+                                <span class="carousel-control-next-icon" />
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 @code {
 }

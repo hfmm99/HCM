@@ -5,6 +5,7 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 
 <div class="btn-toolbar row margin-btm-small" role="toolbar">
@@ -28,7 +29,7 @@
 
 <div class="row">
     <Grid @ref="grid" Data="@projects" OnDoubleClick="@EditProject">
-        <GridColumns>          
+        <GridColumns>
             <GridColumn Field="@nameof(GqlProject.Name)" />
         </GridColumns>
     </Grid>
@@ -47,15 +48,24 @@
 
     private Grid grid;
 
-     public void OnPageChange(PageChangeEventArgs e)
-        {
-            page = e.Page;
-            Search();
-        }
+    public void OnPageChange(PageChangeEventArgs e)
+    {
+        page = e.Page;
+        Search();
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        await Search();
+        var name = await sessionStorage.GetItemAsync<string>("name");
+
+        if (name == null)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            await Search();
+        }
     }
 
     private string searchTerm;
@@ -83,13 +93,13 @@
     }
 
     public void EditProject()
-        {
-          if (grid.SelectedItem != null)
-                navigationManager.NavigateTo("/project/" + (grid.SelectedItem as GqlProject)._id);
-        }
+    {
+        if (grid.SelectedItem != null)
+            navigationManager.NavigateTo("/project/" + (grid.SelectedItem as GqlProject)._id);
+    }
 
-     public void NewProject()
-        {
-            navigationManager.NavigateTo("/project/" + -1);
-        }
+    public void NewProject()
+    {
+        navigationManager.NavigateTo("/project/" + -1);
+    }
 }

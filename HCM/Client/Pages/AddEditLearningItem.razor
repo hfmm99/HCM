@@ -2,6 +2,7 @@
 @using HCM.Client.Components.Markdown
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 <div class="add_learning_item">
     <div class="markdown_write">
@@ -20,7 +21,7 @@
             <div class="pre_box">
                 <span class="form-text section_title">Preview</span>
                 <div class="markdown_preview_box">
-                    <MarkdownOutput Content="@MarkdownContent"/>
+                    <MarkdownOutput Content="@MarkdownContent" />
                 </div>
             </div>
         </div>
@@ -30,6 +31,16 @@
 @code {
     [Parameter]
     public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var name = await sessionStorage.GetItemAsync<string>("name");
+
+        if (name == null)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+    }
 
     private MarkdownInput InputBox;
 

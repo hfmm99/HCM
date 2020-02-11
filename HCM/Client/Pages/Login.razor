@@ -1,9 +1,9 @@
 ﻿@page "/login"
+@layout SimpleLayout
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
-
-
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @using Microsoft.AspNetCore.Components.Authorization
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -18,26 +18,26 @@
                             <h1 class="h3 mb-3 font-weight-normal">CAREER PATH</h1>
                         </div>
                         <div style="width:60%; align-content:center; margin: 0 auto">
-                        <div class="form-label-group">
-                            <input type="text" name="txt_User" id="inputUser" class="form-control" placeholder="User ID" @bind="Input_user" required autofocus>
+                            <div class="form-label-group">
+                                <input type="text" name="txt_User" id="inputUser" class="form-control" placeholder="User ID" @bind="Input_user" required autofocus>
+                            </div>
+                            <br />
+                            <div class="form-label-group">
+                                <input type="password" name="txt_Pass" id="inputPassword" class="form-control" placeholder="Password" @bind="Input_password" required>
+                            </div>
+                            <br />
+                            <div class="checkbox mb-3">
+                                <label>
+                                    <input type="checkbox" value="remember-me"> Remember me
+                                </label>
+                            </div>
+                            <button class="btn btn-lg btn-primary btn-block" @onclick="Login_user">Sign in</button>
                         </div>
-                        <br />
-                        <div class="form-label-group">
-                            <input type="password" name="txt_Pass" id="inputPassword" class="form-control" placeholder="Password" @bind="Input_password" required>
-                        </div>
-                        <br />
-                        <div class="checkbox mb-3">
-                            <label>
-                                <input type="checkbox" value="remember-me"> Remember me
-                            </label>
-                        </div>
-                        <button class="btn btn-lg btn-primary btn-block" @onclick="LogUsername">Sign in</button>
-                        </div>
-                    </div>
                     </div>
                 </div>
             </div>
-</NotAuthorized>
+        </div>
+    </NotAuthorized>
 </AuthorizeView>
 
 @code {
@@ -46,45 +46,6 @@
 
     public string Input_user { get; set; }
     public string Input_password { get; set; }
-
-
-    //public async Task Login_user()
-    //{
-    //    gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
-    //    var query = gql.Employee(string.Empty, _user: Input_user, fields: e => new GqlEmployee
-    //    {
-    //        _id = e._id,
-    //        _user = e._user,
-    //        _password = e._password,
-    //        Name = e.Name
-
-    //    });
-
-    //    employee = (await query.RunAsync()).FirstOrDefault();
-    //    if (employee._user == Input_user && employee._password == Input_password)
-    //    {
-
-    //        navigationManager.NavigateTo("/");
-
-    //    }
-    //    else
-    //        Console.WriteLine("Mal");
-    //}
-
-    private async Task LogUsername()
-    {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity.IsAuthenticated)
-        {
-            Console.WriteLine($"{user.Identity.Name} is authenticated.");
-        }
-        else
-        {
-            Console.WriteLine("The user is NOT authenticated.");
-        }
-    }
 
     public async Task Login_user()
     {
@@ -101,11 +62,13 @@
         employee = (await query.RunAsync()).FirstOrDefault();
         if (employee._user == Input_user && employee._password == Input_password)
         {
-
+            await sessionStorage.SetItemAsync("name", Input_user);
             navigationManager.NavigateTo("/");
-
+            NavMenu.logout_visible_change(Input_user);
         }
         else
+        {
             Console.WriteLine("Mal");
+        }
     }
 }

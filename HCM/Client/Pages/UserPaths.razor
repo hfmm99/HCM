@@ -4,7 +4,7 @@
 @using HCM.Client.Components.DataList
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
-
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 <div class="row margin-bottom-small">
     <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Path..." />
 </div>
@@ -103,12 +103,11 @@
     </div>
 </div>
 <!--End menu filter -->
-
 <!--Cards Courses-->
 <div class="paths_section">
     <DataList TItem="GqlLearningPath" Items="@learningPaths" Style="DataListStyle.Cards">
         <Template Context="learningPaths">
-    <article class="card_content list_item bg--trans">
+            <article class="card_content list_item bg--trans">
                 <div class="card_header data_card_header bg--blue">
                     <figure class="card_header card_img_top">
                         @*<img src="@item.Image" role="presentation" class="card_img" />*@
@@ -133,8 +132,8 @@
                     </div>
                 </div>
                 <div class="card_footer data_card_footer"></div>
-    </article>
-            
+            </article>
+
         </Template>
     </DataList>
     <div class="mx-auto" style="width: 215px;">
@@ -153,7 +152,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Search();
+        var name = await sessionStorage.GetItemAsync<string>("name");
+
+        if (name == null)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            await Search();
+        }
     }
 
     private string searchTerm;

@@ -5,6 +5,7 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 <DeleteModal OnDelete="@DeleteRole" />
 
@@ -50,7 +51,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Search();
+        var name = await sessionStorage.GetItemAsync<string>("name");
+
+        if (name == null)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            await Search();
+        }
     }
 
     private string searchTerm;
@@ -110,14 +120,14 @@
         {
             string deleteItemName = (grid.SelectedItem as GqlRole).Name;
             bool showModal = true;
-            ModalService.ShowModal(showModal,deleteItemName);
+            ModalService.ShowModal(showModal, deleteItemName);
         }
     }
 
     public async void DeleteRole()
     {
-            gql.DeleteRole(string.Empty, (grid.SelectedItem as GqlRole).Name).RunAsync();
-            ModalService.CloseModal();
-            await Search();
+        gql.DeleteRole(string.Empty, (grid.SelectedItem as GqlRole).Name).RunAsync();
+        ModalService.CloseModal();
+        await Search();
     }
 }

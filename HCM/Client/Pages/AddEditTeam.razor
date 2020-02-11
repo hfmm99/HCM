@@ -2,31 +2,32 @@
 @using HCM.Client.Components
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
-    <form class="needs-validation">
-        @if (team != null)
-        {
-            <div class="form-group">
-                <label for="txtName">Name</label>
-                <input id="txtName" type="text" class="form-control" placeholder="Enter team's name" @bind="team.Name" required autofocus />
-                <div class="invalid-feedback">
-                    You must enter a name.
-                </div>
+<form class="needs-validation">
+    @if (team != null)
+    {
+        <div class="form-group">
+            <label for="txtName">Name</label>
+            <input id="txtName" type="text" class="form-control" placeholder="Enter team's name" @bind="team.Name" required autofocus />
+            <div class="invalid-feedback">
+                You must enter a name.
             </div>
-            <!--Load team members-->
-            <div class="form-group">
-                <label>Members:</label>
-                <MultiSelect TItem="GqlEmployee" Placeholder="Select Team's Members" Items="Employees" Values="team.Members" DisplayFieldSelector="@(i => i.Name)" />
-            </div>         
-            <div class="form-group">
-                <label>Needed experience :</label>
-                <MultiSelect TItem="GqlExperience" Placeholder="Type to Search" Items="Experiences" Values="team.Exp_requires" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ExperienceRemoved" OnAddNewItem="@AddNewExperience"/>
-            </div>
+        </div>
+        <!--Load team members-->
+        <div class="form-group">
+            <label>Members:</label>
+            <MultiSelect TItem="GqlEmployee" Placeholder="Select Team's Members" Items="Employees" Values="team.Members" DisplayFieldSelector="@(i => i.Name)" />
+        </div>
+        <div class="form-group">
+            <label>Needed experience :</label>
+            <MultiSelect TItem="GqlExperience" Placeholder="Type to Search" Items="Experiences" Values="team.Exp_requires" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ExperienceRemoved" OnAddNewItem="@AddNewExperience" />
+        </div>
 
-            <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
-            <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
-        }
-    </form>
+        <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
+        <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
+    }
+</form>
 
 @code{
 
@@ -44,50 +45,59 @@
 
     protected override async Task OnInitializedAsync()
     {
-        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+        var name = await sessionStorage.GetItemAsync<string>("name");
 
-        if (Id > 0)
+        if (name == null)
         {
-            var query = gql.Team(string.Empty, _id: Id, fields: e => new GqlTeam
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+            if (Id > 0)
             {
-                _id = e._id,
-                Name = e.Name,
-                Exp_requires = new List<GqlExperience>
+                var query = gql.Team(string.Empty, _id: Id, fields: e => new GqlTeam
                 {
+                    _id = e._id,
+                    Name = e.Name,
+                    Exp_requires = new List<GqlExperience>
+            {
                     new GqlExperience
                     {
                         Name = e.Exp_requires[0].Name
                     }
                 }
-            });
+                });
 
-            team = (await query.RunAsync()).FirstOrDefault();
-            team.Members = new List<GqlEmployee>();
+                team = (await query.RunAsync()).FirstOrDefault();
+                team.Members = new List<GqlEmployee>();
+            }
+            else
+                team = new GqlTeam();
+
+            //Load Employees
+            Employees = await gql.Employee(string.Empty, fields: e => new GqlEmployee
+            {
+                _id = e._id,
+                Name = e.Name
+            }).RunAsync();
+
+            //Load roles
+            rolesRequired = await gql.Role(string.Empty, fields: e => new GqlRole
+            {
+                _id = e._id,
+                Name = e.Name
+            }).RunAsync();
+
+            //Load Exp
+            Experiences = await gql.Experience(string.Empty, fields: e => new GqlExperience
+            {
+                _id = e._id,
+                Name = e.Name
+            }).RunAsync();
+            RemovedExperiences = new List<GqlExperience>();
         }
-        else
-            team = new GqlTeam();
-
-        //Load Employees
-        Employees = await gql.Employee(string.Empty, fields: e => new GqlEmployee
-        {
-            _id = e._id,
-            Name = e.Name
-        }).RunAsync();
-
-        //Load roles
-        rolesRequired = await gql.Role(string.Empty, fields: e => new GqlRole
-        {
-            _id = e._id,
-            Name = e.Name
-        }).RunAsync();
-
-        //Load Exp
-        Experiences = await gql.Experience(string.Empty, fields: e => new GqlExperience
-        {
-            _id = e._id,
-            Name = e.Name
-        }).RunAsync();
-        RemovedExperiences = new List<GqlExperience>();
     }
 
     public void Save()

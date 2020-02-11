@@ -4,6 +4,8 @@
 @using MatBlazor;
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
 
 <div class="row margin-bottom-small">
     <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Path..." />
@@ -106,7 +108,7 @@
 <!--End menu filter -->
 <!--Cards Courses-->
 <div class="paths_section">
-    <DataList TItem="GqlLearningPath" Items="@learningPaths" Style="DataListStyle.Cards" @ref="datalist"  >
+    <DataList TItem="GqlLearningPath" Items="@learningPaths" Style="DataListStyle.Cards" @ref="datalist">
         <Template Context="learningPaths">
             <article class="card_content list_item bg--trans">
                 <div class="card_header data_card_header bg--blue">
@@ -154,7 +156,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Search();
+        var name = await sessionStorage.GetItemAsync<string>("name");
+
+        if (name == null)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            await Search();
+        }
     }
 
     private string searchTerm;
@@ -175,7 +186,7 @@
             Name = e.Name,
             Description = e.Description,
             Tags = new List<GqlTag>
-            {
+        {
                 new GqlTag
                 {
                     Name = e.Tags[0].Name

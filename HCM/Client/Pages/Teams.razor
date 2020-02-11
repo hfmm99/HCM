@@ -5,6 +5,7 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 <DeleteModal OnDelete="@DeleteTeam" />
 
@@ -50,7 +51,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Search();
+        var name = await sessionStorage.GetItemAsync<string>("name");
+
+        if (name == null)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            await Search();
+        }
     }
 
     private string searchTerm;
@@ -115,8 +125,8 @@
 
     public async void DeleteTeam()
     {
-            gql.DeleteTeam(string.Empty, (grid.SelectedItem as GqlTeam).Name).RunAsync();
-            ModalService.CloseModal();
-            await Search();
+        gql.DeleteTeam(string.Empty, (grid.SelectedItem as GqlTeam).Name).RunAsync();
+        ModalService.CloseModal();
+        await Search();
     }
 }

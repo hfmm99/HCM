@@ -4,6 +4,7 @@
 @using HCM.Client.Components.Modals
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 <DeleteModal OnDelete="@DeletePath" />
 <div class="btn-toolbar row margin-btm-small" role="toolbar">
@@ -50,7 +51,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Search();
+        var name = await sessionStorage.GetItemAsync<string>("name");
+
+        if (name == null)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            await Search();
+        }
     }
 
     private string searchTerm;
