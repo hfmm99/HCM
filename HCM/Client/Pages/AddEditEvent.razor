@@ -1,0 +1,206 @@
+﻿@page "/event/{Id:int}"
+@inject HttpClient httpClient
+@using HCM.Client.Components
+@inject NavigationManager navigationManager
+@inject ModalService ModalService
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+
+    <form class="needs-validation">
+        @if (events != null)
+        {
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>To:</label>
+                        <MultiSelect TItem="GqlEmployee" Placeholder="Type to Search" Items="Employees" Values="events.Is_to" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ToEmployeeRemoved" OnAddNewItem="@AddNewToEmployee" />
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="txtSubject">Subject:</label>
+                    <input id="txtSubject" type="text" class="form-control" placeholder="Enter a subject" @bind="events.Subject" />
+                    <div class="invalid-feedback">
+                        You must enter a subject
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="z-index:0">
+                <div class="col">
+                    <label for="schProject">Project:</label>
+                    <input id="schProject" type="search" class="form-control" placeholder="Project..." list="listamodelos" @bind="events.Project">
+                    <div class="invalid-feedback">
+                        You must enter a valid project
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="txtScope">Scope:</label>
+                        <MultiSelect TItem="GqlScope" Placeholder="Type to Search" Items="scopes" DisplayFieldSelector="@(i => i.Name)" Values="events.Scopes" OnValueRemoved="@ScopesRemoved" OnAddNewItem="@AddNewScope" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" style="z-index:-1">
+                <div class="col">
+                    <label for="dtpDate">Date:</label>
+                    <input id="dtpDate" type="date" class="form-control" placeholder="Date" @bind="events.Date" />
+                </div>
+                <div class="col">
+                    <label for="num_score">Score:</label>
+                    <input id="num_score" type="number" class="form-control" min="0" max="10" @bind="events.Score" />
+                </div>
+            </div>
+            <textarea placeholder="Description of the logbook" style="width:100%" @bind="events.Description"></textarea>
+            <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
+            <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
+        }
+
+        <datalist id="listamodelos">
+            @if (projects != null)
+            {
+                foreach (var project in projects)
+                {
+                    <option value="@project.Name" />
+                }
+            }
+        </datalist>      
+    </form>
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private GraphQLApiClient gql = null;
+    private GqlEvents events = null;
+    private List<GqlEmployee> Employees;
+    private List<GqlEmployee> RemovedEmployees;
+
+    private List<GqlProject> projects;
+
+    private List<GqlScope> scopes;
+    private List<GqlScope> Removedscopes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var name = await sessionStorage.GetItemAsync<string>("name");
+
+        if (name == null)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+            if (Id > 0)
+            {
+                var query = gql.Events(string.Empty, _id: Id, fields: e => new GqlEvents
+                {
+                    Subject = e.Subject,
+                    Description = e.Description,
+                    Is_to = new List<GqlEmployee>
+                {
+                    new GqlEmployee
+                    {
+                        Name = e.Is_to[0].Name
+                    }
+                },
+                    Scopes = new List<GqlScope>
+            {
+                    new GqlScope
+                    {
+                        Name =e.Scopes[0].Name
+                    }
+                },
+                    Date = e.Date,
+                    Score = e.Score,
+                    Project = e.Project
+
+                });
+
+                events = (await query.RunAsync()).FirstOrDefault();
+            }
+            else
+                events = new GqlEvents();
+
+            ////Load Employees
+            Employees = await gql.Employee(string.Empty, fields: r => new GqlEmployee
+            {
+                _id = r._id,
+                Name = r.Name
+            }).RunAsync();
+
+            RemovedEmployees = new List<GqlEmployee>();
+
+            //Load Projecs
+            projects = await gql.Project(string.Empty, fields: p => new GqlProject
+            {
+                _id = p._id,
+                Name = p.Name
+            }).RunAsync();
+
+            scopes = await gql.Scope(string.Empty, fields: s => new GqlScope
+            {
+                _id = s._id,
+                Name = s.Name
+            }).RunAsync();
+            Removedscopes = new List<GqlScope>();
+
+            Console.WriteLine(Employees.Count);
+        }
+    }
+
+    public void ToEmployeeRemoved(GqlEmployee employee)
+    {
+        RemovedEmployees.Add(employee);
+        events.Is_to.Remove(employee);
+    }
+
+    public void AddNewToEmployee(string text)
+    {
+        var newToemployee = new GqlEmployee { Name = text };
+        Employees.Add(newToemployee);
+        events.Is_to.Add(newToemployee);
+    }
+
+    public void ScopesRemoved(GqlScope scope)
+    {
+
+        Removedscopes.Add(scope);
+        events.Scopes.Remove(scope);
+        Console.WriteLine(Removedscopes.Count);
+    }
+
+    public void AddNewScope(string text)
+    {
+        var newScope = new GqlScope { Name = text };
+        scopes.Add(newScope);
+        events.Scopes.Add(newScope);
+    }
+
+    public void Save()
+    {
+        // Save logbook
+        gql.MergeEvents(string.Empty, date: events.Date, description: events.Description, project: events.Project, score: events.Score, subject: events.Subject).RunAsync();
+        SaveScopes();
+        Cancel();
+    }
+
+    private void SaveScopes()
+    {
+        // Insert newly created scopes, if any
+        foreach (var scope in scopes.Where(s => !s._id.HasValue))
+            gql.CreateScope(string.Empty, scope.Name).RunAsync();
+
+        // Save logbook scopes
+        gql.AddEventsScopes(string.Empty, subject: events.Subject, scopes: events.Scopes.Select(s => s.Name).ToArray()).RunAsync();
+
+        //Delete removed scopes, if any
+        var ScopesToRemove = Removedscopes.Select(s => s.Name).Except(events.Scopes.Select(es => es.Name));
+
+        if (ScopesToRemove.Any())
+            gql.DeleteEventsScopes(string.Empty, subject: events.Subject, scopes: ScopesToRemove.ToArray()).RunAsync();
+    }
+
+    public void Cancel()
+    {
+        navigationManager.NavigateTo("/events");
+    }
+}

@@ -17,11 +17,11 @@
         <!--Load team members-->
         <div class="form-group">
             <label>Members:</label>
-            <MultiSelect TItem="GqlEmployee" Placeholder="Select Team's Members" Items="Employees" Values="team.Members" DisplayFieldSelector="@(i => i.Name)" />
+            <MultiSelect TItem="GqlEmployee"  Placeholder="Select Team's Members" Items="Employees" Values="team.Members" DisplayFieldSelector="@(i => i.Name)" />
         </div>
         <div class="form-group">
             <label>Needed experience :</label>
-            <MultiSelect TItem="GqlExperience" Placeholder="Type to Search" Items="Experiences" Values="team.Exp_requires" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ExperienceRemoved" OnAddNewItem="@AddNewExperience" />
+            <MultiSelect TItem="GqlExperience" Placeholder="Type to Search" Items="Experiences" Values="team.Exp_requeres" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ExperienceRemoved" OnAddNewItem="@AddNewExperience" />
         </div>
 
         <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
@@ -61,11 +61,11 @@
                 {
                     _id = e._id,
                     Name = e.Name,
-                    Exp_requires = new List<GqlExperience>
+                    Exp_requeres = new List<GqlExperience>
             {
                     new GqlExperience
                     {
-                        Name = e.Exp_requires[0].Name
+                        Name = e.Exp_requeres[0].Name
                     }
                 }
                 });
@@ -116,13 +116,13 @@
     {
         var newExperience = new GqlExperience { Name = text };
         Experiences.Add(newExperience);
-        team.Exp_requires.Add(newExperience);
+        team.Exp_requeres.Add(newExperience);
     }
 
     public void ExperienceRemoved(GqlExperience experience)
     {
         RemovedExperiences.Add(experience);
-        team.Exp_requires.Remove(experience);
+        team.Exp_requeres.Remove(experience);
         Console.WriteLine(RemovedExperiences.Count);
     }
 
@@ -133,12 +133,12 @@
             gql.CreateExperience(string.Empty, experience.Name).RunAsync();
 
         // Save team needed exp
-        gql.AddTeamExp_requires(string.Empty, name: team.Name, exp_requires: team.Exp_requires.Select(s => s.Name).ToArray()).RunAsync();
+        gql.AddTeamExp_requeres(string.Empty, name: team.Name, exp_requeres: team.Exp_requeres.Select(s => s.Name).ToArray()).RunAsync();
 
         // Delete removed experiences, if any
-        var experiencesToRemove = RemovedExperiences.Select(s => s.Name).Except(team.Exp_requires.Select(es => es.Name));
+        var experiencesToRemove = RemovedExperiences.Select(s => s.Name).Except(team.Exp_requeres.Select(es => es.Name));
 
         if (experiencesToRemove.Any())
-            gql.DeleteTeamExp_requires(string.Empty, name: team.Name, exp_requires: experiencesToRemove.ToArray()).RunAsync();
+            gql.DeleteTeamExp_requeres(string.Empty, name: team.Name, exp_requeres: experiencesToRemove.ToArray()).RunAsync();
     }
 }

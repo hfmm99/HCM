@@ -12,15 +12,15 @@ type Employee {
   worksFor: Client @relation(name: "WOKS_FOR", direction: out)
   livesIn: Country @relation(name: "LIVES_IN", direction: out)
   experience: [Experience] @relation(name: "KNOWS", direction: out)
-  is_from: [Logbook] @relation(name: "FROM", direction: in)
+  is_from_: [Events] @relation(name: "FROM", direction: in)
 }
 
 type Scope{
 name: ID!
-isScopeOf:[Logbook] @relation(name: "SCOPE_OF", direction: out)
+isScopeOf_:[Events] @relation(name: "SCOPE_OF", direction: out)
 }
 
-type Logbook{
+type Events{
 score: Int
 project: String
 subject: ID!
