@@ -27,7 +27,7 @@
             <div class="form-row" style="z-index:0">
                 <div class="col">
                     <label for="schProject">Project:</label>
-                    <input id="schProject" type="search" class="form-control" placeholder="Project..." list="listamodelos" @bind="events.Project">
+                    <MultiSelect TItem="GqlProject" Placeholder="Type to Search" Items="projects" DisplayFieldSelector="@(i => i.Name)" Values="events.Event_of" OnValueRemoved="@ProjectRemoved" OnAddNewItem="@AddNewProject"/>
                     <div class="invalid-feedback">
                         You must enter a valid project
                     </div>
@@ -73,6 +73,7 @@
     private List<GqlEmployee> RemovedEmployees;
 
     private List<GqlProject> projects;
+    private List<GqlProject> Removedprojects;
 
     private List<GqlScope> scopes;
     private List<GqlScope> Removedscopes;
@@ -96,23 +97,29 @@
                     Subject = e.Subject,
                     Description = e.Description,
                     Is_to = new List<GqlEmployee>
-                {
+                    {
                     new GqlEmployee
                     {
                         Name = e.Is_to[0].Name
                     }
-                },
+                    },
                     Scopes = new List<GqlScope>
-            {
+                    {
                     new GqlScope
                     {
                         Name =e.Scopes[0].Name
                     }
-                },
+                    },
                     Date = e.Date,
                     Score = e.Score,
-                    Project = e.Project
-
+                    Project = e.Project,
+                    Event_of= new List<GqlProject>
+                    {
+                        new GqlProject
+                        {
+                            Name = e.Event_of[0].Name
+                        }
+                    }
                 });
 
                 events = (await query.RunAsync()).FirstOrDefault();
@@ -135,6 +142,7 @@
                 _id = p._id,
                 Name = p.Name
             }).RunAsync();
+            Removedprojects = new List<GqlProject>();
 
             scopes = await gql.Scope(string.Empty, fields: s => new GqlScope
             {
@@ -175,12 +183,44 @@
         events.Scopes.Add(newScope);
     }
 
+    public void ProjectRemoved(GqlProject project)
+    {
+
+        Removedprojects.Add(project);
+        events.Event_of.Remove(project);
+        Console.WriteLine(Removedscopes.Count);
+    }
+
+    public void AddNewProject(string text)
+    {
+        var newProject = new GqlProject { Name = text };
+        projects.Add(newProject);
+        events.Event_of.Add(newProject);
+    }
+
     public void Save()
     {
         // Save logbook
         gql.MergeEvents(string.Empty, date: events.Date, description: events.Description, project: events.Project, score: events.Score, subject: events.Subject).RunAsync();
         SaveScopes();
+        SaveProjects();
         Cancel();
+    }
+
+    private void SaveProjects()
+    {
+        // Insert newly created projects, if any
+        foreach (var projects in projects.Where(s => !s._id.HasValue))
+            gql.CreateProject(string.Empty, projects.Name).RunAsync();
+
+        // Save logbook scopes
+        gql.AddEventsEvent_of(string.Empty, subject: events.Subject, event_of: events.Event_of.Select(s => s.Name).ToArray()).RunAsync();
+
+        //Delete removed scopes, if any
+        var ProjectsToRemove = Removedprojects.Select(s => s.Name).Except(events.Scopes.Select(es => es.Name));
+
+        if (ProjectsToRemove.Any())
+        gql.DeleteEventsEvent_of (string.Empty, subject: events.Subject, event_of: ProjectsToRemove.ToArray()).RunAsync();
     }
 
     private void SaveScopes()

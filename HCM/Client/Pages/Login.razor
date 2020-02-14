@@ -25,15 +25,20 @@
                             <div class="form-label-group">
                                 <input type="password" name="txt_Pass" id="inputPassword" class="form-control" placeholder="Password" @bind="Input_password" required>
                             </div>
-                            <br />
-                            <div class="checkbox mb-3">
-                                <label>
-                                    <input type="checkbox" value="remember-me"> Remember me
-                                </label>
+                            <div class="error-notice" style="display:@show">
+                                <div class="oaerror danger">
+                                    <strong>Error</strong>- User or password invalid. Try again
+                                </div>
                             </div>
-                            <button class="btn btn-lg btn-primary btn-block" @onclick="Login_user">Sign in</button>
+                                <br />
+                                <div class="checkbox mb-3">
+                                    <label>
+                                        <input type="checkbox" value="remember-me"> Remember me
+                                    </label>
+                                </div>
+                                <button class="btn btn-lg btn-primary btn-block" @onclick="Login_user">Sign in</button>
+                            </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -46,6 +51,8 @@
 
     public string Input_user { get; set; }
     public string Input_password { get; set; }
+
+    string show = "none";
 
     public async Task Login_user()
     {
@@ -68,7 +75,8 @@
         }
         else
         {
-            Console.WriteLine("Mal");
+            //Console.WriteLine("Mal");
+            show = "flex";
         }
     }
 }

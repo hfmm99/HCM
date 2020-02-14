@@ -1055,3 +1055,29 @@ input[type=number]::-webkit-outer-spin-button {
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
+
+/*Error login*/
+.error-notice {
+    margin: 5px; /* Make sure to keep some distance from all sides */
+}
+
+.oaerror {
+    width: 80%;
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+    margin: 10px auto;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+}
+
+.danger {
+    border-left-color: #d9534f; /* Left side border color */
+    background-color: rgba(217, 83, 79, 0.1); /*Same color as the left border with reduced alpha to 0.1*/
+}
+
+    .danger strong {
+        color: #d9534f;
+    }
