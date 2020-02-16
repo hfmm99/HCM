@@ -1,10 +1,13 @@
 ﻿@using System.Text.RegularExpressions
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
+@inject HttpClient httpClient
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 <div class="sidebar @TogglinClass">
     <NavMenu />
 </div>
+
 <div class="middle-layer">
     <div class="middle-layer_barline"></div>
     <div>
@@ -17,21 +20,43 @@
     </div>
 </div>
 <div class="main">
-    @*<div class="topRow bg--lightGray btm--gray px-4">
-        <h2 style="text-transform: capitalize;">
-            @Regex.Match(NavigationManager.Uri, "(?<=\\/)[a-z]*$")
-        </h2>
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
-    </div>*@
-
+    @if (employee != null)
+    {
+        <div class="topRow bg--lightGray btm--gray px-4">
+            <a class="ml-md-auto"><img src="/Images/@employee.Image" alt="@employee.Name" style="border-radius: 50%; width:50px; height:50px" /></a>
+        </div>
+    }
     <div class="content px-4">
         @Body
     </div>
 </div>
 
+
 @code{
     private string TogglinClass = "sidebar_show";
     private int Toggler = 1;
+    private GraphQLApiClient gql = null;
+    private GqlEmployee employee = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var name = await sessionStorage.GetItemAsync<string>("name");
+
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+        if (name != null)
+        {
+            var query = gql.Employee(string.Empty, _user: name, fields: e => new GqlEmployee
+            {
+                _id = e._id,
+                Name = e.Name,
+                Image = e.Image
+
+            });
+            employee = (await query.RunAsync()).FirstOrDefault();
+        }
+    }
+
 
     private void NavToggler()
     {

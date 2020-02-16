@@ -186,6 +186,12 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> AddEmployeeWorksFor (string sessionToken, string name, string[] worksFor, Func<string, string> fields = null );
 	
 
+	/// <summary>Adds Event_of to Events entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addEventsEvent_of")]
+	GraphQLQuery<string> AddEventsEvent_of (string sessionToken, string[] event_of, string subject, Func<string, string> fields = null );
+	
+
 	/// <summary>Adds Is_to to Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addEventsIs_to")]
@@ -232,6 +238,12 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addLearningPathTags")]
 	GraphQLQuery<string> AddLearningPathTags (string sessionToken, string name, string[] tags, Func<string, string> fields = null );
+	
+
+	/// <summary>Adds Project to Project entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addProjectProject")]
+	GraphQLQuery<string> AddProjectProject (string sessionToken, string name, string[] project, Func<string, string> fields = null );
 	
 
 	/// <summary>Adds Employees to Role entity</summary>
@@ -420,6 +432,12 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> DeleteEvents (string sessionToken, string subject, Func<string, string> fields = null );
 	
 
+	/// <summary>Deletes Event_of from Events entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteEventsEvent_of")]
+	GraphQLQuery<string> DeleteEventsEvent_of (string sessionToken, string[] event_of, string subject, Func<string, string> fields = null );
+	
+
 	/// <summary>Deletes Is_to from Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteEventsIs_to")]
@@ -490,6 +508,12 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteProject")]
 	GraphQLQuery<string> DeleteProject (string sessionToken, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Deletes Project from Project entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteProjectProject")]
+	GraphQLQuery<string> DeleteProjectProject (string sessionToken, string name, string[] project, Func<string, string> fields = null );
 	
 
 	/// <summary>Deletes a Role entity</summary>

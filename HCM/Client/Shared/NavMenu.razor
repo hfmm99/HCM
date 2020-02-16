@@ -96,7 +96,7 @@
 
     string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    static string logout_visible = "hidden";
+    static string logout_visible = "visible";
 
     void ToggleNavMenu()
     {
@@ -107,7 +107,7 @@
     {
         await sessionStorage.SetItemAsync("name", null);
         navigationManager.NavigateTo("/login");
-        logout_visible = "hidden";
+        logout_visible = "visible";
     }
 
     public static void logout_visible_change(string variable)

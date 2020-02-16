@@ -8,9 +8,9 @@ type Employee {
   dateOfBirth: DateTime
   image: String
   isMemberOf: [Team] @relation(name: "IS_MEMBER_OF", direction: out)
-  worksAs: [Role] @relation(name: "WOKS_AS", direction: out)
-  worksFor: Client @relation(name: "WOKS_FOR", direction: out)
-  livesIn: Country @relation(name: "LIVES_IN", direction: out)
+  worksAs: [Role] @relation(name: "WORKS_AS", direction: out)
+  worksFor: [Client] @relation(name: "WORKS_FOR", direction: out)
+  livesIn: [Country] @relation(name: "LIVES_IN", direction: out)
   experience: [Experience] @relation(name: "KNOWS", direction: out)
   events: [Events] @relation(name: "FROM", direction: in)
 }
@@ -28,10 +28,12 @@ date: DateTime
 description: String
 is_to: [Employee] @relation(name: "TO", direction: out)
 scopes: [Scope] @relation(name: "SCOPE_OF", direction: in)
+event_of: [Project] @relation(name: "EVENT_OF", direction: out)
 }
 
 type Project{
 name: ID!
+project: [Events] @relation(name: "EVENT_OF", direction: in)
 }
 
 type LearningItem{
@@ -64,7 +66,7 @@ type Team {
 
 type Role {
   name: ID!
-  employees: [Employee] @relation(name: "WOKS_AS", direction: in)
+  employees: [Employee] @relation(name: "WORKS_AS", direction: in)
   isRequiredBy: [Team] @relation(name: "REQUIRES", direction: in)
 }
 
