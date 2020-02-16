@@ -3,8 +3,8 @@ type Employee {
   gender: String
   email: String
   phone: String
-  _user: String
-  _password: String
+  user: String
+  password: String
   dateOfBirth: DateTime
   image: String
   isMemberOf: [Team] @relation(name: "IS_MEMBER_OF", direction: out)
@@ -12,7 +12,7 @@ type Employee {
   worksFor: Client @relation(name: "WOKS_FOR", direction: out)
   livesIn: Country @relation(name: "LIVES_IN", direction: out)
   experience: [Experience] @relation(name: "KNOWS", direction: out)
-  is_from_: [Events] @relation(name: "FROM", direction: in)
+  events: [Events] @relation(name: "FROM", direction: in)
 }
 
 type Scope{

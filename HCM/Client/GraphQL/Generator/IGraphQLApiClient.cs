@@ -21,10 +21,6 @@ public interface IGraphQLApiClient
 	GraphQLQuery<GqlCountry> Country (string sessionToken, long? _id = null, long?[] _ids = null, Gql_CountryFilter filter = null, int? first = null, string name = null, string[] names = null, int? offset = null, Gql_CountryOrdering[] orderBy = null, Func<GqlCountry, GqlCountry> fields = null );
 	
 
-	/// <param name="_password">_password of Employee</param>
-	/// <param name="_passwords">_passwords is list variant of _password of Employee</param>
-	/// <param name="_user">_user of Employee</param>
-	/// <param name="_users">_users is list variant of _user of Employee</param>
 	/// <param name="dateOfBirth">dateOfBirth of Employee</param>
 	/// <param name="dateOfBirths">dateOfBirths is list variant of dateOfBirth of Employee</param>
 	/// <param name="email">email of Employee</param>
@@ -35,11 +31,15 @@ public interface IGraphQLApiClient
 	/// <param name="images">images is list variant of image of Employee</param>
 	/// <param name="name">name of Employee</param>
 	/// <param name="names">names is list variant of name of Employee</param>
+	/// <param name="password">password of Employee</param>
+	/// <param name="passwords">passwords is list variant of password of Employee</param>
 	/// <param name="phone">phone of Employee</param>
 	/// <param name="phones">phones is list variant of phone of Employee</param>
+	/// <param name="user">user of Employee</param>
+	/// <param name="users">users is list variant of user of Employee</param>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("Employee")]
-	GraphQLQuery<GqlEmployee> Employee (string sessionToken, long? _id = null, long?[] _ids = null, string _password = null, string[] _passwords = null, string _user = null, string[] _users = null, DateTime? dateOfBirth = null, DateTime?[] dateOfBirths = null, string email = null, string[] emails = null, Gql_EmployeeFilter filter = null, int? first = null, string gender = null, string[] genders = null, string image = null, string[] images = null, string name = null, string[] names = null, int? offset = null, Gql_EmployeeOrdering[] orderBy = null, string phone = null, string[] phones = null, Func<GqlEmployee, GqlEmployee> fields = null );
+	GraphQLQuery<GqlEmployee> Employee (string sessionToken, long? _id = null, long?[] _ids = null, DateTime? dateOfBirth = null, DateTime?[] dateOfBirths = null, string email = null, string[] emails = null, Gql_EmployeeFilter filter = null, int? first = null, string gender = null, string[] genders = null, string image = null, string[] images = null, string name = null, string[] names = null, int? offset = null, Gql_EmployeeOrdering[] orderBy = null, string password = null, string[] passwords = null, string phone = null, string[] phones = null, string user = null, string[] users = null, Func<GqlEmployee, GqlEmployee> fields = null );
 	
 
 	/// <param name="sessionToken">Token Used on production</param>
@@ -150,6 +150,12 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> AddCountryEmployees (string sessionToken, string[] employees, string name, Func<string, string> fields = null );
 	
 
+	/// <summary>Adds Events to Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addEmployeeEvents")]
+	GraphQLQuery<string> AddEmployeeEvents (string sessionToken, string[] events, string name, Func<string, string> fields = null );
+	
+
 	/// <summary>Adds Experience to Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addEmployeeExperience")]
@@ -160,12 +166,6 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addEmployeeIsMemberOf")]
 	GraphQLQuery<string> AddEmployeeIsMemberOf (string sessionToken, string[] isMemberOf, string name, Func<string, string> fields = null );
-	
-
-	/// <summary>Adds Is_from_ to Employee entity</summary>
-	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("addEmployeeIs_from_")]
-	GraphQLQuery<string> AddEmployeeIs_from_ (string sessionToken, string[] is_from_, string name, Func<string, string> fields = null );
 	
 
 	/// <summary>Adds LivesIn to Employee entity</summary>
@@ -291,7 +291,7 @@ public interface IGraphQLApiClient
 	/// <summary>Creates a Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createEmployee")]
-	GraphQLQuery<string> CreateEmployee (string sessionToken, string name, string _password = null, string _user = null, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string phone = null, Func<string, string> fields = null );
+	GraphQLQuery<string> CreateEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string password = null, string phone = null, string user = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Creates a Events entity</summary>
@@ -378,6 +378,12 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> DeleteEmployee (string sessionToken, string name, Func<string, string> fields = null );
 	
 
+	/// <summary>Deletes Events from Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteEmployeeEvents")]
+	GraphQLQuery<string> DeleteEmployeeEvents (string sessionToken, string[] events, string name, Func<string, string> fields = null );
+	
+
 	/// <summary>Deletes Experience from Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteEmployeeExperience")]
@@ -388,12 +394,6 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteEmployeeIsMemberOf")]
 	GraphQLQuery<string> DeleteEmployeeIsMemberOf (string sessionToken, string[] isMemberOf, string name, Func<string, string> fields = null );
-	
-
-	/// <summary>Deletes Is_from_ from Employee entity</summary>
-	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("deleteEmployeeIs_from_")]
-	GraphQLQuery<string> DeleteEmployeeIs_from_ (string sessionToken, string[] is_from_, string name, Func<string, string> fields = null );
 	
 
 	/// <summary>Deletes LivesIn from Employee entity</summary>
@@ -573,7 +573,7 @@ public interface IGraphQLApiClient
 	/// <summary>Merge a Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeEmployee")]
-	GraphQLQuery<string> MergeEmployee (string sessionToken, string name, string _password = null, string _user = null, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string phone = null, Func<string, string> fields = null );
+	GraphQLQuery<string> MergeEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string password = null, string phone = null, string user = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Merge a Events entity</summary>
@@ -645,7 +645,7 @@ public interface IGraphQLApiClient
 	/// <summary>Updates a Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateEmployee")]
-	GraphQLQuery<string> UpdateEmployee (string sessionToken, string name, string _password = null, string _user = null, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string phone = null, Func<string, string> fields = null );
+	GraphQLQuery<string> UpdateEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string password = null, string phone = null, string user = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Updates a Events entity</summary>

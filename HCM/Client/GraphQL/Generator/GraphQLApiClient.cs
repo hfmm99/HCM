@@ -45,14 +45,6 @@ public partial class GqlEmployee
 	[GraphQLField("_id")]
 	public long? _id { get; set; }
 
-	/// <summary>_password of  Employee</summary>
-	[GraphQLField("_password")]
-	public string _password { get; set; }
-
-	/// <summary>_user of  Employee</summary>
-	[GraphQLField("_user")]
-	public string _user { get; set; }
-
 	/// <summary>dateOfBirth of  Employee</summary>
 	[GraphQLField("dateOfBirth")]
 	public DateTime? DateOfBirth { get; set; }
@@ -60,6 +52,10 @@ public partial class GqlEmployee
 	/// <summary>email of  Employee</summary>
 	[GraphQLField("email")]
 	public string Email { get; set; }
+
+	/// <summary>Employee events Events</summary>
+	[GraphQLField("events")]
+	public List<GqlEvents> Events { get; set; }
 
 	/// <summary>Employee experience Experience</summary>
 	[GraphQLField("experience")]
@@ -77,10 +73,6 @@ public partial class GqlEmployee
 	[GraphQLField("isMemberOf")]
 	public List<GqlTeam> IsMemberOf { get; set; }
 
-	/// <summary>Employee is_from_ Events</summary>
-	[GraphQLField("is_from_")]
-	public List<GqlEvents> Is_from_ { get; set; }
-
 	/// <summary>Employee livesIn Country</summary>
 	[GraphQLField("livesIn")]
 	public GqlCountry LivesIn { get; set; }
@@ -89,9 +81,17 @@ public partial class GqlEmployee
 	[GraphQLField("name")]
 	public string Name { get; set; }
 
+	/// <summary>password of  Employee</summary>
+	[GraphQLField("password")]
+	public string Password { get; set; }
+
 	/// <summary>phone of  Employee</summary>
 	[GraphQLField("phone")]
 	public string Phone { get; set; }
+
+	/// <summary>user of  Employee</summary>
+	[GraphQLField("user")]
+	public string User { get; set; }
 
 	/// <summary>Employee worksAs Role</summary>
 	[GraphQLField("worksAs")]
@@ -523,118 +523,6 @@ public class Gql_EmployeeFilter
 	[JsonProperty(PropertyName = "OR", NullValueHandling = NullValueHandling.Ignore)]
 	public List<Gql_EmployeeFilter> OR { get; set; }
 
-	/// <summary>_password</summary>
-	[JsonProperty(PropertyName = "_password", NullValueHandling = NullValueHandling.Ignore)]
-	public string _password { get; set; }
-
-	/// <summary>_password_contains</summary>
-	[JsonProperty(PropertyName = "_password_contains", NullValueHandling = NullValueHandling.Ignore)]
-	public string _password_contains { get; set; }
-
-	/// <summary>_password_ends_with</summary>
-	[JsonProperty(PropertyName = "_password_ends_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string _password_ends_with { get; set; }
-
-	/// <summary>_password_gt</summary>
-	[JsonProperty(PropertyName = "_password_gt", NullValueHandling = NullValueHandling.Ignore)]
-	public string _password_gt { get; set; }
-
-	/// <summary>_password_gte</summary>
-	[JsonProperty(PropertyName = "_password_gte", NullValueHandling = NullValueHandling.Ignore)]
-	public string _password_gte { get; set; }
-
-	/// <summary>_password_in</summary>
-	[JsonProperty(PropertyName = "_password_in", NullValueHandling = NullValueHandling.Ignore)]
-	public List<string> _password_in { get; set; }
-
-	/// <summary>_password_lt</summary>
-	[JsonProperty(PropertyName = "_password_lt", NullValueHandling = NullValueHandling.Ignore)]
-	public string _password_lt { get; set; }
-
-	/// <summary>_password_lte</summary>
-	[JsonProperty(PropertyName = "_password_lte", NullValueHandling = NullValueHandling.Ignore)]
-	public string _password_lte { get; set; }
-
-	/// <summary>_password_not</summary>
-	[JsonProperty(PropertyName = "_password_not", NullValueHandling = NullValueHandling.Ignore)]
-	public string _password_not { get; set; }
-
-	/// <summary>_password_not_contains</summary>
-	[JsonProperty(PropertyName = "_password_not_contains", NullValueHandling = NullValueHandling.Ignore)]
-	public string _password_not_contains { get; set; }
-
-	/// <summary>_password_not_ends_with</summary>
-	[JsonProperty(PropertyName = "_password_not_ends_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string _password_not_ends_with { get; set; }
-
-	/// <summary>_password_not_in</summary>
-	[JsonProperty(PropertyName = "_password_not_in", NullValueHandling = NullValueHandling.Ignore)]
-	public List<string> _password_not_in { get; set; }
-
-	/// <summary>_password_not_starts_with</summary>
-	[JsonProperty(PropertyName = "_password_not_starts_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string _password_not_starts_with { get; set; }
-
-	/// <summary>_password_starts_with</summary>
-	[JsonProperty(PropertyName = "_password_starts_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string _password_starts_with { get; set; }
-
-	/// <summary>_user</summary>
-	[JsonProperty(PropertyName = "_user", NullValueHandling = NullValueHandling.Ignore)]
-	public string _user { get; set; }
-
-	/// <summary>_user_contains</summary>
-	[JsonProperty(PropertyName = "_user_contains", NullValueHandling = NullValueHandling.Ignore)]
-	public string _user_contains { get; set; }
-
-	/// <summary>_user_ends_with</summary>
-	[JsonProperty(PropertyName = "_user_ends_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string _user_ends_with { get; set; }
-
-	/// <summary>_user_gt</summary>
-	[JsonProperty(PropertyName = "_user_gt", NullValueHandling = NullValueHandling.Ignore)]
-	public string _user_gt { get; set; }
-
-	/// <summary>_user_gte</summary>
-	[JsonProperty(PropertyName = "_user_gte", NullValueHandling = NullValueHandling.Ignore)]
-	public string _user_gte { get; set; }
-
-	/// <summary>_user_in</summary>
-	[JsonProperty(PropertyName = "_user_in", NullValueHandling = NullValueHandling.Ignore)]
-	public List<string> _user_in { get; set; }
-
-	/// <summary>_user_lt</summary>
-	[JsonProperty(PropertyName = "_user_lt", NullValueHandling = NullValueHandling.Ignore)]
-	public string _user_lt { get; set; }
-
-	/// <summary>_user_lte</summary>
-	[JsonProperty(PropertyName = "_user_lte", NullValueHandling = NullValueHandling.Ignore)]
-	public string _user_lte { get; set; }
-
-	/// <summary>_user_not</summary>
-	[JsonProperty(PropertyName = "_user_not", NullValueHandling = NullValueHandling.Ignore)]
-	public string _user_not { get; set; }
-
-	/// <summary>_user_not_contains</summary>
-	[JsonProperty(PropertyName = "_user_not_contains", NullValueHandling = NullValueHandling.Ignore)]
-	public string _user_not_contains { get; set; }
-
-	/// <summary>_user_not_ends_with</summary>
-	[JsonProperty(PropertyName = "_user_not_ends_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string _user_not_ends_with { get; set; }
-
-	/// <summary>_user_not_in</summary>
-	[JsonProperty(PropertyName = "_user_not_in", NullValueHandling = NullValueHandling.Ignore)]
-	public List<string> _user_not_in { get; set; }
-
-	/// <summary>_user_not_starts_with</summary>
-	[JsonProperty(PropertyName = "_user_not_starts_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string _user_not_starts_with { get; set; }
-
-	/// <summary>_user_starts_with</summary>
-	[JsonProperty(PropertyName = "_user_starts_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string _user_starts_with { get; set; }
-
 	/// <summary>dateOfBirth</summary>
 	[JsonProperty(PropertyName = "dateOfBirth", NullValueHandling = NullValueHandling.Ignore)]
 	public DateTime? DateOfBirth { get; set; }
@@ -722,6 +610,38 @@ public class Gql_EmployeeFilter
 	/// <summary>email_starts_with</summary>
 	[JsonProperty(PropertyName = "email_starts_with", NullValueHandling = NullValueHandling.Ignore)]
 	public string Email_starts_with { get; set; }
+
+	/// <summary>events</summary>
+	[JsonProperty(PropertyName = "events", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events { get; set; }
+
+	/// <summary>events_every</summary>
+	[JsonProperty(PropertyName = "events_every", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events_every { get; set; }
+
+	/// <summary>events_in</summary>
+	[JsonProperty(PropertyName = "events_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events_in { get; set; }
+
+	/// <summary>events_none</summary>
+	[JsonProperty(PropertyName = "events_none", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events_none { get; set; }
+
+	/// <summary>events_not</summary>
+	[JsonProperty(PropertyName = "events_not", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events_not { get; set; }
+
+	/// <summary>events_not_in</summary>
+	[JsonProperty(PropertyName = "events_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events_not_in { get; set; }
+
+	/// <summary>events_single</summary>
+	[JsonProperty(PropertyName = "events_single", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events_single { get; set; }
+
+	/// <summary>events_some</summary>
+	[JsonProperty(PropertyName = "events_some", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events_some { get; set; }
 
 	/// <summary>experience</summary>
 	[JsonProperty(PropertyName = "experience", NullValueHandling = NullValueHandling.Ignore)]
@@ -899,38 +819,6 @@ public class Gql_EmployeeFilter
 	[JsonProperty(PropertyName = "isMemberOf_some", NullValueHandling = NullValueHandling.Ignore)]
 	public Gql_TeamFilter IsMemberOf_some { get; set; }
 
-	/// <summary>is_from_</summary>
-	[JsonProperty(PropertyName = "is_from_", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Is_from_ { get; set; }
-
-	/// <summary>is_from__every</summary>
-	[JsonProperty(PropertyName = "is_from__every", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Is_from__every { get; set; }
-
-	/// <summary>is_from__in</summary>
-	[JsonProperty(PropertyName = "is_from__in", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Is_from__in { get; set; }
-
-	/// <summary>is_from__none</summary>
-	[JsonProperty(PropertyName = "is_from__none", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Is_from__none { get; set; }
-
-	/// <summary>is_from__not</summary>
-	[JsonProperty(PropertyName = "is_from__not", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Is_from__not { get; set; }
-
-	/// <summary>is_from__not_in</summary>
-	[JsonProperty(PropertyName = "is_from__not_in", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Is_from__not_in { get; set; }
-
-	/// <summary>is_from__single</summary>
-	[JsonProperty(PropertyName = "is_from__single", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Is_from__single { get; set; }
-
-	/// <summary>is_from__some</summary>
-	[JsonProperty(PropertyName = "is_from__some", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Is_from__some { get; set; }
-
 	/// <summary>livesIn</summary>
 	[JsonProperty(PropertyName = "livesIn", NullValueHandling = NullValueHandling.Ignore)]
 	public Gql_CountryFilter LivesIn { get; set; }
@@ -1003,6 +891,62 @@ public class Gql_EmployeeFilter
 	[JsonProperty(PropertyName = "name_starts_with", NullValueHandling = NullValueHandling.Ignore)]
 	public string Name_starts_with { get; set; }
 
+	/// <summary>password</summary>
+	[JsonProperty(PropertyName = "password", NullValueHandling = NullValueHandling.Ignore)]
+	public string Password { get; set; }
+
+	/// <summary>password_contains</summary>
+	[JsonProperty(PropertyName = "password_contains", NullValueHandling = NullValueHandling.Ignore)]
+	public string Password_contains { get; set; }
+
+	/// <summary>password_ends_with</summary>
+	[JsonProperty(PropertyName = "password_ends_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Password_ends_with { get; set; }
+
+	/// <summary>password_gt</summary>
+	[JsonProperty(PropertyName = "password_gt", NullValueHandling = NullValueHandling.Ignore)]
+	public string Password_gt { get; set; }
+
+	/// <summary>password_gte</summary>
+	[JsonProperty(PropertyName = "password_gte", NullValueHandling = NullValueHandling.Ignore)]
+	public string Password_gte { get; set; }
+
+	/// <summary>password_in</summary>
+	[JsonProperty(PropertyName = "password_in", NullValueHandling = NullValueHandling.Ignore)]
+	public List<string> Password_in { get; set; }
+
+	/// <summary>password_lt</summary>
+	[JsonProperty(PropertyName = "password_lt", NullValueHandling = NullValueHandling.Ignore)]
+	public string Password_lt { get; set; }
+
+	/// <summary>password_lte</summary>
+	[JsonProperty(PropertyName = "password_lte", NullValueHandling = NullValueHandling.Ignore)]
+	public string Password_lte { get; set; }
+
+	/// <summary>password_not</summary>
+	[JsonProperty(PropertyName = "password_not", NullValueHandling = NullValueHandling.Ignore)]
+	public string Password_not { get; set; }
+
+	/// <summary>password_not_contains</summary>
+	[JsonProperty(PropertyName = "password_not_contains", NullValueHandling = NullValueHandling.Ignore)]
+	public string Password_not_contains { get; set; }
+
+	/// <summary>password_not_ends_with</summary>
+	[JsonProperty(PropertyName = "password_not_ends_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Password_not_ends_with { get; set; }
+
+	/// <summary>password_not_in</summary>
+	[JsonProperty(PropertyName = "password_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public List<string> Password_not_in { get; set; }
+
+	/// <summary>password_not_starts_with</summary>
+	[JsonProperty(PropertyName = "password_not_starts_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Password_not_starts_with { get; set; }
+
+	/// <summary>password_starts_with</summary>
+	[JsonProperty(PropertyName = "password_starts_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Password_starts_with { get; set; }
+
 	/// <summary>phone</summary>
 	[JsonProperty(PropertyName = "phone", NullValueHandling = NullValueHandling.Ignore)]
 	public string Phone { get; set; }
@@ -1059,6 +1003,62 @@ public class Gql_EmployeeFilter
 	[JsonProperty(PropertyName = "phone_starts_with", NullValueHandling = NullValueHandling.Ignore)]
 	public string Phone_starts_with { get; set; }
 
+	/// <summary>user</summary>
+	[JsonProperty(PropertyName = "user", NullValueHandling = NullValueHandling.Ignore)]
+	public string User { get; set; }
+
+	/// <summary>user_contains</summary>
+	[JsonProperty(PropertyName = "user_contains", NullValueHandling = NullValueHandling.Ignore)]
+	public string User_contains { get; set; }
+
+	/// <summary>user_ends_with</summary>
+	[JsonProperty(PropertyName = "user_ends_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string User_ends_with { get; set; }
+
+	/// <summary>user_gt</summary>
+	[JsonProperty(PropertyName = "user_gt", NullValueHandling = NullValueHandling.Ignore)]
+	public string User_gt { get; set; }
+
+	/// <summary>user_gte</summary>
+	[JsonProperty(PropertyName = "user_gte", NullValueHandling = NullValueHandling.Ignore)]
+	public string User_gte { get; set; }
+
+	/// <summary>user_in</summary>
+	[JsonProperty(PropertyName = "user_in", NullValueHandling = NullValueHandling.Ignore)]
+	public List<string> User_in { get; set; }
+
+	/// <summary>user_lt</summary>
+	[JsonProperty(PropertyName = "user_lt", NullValueHandling = NullValueHandling.Ignore)]
+	public string User_lt { get; set; }
+
+	/// <summary>user_lte</summary>
+	[JsonProperty(PropertyName = "user_lte", NullValueHandling = NullValueHandling.Ignore)]
+	public string User_lte { get; set; }
+
+	/// <summary>user_not</summary>
+	[JsonProperty(PropertyName = "user_not", NullValueHandling = NullValueHandling.Ignore)]
+	public string User_not { get; set; }
+
+	/// <summary>user_not_contains</summary>
+	[JsonProperty(PropertyName = "user_not_contains", NullValueHandling = NullValueHandling.Ignore)]
+	public string User_not_contains { get; set; }
+
+	/// <summary>user_not_ends_with</summary>
+	[JsonProperty(PropertyName = "user_not_ends_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string User_not_ends_with { get; set; }
+
+	/// <summary>user_not_in</summary>
+	[JsonProperty(PropertyName = "user_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public List<string> User_not_in { get; set; }
+
+	/// <summary>user_not_starts_with</summary>
+	[JsonProperty(PropertyName = "user_not_starts_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string User_not_starts_with { get; set; }
+
+	/// <summary>user_starts_with</summary>
+	[JsonProperty(PropertyName = "user_starts_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string User_starts_with { get; set; }
+
 	/// <summary>worksAs</summary>
 	[JsonProperty(PropertyName = "worksAs", NullValueHandling = NullValueHandling.Ignore)]
 	public Gql_RoleFilter WorksAs { get; set; }
@@ -1112,14 +1112,6 @@ public class Gql_EmployeeFilter
 [JsonConverter(typeof(GraphQLEnumConverter))]
 public enum Gql_EmployeeOrdering
 {
-	/// <summary>Ascending sort for _password</summary>
-	_password_asc,
-	/// <summary>Descending sort for _password</summary>
-	_password_desc,
-	/// <summary>Ascending sort for _user</summary>
-	_user_asc,
-	/// <summary>Descending sort for _user</summary>
-	_user_desc,
 	/// <summary>Ascending sort for dateOfBirth</summary>
 	dateOfBirth_asc,
 	/// <summary>Descending sort for dateOfBirth</summary>
@@ -1140,10 +1132,18 @@ public enum Gql_EmployeeOrdering
 	name_asc,
 	/// <summary>Descending sort for name</summary>
 	name_desc,
+	/// <summary>Ascending sort for password</summary>
+	password_asc,
+	/// <summary>Descending sort for password</summary>
+	password_desc,
 	/// <summary>Ascending sort for phone</summary>
 	phone_asc,
 	/// <summary>Descending sort for phone</summary>
-	phone_desc
+	phone_desc,
+	/// <summary>Ascending sort for user</summary>
+	user_asc,
+	/// <summary>Descending sort for user</summary>
+	user_desc
 }
 
 public class Gql_EventsFilter
@@ -2663,10 +2663,6 @@ _id, _ids, filter, first, name, names, offset, orderBy);
 _id, _ids, filter, first, name, names, offset, orderBy);
 	}
 
-	/// <param name="_password">_password of Employee</param>
-	/// <param name="_passwords">_passwords is list variant of _password of Employee</param>
-	/// <param name="_user">_user of Employee</param>
-	/// <param name="_users">_users is list variant of _user of Employee</param>
 	/// <param name="dateOfBirth">dateOfBirth of Employee</param>
 	/// <param name="dateOfBirths">dateOfBirths is list variant of dateOfBirth of Employee</param>
 	/// <param name="email">email of Employee</param>
@@ -2677,14 +2673,18 @@ _id, _ids, filter, first, name, names, offset, orderBy);
 	/// <param name="images">images is list variant of image of Employee</param>
 	/// <param name="name">name of Employee</param>
 	/// <param name="names">names is list variant of name of Employee</param>
+	/// <param name="password">password of Employee</param>
+	/// <param name="passwords">passwords is list variant of password of Employee</param>
 	/// <param name="phone">phone of Employee</param>
 	/// <param name="phones">phones is list variant of phone of Employee</param>
+	/// <param name="user">user of Employee</param>
+	/// <param name="users">users is list variant of user of Employee</param>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("Employee")]
-	public GraphQLQuery<GqlEmployee> Employee (string sessionToken, long? _id = null, long?[] _ids = null, string _password = null, string[] _passwords = null, string _user = null, string[] _users = null, DateTime? dateOfBirth = null, DateTime?[] dateOfBirths = null, string email = null, string[] emails = null, Gql_EmployeeFilter filter = null, int? first = null, string gender = null, string[] genders = null, string image = null, string[] images = null, string name = null, string[] names = null, int? offset = null, Gql_EmployeeOrdering[] orderBy = null, string phone = null, string[] phones = null, Func<GqlEmployee, GqlEmployee> fields = null ) 
+	public GraphQLQuery<GqlEmployee> Employee (string sessionToken, long? _id = null, long?[] _ids = null, DateTime? dateOfBirth = null, DateTime?[] dateOfBirths = null, string email = null, string[] emails = null, Gql_EmployeeFilter filter = null, int? first = null, string gender = null, string[] genders = null, string image = null, string[] images = null, string name = null, string[] names = null, int? offset = null, Gql_EmployeeOrdering[] orderBy = null, string password = null, string[] passwords = null, string phone = null, string[] phones = null, string user = null, string[] users = null, Func<GqlEmployee, GqlEmployee> fields = null ) 
 	{
 		return new GraphQLQuery<GqlEmployee>(_httpClient, _endpoint, true, false, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-_id, _ids, _password, _passwords, _user, _users, dateOfBirth, dateOfBirths, email, emails, filter, first, gender, genders, image, images, name, names, offset, orderBy, phone, phones);
+_id, _ids, dateOfBirth, dateOfBirths, email, emails, filter, first, gender, genders, image, images, name, names, offset, orderBy, password, passwords, phone, phones, user, users);
 	}
 
 	/// <param name="sessionToken">Token Used on production</param>
@@ -2840,6 +2840,15 @@ employees, name);
 employees, name);
 	}
 
+	/// <summary>Adds Events to Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addEmployeeEvents")]
+	public GraphQLQuery<string> AddEmployeeEvents (string sessionToken, string[] events, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+events, name);
+	}
+
 	/// <summary>Adds Experience to Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addEmployeeExperience")]
@@ -2856,15 +2865,6 @@ experience, name);
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 isMemberOf, name);
-	}
-
-	/// <summary>Adds Is_from_ to Employee entity</summary>
-	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("addEmployeeIs_from_")]
-	public GraphQLQuery<string> AddEmployeeIs_from_ (string sessionToken, string[] is_from_, string name, Func<string, string> fields = null ) 
-	{
-		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-is_from_, name);
 	}
 
 	/// <summary>Adds LivesIn to Employee entity</summary>
@@ -3050,10 +3050,10 @@ name);
 	/// <summary>Creates a Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createEmployee")]
-	public GraphQLQuery<string> CreateEmployee (string sessionToken, string name, string _password = null, string _user = null, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string phone = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> CreateEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string password = null, string phone = null, string user = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-name, _password, _user, dateOfBirth, email, gender, image, phone);
+name, dateOfBirth, email, gender, image, password, phone, user);
 	}
 
 	/// <summary>Creates a Events entity</summary>
@@ -3182,6 +3182,15 @@ employees, name);
 name);
 	}
 
+	/// <summary>Deletes Events from Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteEmployeeEvents")]
+	public GraphQLQuery<string> DeleteEmployeeEvents (string sessionToken, string[] events, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+events, name);
+	}
+
 	/// <summary>Deletes Experience from Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteEmployeeExperience")]
@@ -3198,15 +3207,6 @@ experience, name);
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 isMemberOf, name);
-	}
-
-	/// <summary>Deletes Is_from_ from Employee entity</summary>
-	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("deleteEmployeeIs_from_")]
-	public GraphQLQuery<string> DeleteEmployeeIs_from_ (string sessionToken, string[] is_from_, string name, Func<string, string> fields = null ) 
-	{
-		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-is_from_, name);
 	}
 
 	/// <summary>Deletes LivesIn from Employee entity</summary>
@@ -3473,10 +3473,10 @@ name);
 	/// <summary>Merge a Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeEmployee")]
-	public GraphQLQuery<string> MergeEmployee (string sessionToken, string name, string _password = null, string _user = null, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string phone = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> MergeEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string password = null, string phone = null, string user = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-name, _password, _user, dateOfBirth, email, gender, image, phone);
+name, dateOfBirth, email, gender, image, password, phone, user);
 	}
 
 	/// <summary>Merge a Events entity</summary>
@@ -3581,10 +3581,10 @@ name);
 	/// <summary>Updates a Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateEmployee")]
-	public GraphQLQuery<string> UpdateEmployee (string sessionToken, string name, string _password = null, string _user = null, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string phone = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> UpdateEmployee (string sessionToken, string name, DateTime? dateOfBirth = null, string email = null, string gender = null, string image = null, string password = null, string phone = null, string user = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-name, _password, _user, dateOfBirth, email, gender, image, phone);
+name, dateOfBirth, email, gender, image, password, phone, user);
 	}
 
 	/// <summary>Updates a Events entity</summary>
