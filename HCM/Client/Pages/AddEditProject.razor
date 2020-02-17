@@ -4,7 +4,7 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Blazored.SessionStorage.ISessionStorageService user_name
 
 <form class="needs-validation">
 
@@ -33,7 +33,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var name = await sessionStorage.GetItemAsync<string>("name");
+        var name = await user_name.GetItemAsync<string>("name");
 
         if (name == null)
         {

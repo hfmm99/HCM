@@ -1,8 +1,50 @@
 ﻿@typeparam TItem
 @using Microsoft.AspNetCore.Components;
+@using HCM.Shared.Enums;
 
+@if (Layout != 0)
+{
+    <div class="multiSelect">
+        <ul class="multiSelect_list">
+            @foreach (var value in Values)
+            {
+                <li class="multiSelect_chip2 multiSelect_list_item bg--lightGray text--vertMiddle" @onclick="(e => ValueClicked(value))">
+                    @DisplayFieldSelector?.Invoke(value)
+                    <span class="close" style="margin-left:auto" @onclick="(e => RemoveValue(value))">×</span>
+                </li>
+            }
+            <li class="multiSelect_inputSpace multiSelect_list">
+                <input type="search" class="multiSelect_input" placeholder="@Placeholder" @oninput="OnValueChanged" @bind="SearchText" @onfocus="OpenPopup" @onblur="ClosePopup" />
+            </li>
+        </ul>
+        @if (IsOpened && ((Items != null && Items.Count > 0) || !string.IsNullOrEmpty(SearchText)))
+        {
+            <div class="dropdown bg--solidWhite">
+                <ul class="multiSelect_list multiSelect_dropdown_list bg--solidWhite">
+                    @{
+                        var displayItems = GetFilteredItems(SearchText);
+                        foreach (var item in displayItems)
+                        {
+                            <li class="multiSelect_dropdown_list_item bg--solidWhite" @onmousedown="@(e => ItemClick(item))">
+                                @(DisplayFieldSelector?.Invoke(item) ?? item?.ToString())
+                            </li>
+                        }
+                        if (displayItems.Count() == 0 && !string.IsNullOrEmpty(SearchText))
+                        {
+                            <li class="text-info text-center multiSelect_dropdown_list_item bg--solidWhite">
+                                <a @onmousedown="AddNewItem" href="#">Add New Value: @SearchText</a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        }     
+    </div>
+}
+else
+{
 <div class="multiSelect">
-    <ul class="multiSelect_list">
+    <ul class="multiSelect_list">      
         <li class="multiSelect_inputSpace multiSelect_list">
             <input type="search" class="multiSelect_input" placeholder="@Placeholder" @oninput="OnValueChanged" @bind="SearchText" @onfocus="OpenPopup" @onblur="ClosePopup" />
         </li>
@@ -29,14 +71,17 @@
             </ul>
         </div>
     }
-    @foreach (var value in Values)
-    {
-        <li class="multiSelect_chip multiSelect_list_item bg--lightGray text--vertMiddle" @onclick="(e => ValueClicked(value))">
-            @DisplayFieldSelector?.Invoke(value)
-            <span class="close" style="margin-left:auto" @onclick="(e => RemoveValue(value))">×</span>
-        </li>
-    }
+    <div style="overflow:scroll; overflow-x:hidden; max-height:80px">
+        @foreach (var value in Values)
+        {
+            <li class="multiSelect_chip multiSelect_list_item bg--lightGray text--vertMiddle" @onclick="(e => ValueClicked(value))">
+                @DisplayFieldSelector?.Invoke(value)
+                <span class="close" style="margin-left:auto" @onclick="(e => RemoveValue(value))">×</span>
+            </li>
+        }
+    </div>
 </div>
+}
 
 
 @code {
@@ -52,6 +97,9 @@
 
     [Parameter]
     public string Placeholder { get; set; }
+
+    [Parameter]
+    public LayoutEnum Layout { get; set; }
 
     protected override void OnParametersSet()
     {
@@ -146,6 +194,7 @@
     {
         Values.Remove(item);
         OnValueRemoved.InvokeAsync(item);
+
     }
 
     [Parameter]
@@ -170,4 +219,7 @@
 
         return items.Select(i => i.Item);
     }
+
+
+
 }

@@ -4,7 +4,7 @@
 @using MatBlazor;
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Blazored.SessionStorage.ISessionStorageService user_name
 
 
 <div class="row margin-bottom-small">
@@ -156,7 +156,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var name = await sessionStorage.GetItemAsync<string>("name");
+        var name = await user_name.GetItemAsync<string>("name");
 
         if (name == null)
         {

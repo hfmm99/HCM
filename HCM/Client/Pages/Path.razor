@@ -3,7 +3,7 @@
 @using HCM.Client.Components.DataList
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Blazored.SessionStorage.ISessionStorageService user_name
 
 <div class="btn-toolbar row margin-btm-small" role="toolbar">
     <button class="btn btn-dark" @onclick="GoBack">Go back</button>
@@ -162,7 +162,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var name = await sessionStorage.GetItemAsync<string>("name");
+        var name = await user_name.GetItemAsync<string>("name");
 
         if (name == null)
         {

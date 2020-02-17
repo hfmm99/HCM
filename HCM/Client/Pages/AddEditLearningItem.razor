@@ -2,7 +2,7 @@
 @using HCM.Client.Components.Markdown
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Blazored.SessionStorage.ISessionStorageService user_name
 
 <div class="add_learning_item">
     <div class="markdown_write">
@@ -34,7 +34,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var name = await sessionStorage.GetItemAsync<string>("name");
+        var name = await user_name.GetItemAsync<string>("name");
 
         if (name == null)
         {

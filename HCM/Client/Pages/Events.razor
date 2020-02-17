@@ -6,15 +6,15 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Blazored.SessionStorage.ISessionStorageService user_name
 
-<DeleteModal OnDelete="@DeleteLogbook" />
+<DeleteModal OnDelete="@DeleteEvent" />
 <div class="btn-toolbar row margin-btm-small" role="toolbar">
-    <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewLogbook">
+    <button type="button" class="btn btn-outline-primary mr-1" @onclick="NewEvent">
         <span class="oi oi-plus" />
         New
     </button>
-    <button type="button" class="btn btn-outline-secondary mr-1" @onclick="EditLogbook">
+    <button type="button" class="btn btn-outline-secondary mr-1" @onclick="EditEvent">
         <span class="oi oi-pencil" />
         Edit
     </button>
@@ -29,7 +29,7 @@
 </div>
 
 <div class="row">
-    <Grid @ref="grid" Data="@events" OnDoubleClick="@EditLogbook" OnSort="@OnGridSort">
+    <Grid @ref="grid" Data="@events" OnDoubleClick="@EditEvent" OnSort="@OnGridSort">
         <GridColumns>
             <GridColumn Field="@nameof(GqlEvents.Subject)" />
             <GridColumn Field="@nameof(GqlEvents.Date)" />
@@ -51,7 +51,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var name = await sessionStorage.GetItemAsync<string>("name");
+        var name = await user_name.GetItemAsync<string>("name");
 
         if (name == null)
         {
@@ -63,7 +63,7 @@
         }
     }
 
-    void NewLogbook()
+    void NewEvent()
     {
         navigationManager.NavigateTo("/event/" + -1);
     }
@@ -99,7 +99,7 @@
         Search();
     }
 
-    public void EditLogbook()
+    public void EditEvent()
     {
         if (grid.SelectedItem != null)
             navigationManager.NavigateTo("/event/" + (grid.SelectedItem as GqlEvents)._id);
@@ -130,7 +130,7 @@
         }
     }
 
-    public async void DeleteLogbook()
+    public async void DeleteEvent()
     {
         gql.DeleteEvents(string.Empty, (grid.SelectedItem as GqlEvents).Subject).RunAsync();
         ModalService.CloseModal();

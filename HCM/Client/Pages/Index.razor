@@ -1,6 +1,6 @@
 ﻿@page "/"
 @inject NavigationManager navigationManager
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Blazored.SessionStorage.ISessionStorageService user_name
 @inject HttpClient httpClient
 
 <!doctype html>
@@ -46,13 +46,16 @@
                         </div>
                     </div>
                     <div class="col-md-3">
+                        @foreach (var work_as in employee.WorksAs)
+                        {
                         <div class="metric">
                             <span class="icon"><i class="oi oi-monitor"></i></span>
                             <p>
-                                <span class="number">Developer</span>
+                                <span class="number">@work_as.Name</span>
                                 <span class="title">Work as</span>
                             </p>
                         </div>
+                        }
                     </div>
                     <div class="col-md-3">
                         <div class="metric">
@@ -85,7 +88,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var name = await sessionStorage.GetItemAsync<string>("name");
+        var name = await user_name.GetItemAsync<string>("name");
 
         if (name == null)
         {
@@ -99,7 +102,7 @@
 
     protected async Task Search()
     {
-        var name = await sessionStorage.GetItemAsync<string>("name");
+        var name = await user_name.GetItemAsync<string>("name");
         gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
 
         if (name != null)
@@ -112,27 +115,34 @@
                 {
                     new GqlTeam
                     {
-                    Name = e.IsMemberOf[0].Name
+                    Name = ""
                     }
                 },
                 WorksFor = new List<GqlClient>
                 {
                     new GqlClient
                     {
-                        Name= e.WorksFor[0].Name
+                        Name= ""
                     }
                 },
                 LivesIn= new List<GqlCountry>
                 {
                     new GqlCountry
                     {
-                        Name = e.LivesIn[0].Name
-                    }               
+                        Name = ""
+                    }
+                },
+                WorksAs= new List<GqlRole>
+                {
+                    new GqlRole
+                    {
+                        Name = ""
+                    }
                 }
             });
-        employee = (await query.RunAsync()).FirstOrDefault();
-        date = DateTime.Today;
-        date_short = date.ToShortDateString();
+            employee = (await query.RunAsync()).FirstOrDefault();
+            date = DateTime.Today;
+            date_short = date.ToShortDateString();
+        }
     }
-}
 }

@@ -3,7 +3,7 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Blazored.SessionStorage.ISessionStorageService user_name
 @using Microsoft.AspNetCore.Components.Authorization
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -33,10 +33,10 @@
                             <br />
                             <div class="checkbox mb-3">
                                 <label>
-                                    <input type="checkbox" value="remember-me" /> Remember me
+                                    <input type="checkbox" value="remember-me"/> Remember me
                                 </label>
                             </div>
-                            <button type="submit" class="btn btn-lg btn-primary btn-block" @onclick="Login_user">Sign in</button>
+                            <input  type="submit" class="btn btn-lg btn-primary btn-block" @onclick="Login_user" value="Sign in"/>
                         </form>
                     </div>
                 </div>
@@ -63,15 +63,14 @@
             User = e.User,
             Password = e.Password,
             Name = e.Name
-
         });
 
         employee = (await query.RunAsync()).FirstOrDefault();
         if (employee.User == Input_user && employee.Password == Input_password)
         {
-            await sessionStorage.SetItemAsync("name", Input_user);
+            await user_name.SetItemAsync("name", Input_user);
             navigationManager.NavigateTo("/");
-            NavMenu.logout_visible_change(Input_user);
+            NavMenu.logout_visible_change(Input_user);      
         }
         else
         {
