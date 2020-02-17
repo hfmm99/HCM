@@ -15,30 +15,30 @@
                     <div class="pre_box">
                         <div class="text-center mb-4">
                             <img class="mb-4" src="/Images/logo-ex2.png" width="300" height="150">
-                            <h1 class="h3 mb-3 font-weight-normal">CAREER PATH</h1>
+                            <h1 class="h3 mb-3 font-weight-normal">HUMAN CAPITAL MANAGER</h1>
                         </div>
-                        <div style="width:60%; align-content:center; margin: 0 auto">
+                        <form style="width:60%; align-content:center; margin: 0 auto" @onsubmit="Login_user">
                             <div class="form-label-group">
-                                <input type="text" name="txt_User" id="inputUser" class="form-control" placeholder="User ID" @bind="Input_user" required autofocus>
+                                <input type="text" name="txt_User" id="inputUser" class="form-control" placeholder="User ID" @bind="Input_user" required autofocus />
                             </div>
                             <br />
                             <div class="form-label-group">
-                                <input type="password" name="txt_Pass" id="inputPassword" class="form-control" placeholder="Password" @bind="Input_password" required>
+                                <input type="password" name="txt_Pass" id="inputPassword" class="form-control" placeholder="Password" @bind="Input_password" required />
                             </div>
                             <div class="error-notice" style="display:@show">
                                 <div class="oaerror danger">
-                                    <strong>Error</strong>- User or password invalid. Try again
+                                    <strong>Error</strong>: Invalid User or Password. Please try again.
                                 </div>
                             </div>
-                                <br />
-                                <div class="checkbox mb-3">
-                                    <label>
-                                        <input type="checkbox" value="remember-me"> Remember me
-                                    </label>
-                                </div>
-                                <button class="btn btn-lg btn-primary btn-block" @onclick="Login_user">Sign in</button>
+                            <br />
+                            <div class="checkbox mb-3">
+                                <label>
+                                    <input type="checkbox" value="remember-me" /> Remember me
+                                </label>
                             </div>
-                        </div>
+                            <button type="submit" class="btn btn-lg btn-primary btn-block" @onclick="Login_user">Sign in</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

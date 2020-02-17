@@ -8,7 +8,7 @@
     @if (team != null)
     {
         <div class="form-group">
-            <label for="txtName">Name</label>
+            <label for="txtName">Name:</label>
             <input id="txtName" type="text" class="form-control" placeholder="Enter team's name" @bind="team.Name" required autofocus />
             <div class="invalid-feedback">
                 You must enter a name.
@@ -17,11 +17,15 @@
         <!--Load team members-->
         <div class="form-group">
             <label>Members:</label>
-            <MultiSelect TItem="GqlEmployee"  Placeholder="Select Team's Members" Items="Employees" Values="team.Members" DisplayFieldSelector="@(i => i.Name)" />
+            <MultiSelect TItem="GqlEmployee" Placeholder="Select Team's Members" Items="Employees" Values="team.Members" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@EmployeeRemoved" />
         </div>
         <div class="form-group">
-            <label>Needed experience :</label>
-            <MultiSelect TItem="GqlExperience" Placeholder="Type to Search" Items="Experiences" Values="team.Exp_requeres" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ExperienceRemoved" OnAddNewItem="@AddNewExperience" />
+            <label>Experience:</label>
+            <MultiSelect TItem="GqlExperience" Placeholder="Enter Team's Experience" Items="Experiences" Values="team.Exp_requeres" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ExperienceRemoved" OnAddNewItem="@AddNewExperience" />
+        </div>
+        <div class="form-group">
+            <label>Works on:</label>
+            <MultiSelect TItem="GqlProject" Placeholder="Works on Projects" Items="Projects" Values="team.WorksOn" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ProjectRemoved" OnAddNewItem="@AddNewProject" />
         </div>
 
         <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
@@ -38,10 +42,15 @@
     private GqlTeam team = null;
 
     private List<GqlRole> rolesRequired = null;
+
     private List<GqlEmployee> Employees;
+    private List<GqlEmployee> RemovedEmployees;
 
     private List<GqlExperience> Experiences;
     private List<GqlExperience> RemovedExperiences;
+
+    private List<GqlProject> Projects;
+    private List<GqlProject> RemovedProjects;
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,17 +70,21 @@
                 {
                     _id = e._id,
                     Name = e.Name,
+                    Members = new List<GqlEmployee>
+                    {
+                        new GqlEmployee{ Name = "" }
+                    },
                     Exp_requeres = new List<GqlExperience>
             {
-                    new GqlExperience
-                    {
-                        Name = e.Exp_requeres[0].Name
+                        new GqlExperience { Name = "" }
+                    },
+                    WorksOn = new List<GqlProject>
+            {
+                        new GqlProject { Name = "" }
                     }
-                }
                 });
 
                 team = (await query.RunAsync()).FirstOrDefault();
-                team.Members = new List<GqlEmployee>();
             }
             else
                 team = new GqlTeam();
@@ -84,32 +97,36 @@
             }).RunAsync();
 
             //Load roles
-            rolesRequired = await gql.Role(string.Empty, fields: e => new GqlRole
-            {
-                _id = e._id,
-                Name = e.Name
-            }).RunAsync();
+            rolesRequired = await gql.Role(string.Empty, fields: e => new GqlRole { _id = e._id, Name = e.Name }).RunAsync();
 
             //Load Exp
-            Experiences = await gql.Experience(string.Empty, fields: e => new GqlExperience
-            {
-                _id = e._id,
-                Name = e.Name
-            }).RunAsync();
+            Experiences = await gql.Experience(string.Empty, fields: e => new GqlExperience { _id = e._id, Name = e.Name }).RunAsync();
             RemovedExperiences = new List<GqlExperience>();
+
+            //Load Projects
+            Projects = await gql.Project(string.Empty, fields: p => new GqlProject { _id = p._id, Name = p.Name }).RunAsync();
+            RemovedProjects = new List<GqlProject>();
         }
     }
 
     public void Save()
     {
         gql.MergeTeam(string.Empty, team.Name).RunAsync();
+        SaveEmployees();
         SaveExperiences();
+        SaveProjects();
         Cancel();
     }
 
     public void Cancel()
     {
         navigationManager.NavigateTo("/teams");
+    }
+
+    public void EmployeeRemoved(GqlEmployee employee)
+    {
+        RemovedEmployees.Add(employee);
+        team.Members.Remove(employee);
     }
 
     public void AddNewExperience(string text)
@@ -123,7 +140,31 @@
     {
         RemovedExperiences.Add(experience);
         team.Exp_requeres.Remove(experience);
-        Console.WriteLine(RemovedExperiences.Count);
+    }
+
+    public void AddNewProject(string text)
+    {
+        var newProject = new GqlProject { Name = text };
+        Projects.Add(newProject);
+        team.WorksOn.Add(newProject);
+    }
+
+    public void ProjectRemoved(GqlProject project)
+    {
+        RemovedProjects.Add(project);
+        team.WorksOn.Remove(project);
+    }
+
+    private void SaveEmployees()
+    {
+        // Save team employees
+        gql.AddTeamMembers(string.Empty, name: team.Name, members: team.Members.Select(s => s.Name).ToArray()).RunAsync();
+
+        // Delete removed employees, if any
+        var membersToRemove = RemovedEmployees.Select(s => s.Name).Except(team.Members.Select(es => es.Name));
+
+        if (membersToRemove.Any())
+            gql.DeleteTeamMembers(string.Empty, name: team.Name, members: membersToRemove.ToArray()).RunAsync();
     }
 
     private void SaveExperiences()
@@ -140,5 +181,21 @@
 
         if (experiencesToRemove.Any())
             gql.DeleteTeamExp_requeres(string.Empty, name: team.Name, exp_requeres: experiencesToRemove.ToArray()).RunAsync();
+    }
+
+    private void SaveProjects()
+    {
+        // Insert newly created projects, if any
+        foreach (var project in Projects.Where(s => !s._id.HasValue))
+            gql.CreateProject(string.Empty, project.Name).RunAsync();
+
+        // Save team needed exp
+        gql.AddTeamWorksOn(string.Empty, name: team.Name, worksOn: team.WorksOn.Select(s => s.Name).ToArray()).RunAsync();
+
+        // Delete removed projects, if any
+        var projectsToRemove = RemovedProjects.Select(s => s.Name).Except(team.WorksOn.Select(es => es.Name));
+
+        if (projectsToRemove.Any())
+            gql.DeleteTeamWorksOn(string.Empty, name: team.Name, worksOn: projectsToRemove.ToArray()).RunAsync();
     }
 }

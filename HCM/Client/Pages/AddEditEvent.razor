@@ -12,7 +12,7 @@
             <div class="form-row">
                 <div class="col">
                     <div class="form-group">
-                        <label>To:</label>
+                        <label>Involved Employees:</label>
                         <MultiSelect TItem="GqlEmployee" Placeholder="Type to Search" Items="Employees" Values="events.Is_to" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ToEmployeeRemoved" OnAddNewItem="@AddNewToEmployee" />
                     </div>
                 </div>
@@ -46,10 +46,10 @@
                 </div>
                 <div class="col">
                     <label for="num_score">Score:</label>
-                    <input id="num_score" type="number" class="form-control" min="0" max="10" @bind="events.Score" />
+                    <input id="num_score" type="number" class="form-control" min="-10" max="10" @bind="events.Score" />
                 </div>
             </div>
-            <textarea placeholder="Description of the logbook" style="width:100%" @bind="events.Description"></textarea>
+            <textarea placeholder="Description of the incident" style="width:100%" rows="10" @bind="events.Description"></textarea>
             <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
             <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
         }
@@ -125,7 +125,7 @@
                 events = (await query.RunAsync()).FirstOrDefault();
             }
             else
-                events = new GqlEvents();
+                events = new GqlEvents { Date = DateTime.Today };
 
             ////Load Employees
             Employees = await gql.Employee(string.Empty, fields: r => new GqlEmployee
@@ -159,6 +159,8 @@
     {
         RemovedEmployees.Add(employee);
         events.Is_to.Remove(employee);
+        Console.WriteLine("Employees: " + RemovedEmployees.Count);
+
     }
 
     public void AddNewToEmployee(string text)
@@ -170,10 +172,9 @@
 
     public void ScopesRemoved(GqlScope scope)
     {
-
         Removedscopes.Add(scope);
         events.Scopes.Remove(scope);
-        Console.WriteLine(Removedscopes.Count);
+        Console.WriteLine("Scopes: " + Removedscopes.Count);
     }
 
     public void AddNewScope(string text)
@@ -188,7 +189,7 @@
 
         Removedprojects.Add(project);
         events.Event_of.Remove(project);
-        Console.WriteLine(Removedscopes.Count);
+        Console.WriteLine("Projects: " + Removedprojects.Count);
     }
 
     public void AddNewProject(string text)
@@ -220,7 +221,7 @@
         var ProjectsToRemove = Removedprojects.Select(s => s.Name).Except(events.Scopes.Select(es => es.Name));
 
         if (ProjectsToRemove.Any())
-        gql.DeleteEventsEvent_of (string.Empty, subject: events.Subject, event_of: ProjectsToRemove.ToArray()).RunAsync();
+            gql.DeleteEventsEvent_of (string.Empty, subject: events.Subject, event_of: ProjectsToRemove.ToArray()).RunAsync();
     }
 
     private void SaveScopes()

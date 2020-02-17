@@ -240,10 +240,16 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> AddLearningPathTags (string sessionToken, string name, string[] tags, Func<string, string> fields = null );
 	
 
-	/// <summary>Adds Project to Project entity</summary>
+	/// <summary>Adds Events to Project entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("addProjectProject")]
-	GraphQLQuery<string> AddProjectProject (string sessionToken, string name, string[] project, Func<string, string> fields = null );
+	[GraphQLField("addProjectEvents")]
+	GraphQLQuery<string> AddProjectEvents (string sessionToken, string[] events, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Adds Team to Project entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addProjectTeam")]
+	GraphQLQuery<string> AddProjectTeam (string sessionToken, string name, string[] team, Func<string, string> fields = null );
 	
 
 	/// <summary>Adds Employees to Role entity</summary>
@@ -286,6 +292,12 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addTeamRoles")]
 	GraphQLQuery<string> AddTeamRoles (string sessionToken, string name, string[] roles, Func<string, string> fields = null );
+	
+
+	/// <summary>Adds WorksOn to Team entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addTeamWorksOn")]
+	GraphQLQuery<string> AddTeamWorksOn (string sessionToken, string name, string[] worksOn, Func<string, string> fields = null );
 	
 
 	/// <summary>Creates a Client entity</summary>
@@ -510,10 +522,16 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> DeleteProject (string sessionToken, string name, Func<string, string> fields = null );
 	
 
-	/// <summary>Deletes Project from Project entity</summary>
+	/// <summary>Deletes Events from Project entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("deleteProjectProject")]
-	GraphQLQuery<string> DeleteProjectProject (string sessionToken, string name, string[] project, Func<string, string> fields = null );
+	[GraphQLField("deleteProjectEvents")]
+	GraphQLQuery<string> DeleteProjectEvents (string sessionToken, string[] events, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Deletes Team from Project entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteProjectTeam")]
+	GraphQLQuery<string> DeleteProjectTeam (string sessionToken, string name, string[] team, Func<string, string> fields = null );
 	
 
 	/// <summary>Deletes a Role entity</summary>
@@ -580,6 +598,12 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteTeamRoles")]
 	GraphQLQuery<string> DeleteTeamRoles (string sessionToken, string name, string[] roles, Func<string, string> fields = null );
+	
+
+	/// <summary>Deletes WorksOn from Team entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteTeamWorksOn")]
+	GraphQLQuery<string> DeleteTeamWorksOn (string sessionToken, string name, string[] worksOn, Func<string, string> fields = null );
 	
 
 	/// <summary>Merge a Client entity</summary>

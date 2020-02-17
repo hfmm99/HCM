@@ -1,0 +1,105 @@
+type Employee {
+  name: ID!
+  gender: String
+  email: String
+  phone: String
+  user: String
+  password: String
+  dateOfBirth: DateTime
+  image: String
+  isMemberOf: [Team] @relation(name: "IS_MEMBER_OF", direction: out)
+  worksAs: [Role] @relation(name: "WORKS_AS", direction: out)
+  worksFor: [Client] @relation(name: "WORKS_FOR", direction: out)
+  livesIn: [Country] @relation(name: "LIVES_IN", direction: out)
+  experience: [Experience] @relation(name: "KNOWS", direction: out)
+  events: [Events] @relation(name: "FROM", direction: in)
+}
+
+type Team {
+  name: ID!
+  roles: [Role] @relation(name: "REQUIRES", direction: out)
+  members: [Employee] @relation(name: "IS_MEMBER_OF", direction: in)
+  exp_requeres: [Experience] @relation(name: "REQUIRES_EXP", direction: out)
+  worksOn: [Project] @relation(name: "WORKS_ON", direction: out)
+}
+
+type Role {
+  name: ID!
+  employees: [Employee] @relation(name: "WORKS_AS", direction: in)
+  isRequiredBy: [Team] @relation(name: "REQUIRES", direction: in)
+}
+
+type Scope {
+  name: ID!
+  isScopeOf_: [Events] @relation(name: "SCOPE_OF", direction: out)
+}
+
+type Events {
+  score: Int
+  project: String
+  subject: ID!
+  date: DateTime
+  description: String
+  is_to: [Employee] @relation(name: "TO", direction: out)
+  scopes: [Scope] @relation(name: "SCOPE_OF", direction: in)
+  event_of: [Project] @relation(name: "EVENT_OF", direction: out)
+}
+
+type Project {
+  name: ID!
+  events: [Events] @relation(name: "EVENT_OF", direction: in)
+  team: Team @relation(name: "WORKS_ON", direction: in)
+}
+
+type LearningItem {
+  name: ID!
+  duration: String
+  content: [LearningPath] @relation(name: "CONTENT", direction: in)
+  next: [LearningItem] @relation(name: "NEXT", direction: out)
+}
+
+type LearningPath {
+  name: ID!
+  description: String
+  tags: [Tag] @relation(name: "TAG", direction: in)
+  learnings: [LearningItem] @relation(name: "CONTENT", direction: out)
+  prerequisite: [LearningPath]
+    @relation(name: "IS_PREREQUISITE", direction: out)
+}
+
+type Tag {
+  name: ID!
+  isTagOf: [LearningPath] @relation(name: "TAG", direction: out)
+}
+
+type Country {
+  name: ID!
+  employees: [Employee] @relation(name: "LIVES_IN", direction: in)
+}
+
+type Client {
+  name: ID!
+  employees: [Employee] @relation(name: "WORKS_FOR", direction: in)
+}
+
+type Experience {
+  name: ID!
+  employees: [Employee] @relation(name: "KNOWS", direction: in)
+}
+
+type QueryType {
+  EmployeeCount: Int
+    @cypher(statement: "MATCH (e:Employee) RETURN COUNT(e) AS Employees")
+  TeamCount: Int @cypher(statement: "MATCH (t:Team) RETURN COUNT(t) AS Teams")
+  RoleCount: Int @cypher(statement: "MATCH (r:Role) RETURN COUNT(r) AS Roles")
+  LearningItemsList: LearningItem
+    @cypher(
+      statement: "match (m:LearningItem)-[:NEXT *]-(v:LearningItem) where m.name= $name return v as Items"
+    )
+}
+
+schema {
+  query: QueryType
+}
+
+scalar DateTime

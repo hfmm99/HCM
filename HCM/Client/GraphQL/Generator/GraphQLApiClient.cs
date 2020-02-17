@@ -217,13 +217,17 @@ public partial class GqlProject
 	[GraphQLField("_id")]
 	public long? _id { get; set; }
 
+	/// <summary>Project events Events</summary>
+	[GraphQLField("events")]
+	public List<GqlEvents> Events { get; set; }
+
 	/// <summary>name of  Project</summary>
 	[GraphQLField("name")]
 	public string Name { get; set; }
 
-	/// <summary>Project project Events</summary>
-	[GraphQLField("project")]
-	public List<GqlEvents> Project { get; set; }
+	/// <summary>Project team Team</summary>
+	[GraphQLField("team")]
+	public GqlTeam Team { get; set; }
 
 }
 
@@ -300,6 +304,10 @@ public partial class GqlTeam
 	/// <summary>Team roles Role</summary>
 	[GraphQLField("roles")]
 	public List<GqlRole> Roles { get; set; }
+
+	/// <summary>Team worksOn Project</summary>
+	[GraphQLField("worksOn")]
+	public List<GqlProject> WorksOn { get; set; }
 
 }
 
@@ -2104,6 +2112,38 @@ public class Gql_ProjectFilter
 	[JsonProperty(PropertyName = "OR", NullValueHandling = NullValueHandling.Ignore)]
 	public List<Gql_ProjectFilter> OR { get; set; }
 
+	/// <summary>events</summary>
+	[JsonProperty(PropertyName = "events", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events { get; set; }
+
+	/// <summary>events_every</summary>
+	[JsonProperty(PropertyName = "events_every", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events_every { get; set; }
+
+	/// <summary>events_in</summary>
+	[JsonProperty(PropertyName = "events_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events_in { get; set; }
+
+	/// <summary>events_none</summary>
+	[JsonProperty(PropertyName = "events_none", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events_none { get; set; }
+
+	/// <summary>events_not</summary>
+	[JsonProperty(PropertyName = "events_not", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events_not { get; set; }
+
+	/// <summary>events_not_in</summary>
+	[JsonProperty(PropertyName = "events_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events_not_in { get; set; }
+
+	/// <summary>events_single</summary>
+	[JsonProperty(PropertyName = "events_single", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events_single { get; set; }
+
+	/// <summary>events_some</summary>
+	[JsonProperty(PropertyName = "events_some", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter Events_some { get; set; }
+
 	/// <summary>name</summary>
 	[JsonProperty(PropertyName = "name", NullValueHandling = NullValueHandling.Ignore)]
 	public string Name { get; set; }
@@ -2160,37 +2200,21 @@ public class Gql_ProjectFilter
 	[JsonProperty(PropertyName = "name_starts_with", NullValueHandling = NullValueHandling.Ignore)]
 	public string Name_starts_with { get; set; }
 
-	/// <summary>project</summary>
-	[JsonProperty(PropertyName = "project", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Project { get; set; }
+	/// <summary>team</summary>
+	[JsonProperty(PropertyName = "team", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_TeamFilter Team { get; set; }
 
-	/// <summary>project_every</summary>
-	[JsonProperty(PropertyName = "project_every", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Project_every { get; set; }
+	/// <summary>team_in</summary>
+	[JsonProperty(PropertyName = "team_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_TeamFilter Team_in { get; set; }
 
-	/// <summary>project_in</summary>
-	[JsonProperty(PropertyName = "project_in", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Project_in { get; set; }
+	/// <summary>team_not</summary>
+	[JsonProperty(PropertyName = "team_not", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_TeamFilter Team_not { get; set; }
 
-	/// <summary>project_none</summary>
-	[JsonProperty(PropertyName = "project_none", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Project_none { get; set; }
-
-	/// <summary>project_not</summary>
-	[JsonProperty(PropertyName = "project_not", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Project_not { get; set; }
-
-	/// <summary>project_not_in</summary>
-	[JsonProperty(PropertyName = "project_not_in", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Project_not_in { get; set; }
-
-	/// <summary>project_single</summary>
-	[JsonProperty(PropertyName = "project_single", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Project_single { get; set; }
-
-	/// <summary>project_some</summary>
-	[JsonProperty(PropertyName = "project_some", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Project_some { get; set; }
+	/// <summary>team_not_in</summary>
+	[JsonProperty(PropertyName = "team_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_TeamFilter Team_not_in { get; set; }
 
 }
 
@@ -2724,6 +2748,38 @@ public class Gql_TeamFilter
 	[JsonProperty(PropertyName = "roles_some", NullValueHandling = NullValueHandling.Ignore)]
 	public Gql_RoleFilter Roles_some { get; set; }
 
+	/// <summary>worksOn</summary>
+	[JsonProperty(PropertyName = "worksOn", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ProjectFilter WorksOn { get; set; }
+
+	/// <summary>worksOn_every</summary>
+	[JsonProperty(PropertyName = "worksOn_every", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ProjectFilter WorksOn_every { get; set; }
+
+	/// <summary>worksOn_in</summary>
+	[JsonProperty(PropertyName = "worksOn_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ProjectFilter WorksOn_in { get; set; }
+
+	/// <summary>worksOn_none</summary>
+	[JsonProperty(PropertyName = "worksOn_none", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ProjectFilter WorksOn_none { get; set; }
+
+	/// <summary>worksOn_not</summary>
+	[JsonProperty(PropertyName = "worksOn_not", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ProjectFilter WorksOn_not { get; set; }
+
+	/// <summary>worksOn_not_in</summary>
+	[JsonProperty(PropertyName = "worksOn_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ProjectFilter WorksOn_not_in { get; set; }
+
+	/// <summary>worksOn_single</summary>
+	[JsonProperty(PropertyName = "worksOn_single", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ProjectFilter WorksOn_single { get; set; }
+
+	/// <summary>worksOn_some</summary>
+	[JsonProperty(PropertyName = "worksOn_some", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_ProjectFilter WorksOn_some { get; set; }
+
 }
 
 [JsonConverter(typeof(GraphQLEnumConverter))]
@@ -3079,13 +3135,22 @@ name, prerequisite);
 name, tags);
 	}
 
-	/// <summary>Adds Project to Project entity</summary>
+	/// <summary>Adds Events to Project entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("addProjectProject")]
-	public GraphQLQuery<string> AddProjectProject (string sessionToken, string name, string[] project, Func<string, string> fields = null ) 
+	[GraphQLField("addProjectEvents")]
+	public GraphQLQuery<string> AddProjectEvents (string sessionToken, string[] events, string name, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-name, project);
+events, name);
+	}
+
+	/// <summary>Adds Team to Project entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addProjectTeam")]
+	public GraphQLQuery<string> AddProjectTeam (string sessionToken, string name, string[] team, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name, team);
 	}
 
 	/// <summary>Adds Employees to Role entity</summary>
@@ -3149,6 +3214,15 @@ members, name);
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 name, roles);
+	}
+
+	/// <summary>Adds WorksOn to Team entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addTeamWorksOn")]
+	public GraphQLQuery<string> AddTeamWorksOn (string sessionToken, string name, string[] worksOn, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name, worksOn);
 	}
 
 	/// <summary>Creates a Client entity</summary>
@@ -3484,13 +3558,22 @@ name, tags);
 name);
 	}
 
-	/// <summary>Deletes Project from Project entity</summary>
+	/// <summary>Deletes Events from Project entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("deleteProjectProject")]
-	public GraphQLQuery<string> DeleteProjectProject (string sessionToken, string name, string[] project, Func<string, string> fields = null ) 
+	[GraphQLField("deleteProjectEvents")]
+	public GraphQLQuery<string> DeleteProjectEvents (string sessionToken, string[] events, string name, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-name, project);
+events, name);
+	}
+
+	/// <summary>Deletes Team from Project entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteProjectTeam")]
+	public GraphQLQuery<string> DeleteProjectTeam (string sessionToken, string name, string[] team, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name, team);
 	}
 
 	/// <summary>Deletes a Role entity</summary>
@@ -3590,6 +3673,15 @@ members, name);
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 name, roles);
+	}
+
+	/// <summary>Deletes WorksOn from Team entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteTeamWorksOn")]
+	public GraphQLQuery<string> DeleteTeamWorksOn (string sessionToken, string name, string[] worksOn, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name, worksOn);
 	}
 
 	/// <summary>Merge a Client entity</summary>

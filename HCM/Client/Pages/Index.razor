@@ -104,7 +104,7 @@
 
         if (name != null)
         {
-            var query = gql.Employee(string.Empty, _user: name, fields: e => new GqlEmployee
+            var query = gql.Employee(string.Empty, user: name, fields: e => new GqlEmployee
             {
                 _id = e._id,
                 Name = e.Name,
