@@ -1,8 +1,10 @@
 ﻿@using System.Text.RegularExpressions
+@using HCM.Client.Shared
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 @inject HttpClient httpClient
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject NavigationManager navigationManager
 
 <div class="sidebar @TogglinClass">
     <NavMenu />
@@ -23,7 +25,17 @@
     @if (employee != null)
     {
         <div class="topRow bg--lightGray btm--gray px-4">
-            <a class="ml-md-auto"><img src="/Images/@employee.Image" alt="@employee.Name" style="border-radius: 50%; width:50px; height:50px" /></a>
+            <button class="ml-md-auto button_submenu_picture"><img src="/Images/@employee.Image" alt="@employee.Name" class="profile_picture" /></button>
+            <nav class="menu">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <button class="button_submenu_picture" @onclick="Profile">Profile</button>
+                    </li>
+                    <li class="list-group-item">
+                        <button class="button_submenu_picture" @onclick="logout">Log out</button>
+                    </li>
+                </ul>
+            </nav>
         </div>
     }
     <div class="content px-4">
@@ -69,5 +81,16 @@
         {
             TogglinClass = "sidebar_hidden";
         }
+    }
+
+    public async Task logout()
+    {
+        await sessionStorage.SetItemAsync("name", null);
+        navigationManager.NavigateTo("/login");
+    }
+
+    public void Profile()
+    {    
+       navigationManager.NavigateTo("/employee/" + employee._id);
     }
 }

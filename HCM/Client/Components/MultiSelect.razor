@@ -71,7 +71,7 @@ else
             </ul>
         </div>
     }
-    <div style="overflow:scroll; overflow-x:hidden; max-height:80px">
+    <div class="multi_select_vertical_scroll">
         @foreach (var value in Values)
         {
             <li class="multiSelect_chip multiSelect_list_item bg--lightGray text--vertMiddle" @onclick="(e => ValueClicked(value))">
@@ -219,7 +219,4 @@ else
 
         return items.Select(i => i.Item);
     }
-
-
-
 }

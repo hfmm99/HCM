@@ -106,6 +106,10 @@
             //Load Projects
             Projects = await gql.Project(string.Empty, fields: p => new GqlProject { _id = p._id, Name = p.Name }).RunAsync();
             RemovedProjects = new List<GqlProject>();
+
+            RemovedEmployees = new List<GqlEmployee>();
+            RemovedExperiences = new List<GqlExperience>();
+            RemovedProjects = new List<GqlProject>();
         }
     }
 

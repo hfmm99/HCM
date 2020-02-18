@@ -442,6 +442,12 @@ h2 {
         background-color: #b5dbff;
     }
 
+.multi_select_vertical_scroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 10em;
+}
+
 /* Modals */
 .modal_container {
     display: none;
@@ -1056,7 +1062,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .text--vertMiddle {
-    vertical-align: middle;
+    vertical-align: middle;   
 }
 
 .svg--15px {
@@ -1072,7 +1078,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 /*Error login*/
 .error-notice {
-    margin: 5px; /* Make sure to keep some distance from all sides */
+    margin: 5px; 
 }
 
 .oaerror {
@@ -1095,3 +1101,25 @@ input[type=number]::-webkit-outer-spin-button {
     .danger strong {
         color: #d9534f;
     }
+
+/*Photo main layout*/
+.profile_picture {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+/*Menu profile picture*/
+.menu {
+    display: none;
+}
+
+button + .menu:active,
+button:focus + .menu {
+    display:flex;
+}
+
+.button_submenu_picture {
+    border: none;
+    background-color: transparent;
+}
