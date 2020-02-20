@@ -51,15 +51,13 @@ public interface IGraphQLApiClient
 	/// <param name="dates">dates is list variant of date of Events</param>
 	/// <param name="description">description of Events</param>
 	/// <param name="descriptions">descriptions is list variant of description of Events</param>
-	/// <param name="project">project of Events</param>
-	/// <param name="projects">projects is list variant of project of Events</param>
 	/// <param name="score">score of Events</param>
 	/// <param name="scores">scores is list variant of score of Events</param>
 	/// <param name="subject">subject of Events</param>
 	/// <param name="subjects">subjects is list variant of subject of Events</param>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("Events")]
-	GraphQLQuery<GqlEvents> Events (string sessionToken, long? _id = null, long?[] _ids = null, DateTime? date = null, DateTime?[] dates = null, string description = null, string[] descriptions = null, Gql_EventsFilter filter = null, int? first = null, int? offset = null, Gql_EventsOrdering[] orderBy = null, string project = null, string[] projects = null, int? score = null, int?[] scores = null, string subject = null, string[] subjects = null, Func<GqlEvents, GqlEvents> fields = null );
+	GraphQLQuery<GqlEvents> Events (string sessionToken, long? _id = null, long?[] _ids = null, DateTime? date = null, DateTime?[] dates = null, string description = null, string[] descriptions = null, Gql_EventsFilter filter = null, int? first = null, int? offset = null, Gql_EventsOrdering[] orderBy = null, int? score = null, int?[] scores = null, string subject = null, string[] subjects = null, Func<GqlEvents, GqlEvents> fields = null );
 	
 
 	/// <param name="name">name of Experience</param>
@@ -150,22 +148,28 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> AddCountryEmployees (string sessionToken, string[] employees, string name, Func<string, string> fields = null );
 	
 
-	/// <summary>Adds Events to Employee entity</summary>
-	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("addEmployeeEvents")]
-	GraphQLQuery<string> AddEmployeeEvents (string sessionToken, string[] events, string name, Func<string, string> fields = null );
-	
-
 	/// <summary>Adds Experience to Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addEmployeeExperience")]
 	GraphQLQuery<string> AddEmployeeExperience (string sessionToken, string[] experience, string name, Func<string, string> fields = null );
 	
 
+	/// <summary>Adds IsFrom to Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addEmployeeIsFrom")]
+	GraphQLQuery<string> AddEmployeeIsFrom (string sessionToken, string[] isFrom, string name, Func<string, string> fields = null );
+	
+
 	/// <summary>Adds IsMemberOf to Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addEmployeeIsMemberOf")]
 	GraphQLQuery<string> AddEmployeeIsMemberOf (string sessionToken, string[] isMemberOf, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Adds IsTo to Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addEmployeeIsTo")]
+	GraphQLQuery<string> AddEmployeeIsTo (string sessionToken, string[] isTo, string name, Func<string, string> fields = null );
 	
 
 	/// <summary>Adds LivesIn to Employee entity</summary>
@@ -190,6 +194,12 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addEventsEvent_of")]
 	GraphQLQuery<string> AddEventsEvent_of (string sessionToken, string[] event_of, string subject, Func<string, string> fields = null );
+	
+
+	/// <summary>Adds Is_from to Events entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addEventsIs_from")]
+	GraphQLQuery<string> AddEventsIs_from (string sessionToken, string[] is_from, string subject, Func<string, string> fields = null );
 	
 
 	/// <summary>Adds Is_to to Events entity</summary>
@@ -321,7 +331,7 @@ public interface IGraphQLApiClient
 	/// <summary>Creates a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createEvents")]
-	GraphQLQuery<string> CreateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, string project = null, int? score = null, Func<string, string> fields = null );
+	GraphQLQuery<string> CreateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Creates a Experience entity</summary>
@@ -402,22 +412,28 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> DeleteEmployee (string sessionToken, string name, Func<string, string> fields = null );
 	
 
-	/// <summary>Deletes Events from Employee entity</summary>
-	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("deleteEmployeeEvents")]
-	GraphQLQuery<string> DeleteEmployeeEvents (string sessionToken, string[] events, string name, Func<string, string> fields = null );
-	
-
 	/// <summary>Deletes Experience from Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteEmployeeExperience")]
 	GraphQLQuery<string> DeleteEmployeeExperience (string sessionToken, string[] experience, string name, Func<string, string> fields = null );
 	
 
+	/// <summary>Deletes IsFrom from Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteEmployeeIsFrom")]
+	GraphQLQuery<string> DeleteEmployeeIsFrom (string sessionToken, string[] isFrom, string name, Func<string, string> fields = null );
+	
+
 	/// <summary>Deletes IsMemberOf from Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteEmployeeIsMemberOf")]
 	GraphQLQuery<string> DeleteEmployeeIsMemberOf (string sessionToken, string[] isMemberOf, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Deletes IsTo from Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteEmployeeIsTo")]
+	GraphQLQuery<string> DeleteEmployeeIsTo (string sessionToken, string[] isTo, string name, Func<string, string> fields = null );
 	
 
 	/// <summary>Deletes LivesIn from Employee entity</summary>
@@ -448,6 +464,12 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteEventsEvent_of")]
 	GraphQLQuery<string> DeleteEventsEvent_of (string sessionToken, string[] event_of, string subject, Func<string, string> fields = null );
+	
+
+	/// <summary>Deletes Is_from from Events entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteEventsIs_from")]
+	GraphQLQuery<string> DeleteEventsIs_from (string sessionToken, string[] is_from, string subject, Func<string, string> fields = null );
 	
 
 	/// <summary>Deletes Is_to from Events entity</summary>
@@ -627,7 +649,7 @@ public interface IGraphQLApiClient
 	/// <summary>Merge a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeEvents")]
-	GraphQLQuery<string> MergeEvents (string sessionToken, string subject, DateTime? date = null, string description = null, string project = null, int? score = null, Func<string, string> fields = null );
+	GraphQLQuery<string> MergeEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Merge a Experience entity</summary>
@@ -699,7 +721,7 @@ public interface IGraphQLApiClient
 	/// <summary>Updates a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateEvents")]
-	GraphQLQuery<string> UpdateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, string project = null, int? score = null, Func<string, string> fields = null );
+	GraphQLQuery<string> UpdateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Updates a Experience entity</summary>

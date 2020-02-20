@@ -1112,6 +1112,8 @@ input[type=number]::-webkit-outer-spin-button {
 /*Menu profile picture*/
 .menu {
     display: none;
+    margin-top:40px;
+    z-index:100;
 }
 
 button + .menu:active,
@@ -1123,3 +1125,59 @@ button:focus + .menu {
     border: none;
     background-color: transparent;
 }
+
+/*Score-rating*/
+.container_score {
+    width: 450px;
+}
+
+.score-rating {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+    .score-rating input[type="radio"] {
+        display: none;
+    }
+
+    .score-rating label {
+        width: 100%;
+        margin-right: 4px;
+        height: 15px;
+    }
+
+    .score-rating input[type="radio"]:checked + label {
+        border: 1px dotted grey;
+    }
+
+        .score-rating input[type="radio"]:checked + label:after {
+            content: " ";
+            position: relative;
+            left: 40%;
+            top: -2px;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-top: 7px solid black;
+        }
+
+.bg--red {
+    background-color: #e62325;
+}
+
+.bg--orange {
+    background-color: #fe8500;
+}
+
+.bg--yellow {
+    background-color: #fed500;
+}
+
+.bg--lightgreen {
+    background-color: #81b532;
+}
+
+.bg--green {
+    background-color: #00884b;
+}
+
+

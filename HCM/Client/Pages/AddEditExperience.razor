@@ -41,9 +41,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var name = await user_name.GetItemAsync<string>("name");
+        var user_name_session = await user_name.GetItemAsync<string>("user_name_session");
 
-        if (name == null)
+        if (user_name_session == null)
         {
             navigationManager.NavigateTo("/login");
         }
@@ -72,9 +72,9 @@
         }
     }
 
-    public void Save()
+    public async void Save()
     {
-        gql.MergeExperience(string.Empty, experience.Name).RunAsync();
+        await gql.MergeExperience(string.Empty, experience.Name).RunAsync();
         Cancel();
     }
 

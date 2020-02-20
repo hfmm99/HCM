@@ -53,10 +53,6 @@ public partial class GqlEmployee
 	[GraphQLField("email")]
 	public string Email { get; set; }
 
-	/// <summary>Employee events Events</summary>
-	[GraphQLField("events")]
-	public List<GqlEvents> Events { get; set; }
-
 	/// <summary>Employee experience Experience</summary>
 	[GraphQLField("experience")]
 	public List<GqlExperience> Experience { get; set; }
@@ -69,9 +65,17 @@ public partial class GqlEmployee
 	[GraphQLField("image")]
 	public string Image { get; set; }
 
+	/// <summary>Employee isFrom Events</summary>
+	[GraphQLField("isFrom")]
+	public List<GqlEvents> IsFrom { get; set; }
+
 	/// <summary>Employee isMemberOf Team</summary>
 	[GraphQLField("isMemberOf")]
 	public List<GqlTeam> IsMemberOf { get; set; }
+
+	/// <summary>Employee isTo Events</summary>
+	[GraphQLField("isTo")]
+	public List<GqlEvents> IsTo { get; set; }
 
 	/// <summary>Employee livesIn Country</summary>
 	[GraphQLField("livesIn")]
@@ -121,13 +125,13 @@ public partial class GqlEvents
 	[GraphQLField("event_of")]
 	public List<GqlProject> Event_of { get; set; }
 
+	/// <summary>Events is_from Employee</summary>
+	[GraphQLField("is_from")]
+	public List<GqlEmployee> Is_from { get; set; }
+
 	/// <summary>Events is_to Employee</summary>
 	[GraphQLField("is_to")]
 	public List<GqlEmployee> Is_to { get; set; }
-
-	/// <summary>project of  Events</summary>
-	[GraphQLField("project")]
-	public string Project { get; set; }
 
 	/// <summary>Events scopes Scope</summary>
 	[GraphQLField("scopes")]
@@ -627,38 +631,6 @@ public class Gql_EmployeeFilter
 	[JsonProperty(PropertyName = "email_starts_with", NullValueHandling = NullValueHandling.Ignore)]
 	public string Email_starts_with { get; set; }
 
-	/// <summary>events</summary>
-	[JsonProperty(PropertyName = "events", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Events { get; set; }
-
-	/// <summary>events_every</summary>
-	[JsonProperty(PropertyName = "events_every", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Events_every { get; set; }
-
-	/// <summary>events_in</summary>
-	[JsonProperty(PropertyName = "events_in", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Events_in { get; set; }
-
-	/// <summary>events_none</summary>
-	[JsonProperty(PropertyName = "events_none", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Events_none { get; set; }
-
-	/// <summary>events_not</summary>
-	[JsonProperty(PropertyName = "events_not", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Events_not { get; set; }
-
-	/// <summary>events_not_in</summary>
-	[JsonProperty(PropertyName = "events_not_in", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Events_not_in { get; set; }
-
-	/// <summary>events_single</summary>
-	[JsonProperty(PropertyName = "events_single", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Events_single { get; set; }
-
-	/// <summary>events_some</summary>
-	[JsonProperty(PropertyName = "events_some", NullValueHandling = NullValueHandling.Ignore)]
-	public Gql_EventsFilter Events_some { get; set; }
-
 	/// <summary>experience</summary>
 	[JsonProperty(PropertyName = "experience", NullValueHandling = NullValueHandling.Ignore)]
 	public Gql_ExperienceFilter Experience { get; set; }
@@ -803,6 +775,38 @@ public class Gql_EmployeeFilter
 	[JsonProperty(PropertyName = "image_starts_with", NullValueHandling = NullValueHandling.Ignore)]
 	public string Image_starts_with { get; set; }
 
+	/// <summary>isFrom</summary>
+	[JsonProperty(PropertyName = "isFrom", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsFrom { get; set; }
+
+	/// <summary>isFrom_every</summary>
+	[JsonProperty(PropertyName = "isFrom_every", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsFrom_every { get; set; }
+
+	/// <summary>isFrom_in</summary>
+	[JsonProperty(PropertyName = "isFrom_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsFrom_in { get; set; }
+
+	/// <summary>isFrom_none</summary>
+	[JsonProperty(PropertyName = "isFrom_none", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsFrom_none { get; set; }
+
+	/// <summary>isFrom_not</summary>
+	[JsonProperty(PropertyName = "isFrom_not", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsFrom_not { get; set; }
+
+	/// <summary>isFrom_not_in</summary>
+	[JsonProperty(PropertyName = "isFrom_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsFrom_not_in { get; set; }
+
+	/// <summary>isFrom_single</summary>
+	[JsonProperty(PropertyName = "isFrom_single", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsFrom_single { get; set; }
+
+	/// <summary>isFrom_some</summary>
+	[JsonProperty(PropertyName = "isFrom_some", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsFrom_some { get; set; }
+
 	/// <summary>isMemberOf</summary>
 	[JsonProperty(PropertyName = "isMemberOf", NullValueHandling = NullValueHandling.Ignore)]
 	public Gql_TeamFilter IsMemberOf { get; set; }
@@ -834,6 +838,38 @@ public class Gql_EmployeeFilter
 	/// <summary>isMemberOf_some</summary>
 	[JsonProperty(PropertyName = "isMemberOf_some", NullValueHandling = NullValueHandling.Ignore)]
 	public Gql_TeamFilter IsMemberOf_some { get; set; }
+
+	/// <summary>isTo</summary>
+	[JsonProperty(PropertyName = "isTo", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsTo { get; set; }
+
+	/// <summary>isTo_every</summary>
+	[JsonProperty(PropertyName = "isTo_every", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsTo_every { get; set; }
+
+	/// <summary>isTo_in</summary>
+	[JsonProperty(PropertyName = "isTo_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsTo_in { get; set; }
+
+	/// <summary>isTo_none</summary>
+	[JsonProperty(PropertyName = "isTo_none", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsTo_none { get; set; }
+
+	/// <summary>isTo_not</summary>
+	[JsonProperty(PropertyName = "isTo_not", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsTo_not { get; set; }
+
+	/// <summary>isTo_not_in</summary>
+	[JsonProperty(PropertyName = "isTo_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsTo_not_in { get; set; }
+
+	/// <summary>isTo_single</summary>
+	[JsonProperty(PropertyName = "isTo_single", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsTo_single { get; set; }
+
+	/// <summary>isTo_some</summary>
+	[JsonProperty(PropertyName = "isTo_some", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EventsFilter IsTo_some { get; set; }
 
 	/// <summary>livesIn</summary>
 	[JsonProperty(PropertyName = "livesIn", NullValueHandling = NullValueHandling.Ignore)]
@@ -1324,6 +1360,38 @@ public class Gql_EventsFilter
 	[JsonProperty(PropertyName = "event_of_some", NullValueHandling = NullValueHandling.Ignore)]
 	public Gql_ProjectFilter Event_of_some { get; set; }
 
+	/// <summary>is_from</summary>
+	[JsonProperty(PropertyName = "is_from", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Is_from { get; set; }
+
+	/// <summary>is_from_every</summary>
+	[JsonProperty(PropertyName = "is_from_every", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Is_from_every { get; set; }
+
+	/// <summary>is_from_in</summary>
+	[JsonProperty(PropertyName = "is_from_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Is_from_in { get; set; }
+
+	/// <summary>is_from_none</summary>
+	[JsonProperty(PropertyName = "is_from_none", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Is_from_none { get; set; }
+
+	/// <summary>is_from_not</summary>
+	[JsonProperty(PropertyName = "is_from_not", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Is_from_not { get; set; }
+
+	/// <summary>is_from_not_in</summary>
+	[JsonProperty(PropertyName = "is_from_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Is_from_not_in { get; set; }
+
+	/// <summary>is_from_single</summary>
+	[JsonProperty(PropertyName = "is_from_single", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Is_from_single { get; set; }
+
+	/// <summary>is_from_some</summary>
+	[JsonProperty(PropertyName = "is_from_some", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Is_from_some { get; set; }
+
 	/// <summary>is_to</summary>
 	[JsonProperty(PropertyName = "is_to", NullValueHandling = NullValueHandling.Ignore)]
 	public Gql_EmployeeFilter Is_to { get; set; }
@@ -1355,62 +1423,6 @@ public class Gql_EventsFilter
 	/// <summary>is_to_some</summary>
 	[JsonProperty(PropertyName = "is_to_some", NullValueHandling = NullValueHandling.Ignore)]
 	public Gql_EmployeeFilter Is_to_some { get; set; }
-
-	/// <summary>project</summary>
-	[JsonProperty(PropertyName = "project", NullValueHandling = NullValueHandling.Ignore)]
-	public string Project { get; set; }
-
-	/// <summary>project_contains</summary>
-	[JsonProperty(PropertyName = "project_contains", NullValueHandling = NullValueHandling.Ignore)]
-	public string Project_contains { get; set; }
-
-	/// <summary>project_ends_with</summary>
-	[JsonProperty(PropertyName = "project_ends_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string Project_ends_with { get; set; }
-
-	/// <summary>project_gt</summary>
-	[JsonProperty(PropertyName = "project_gt", NullValueHandling = NullValueHandling.Ignore)]
-	public string Project_gt { get; set; }
-
-	/// <summary>project_gte</summary>
-	[JsonProperty(PropertyName = "project_gte", NullValueHandling = NullValueHandling.Ignore)]
-	public string Project_gte { get; set; }
-
-	/// <summary>project_in</summary>
-	[JsonProperty(PropertyName = "project_in", NullValueHandling = NullValueHandling.Ignore)]
-	public List<string> Project_in { get; set; }
-
-	/// <summary>project_lt</summary>
-	[JsonProperty(PropertyName = "project_lt", NullValueHandling = NullValueHandling.Ignore)]
-	public string Project_lt { get; set; }
-
-	/// <summary>project_lte</summary>
-	[JsonProperty(PropertyName = "project_lte", NullValueHandling = NullValueHandling.Ignore)]
-	public string Project_lte { get; set; }
-
-	/// <summary>project_not</summary>
-	[JsonProperty(PropertyName = "project_not", NullValueHandling = NullValueHandling.Ignore)]
-	public string Project_not { get; set; }
-
-	/// <summary>project_not_contains</summary>
-	[JsonProperty(PropertyName = "project_not_contains", NullValueHandling = NullValueHandling.Ignore)]
-	public string Project_not_contains { get; set; }
-
-	/// <summary>project_not_ends_with</summary>
-	[JsonProperty(PropertyName = "project_not_ends_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string Project_not_ends_with { get; set; }
-
-	/// <summary>project_not_in</summary>
-	[JsonProperty(PropertyName = "project_not_in", NullValueHandling = NullValueHandling.Ignore)]
-	public List<string> Project_not_in { get; set; }
-
-	/// <summary>project_not_starts_with</summary>
-	[JsonProperty(PropertyName = "project_not_starts_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string Project_not_starts_with { get; set; }
-
-	/// <summary>project_starts_with</summary>
-	[JsonProperty(PropertyName = "project_starts_with", NullValueHandling = NullValueHandling.Ignore)]
-	public string Project_starts_with { get; set; }
 
 	/// <summary>scopes</summary>
 	[JsonProperty(PropertyName = "scopes", NullValueHandling = NullValueHandling.Ignore)]
@@ -1545,10 +1557,6 @@ public enum Gql_EventsOrdering
 	description_asc,
 	/// <summary>Descending sort for description</summary>
 	description_desc,
-	/// <summary>Ascending sort for project</summary>
-	project_asc,
-	/// <summary>Descending sort for project</summary>
-	project_desc,
 	/// <summary>Ascending sort for score</summary>
 	score_asc,
 	/// <summary>Descending sort for score</summary>
@@ -2859,18 +2867,16 @@ _id, _ids, dateOfBirth, dateOfBirths, email, emails, filter, first, gender, gend
 	/// <param name="dates">dates is list variant of date of Events</param>
 	/// <param name="description">description of Events</param>
 	/// <param name="descriptions">descriptions is list variant of description of Events</param>
-	/// <param name="project">project of Events</param>
-	/// <param name="projects">projects is list variant of project of Events</param>
 	/// <param name="score">score of Events</param>
 	/// <param name="scores">scores is list variant of score of Events</param>
 	/// <param name="subject">subject of Events</param>
 	/// <param name="subjects">subjects is list variant of subject of Events</param>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("Events")]
-	public GraphQLQuery<GqlEvents> Events (string sessionToken, long? _id = null, long?[] _ids = null, DateTime? date = null, DateTime?[] dates = null, string description = null, string[] descriptions = null, Gql_EventsFilter filter = null, int? first = null, int? offset = null, Gql_EventsOrdering[] orderBy = null, string project = null, string[] projects = null, int? score = null, int?[] scores = null, string subject = null, string[] subjects = null, Func<GqlEvents, GqlEvents> fields = null ) 
+	public GraphQLQuery<GqlEvents> Events (string sessionToken, long? _id = null, long?[] _ids = null, DateTime? date = null, DateTime?[] dates = null, string description = null, string[] descriptions = null, Gql_EventsFilter filter = null, int? first = null, int? offset = null, Gql_EventsOrdering[] orderBy = null, int? score = null, int?[] scores = null, string subject = null, string[] subjects = null, Func<GqlEvents, GqlEvents> fields = null ) 
 	{
 		return new GraphQLQuery<GqlEvents>(_httpClient, _endpoint, true, false, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-_id, _ids, date, dates, description, descriptions, filter, first, offset, orderBy, project, projects, score, scores, subject, subjects);
+_id, _ids, date, dates, description, descriptions, filter, first, offset, orderBy, score, scores, subject, subjects);
 	}
 
 	/// <param name="name">name of Experience</param>
@@ -3000,15 +3006,6 @@ employees, name);
 employees, name);
 	}
 
-	/// <summary>Adds Events to Employee entity</summary>
-	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("addEmployeeEvents")]
-	public GraphQLQuery<string> AddEmployeeEvents (string sessionToken, string[] events, string name, Func<string, string> fields = null ) 
-	{
-		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-events, name);
-	}
-
 	/// <summary>Adds Experience to Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addEmployeeExperience")]
@@ -3018,6 +3015,15 @@ events, name);
 experience, name);
 	}
 
+	/// <summary>Adds IsFrom to Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addEmployeeIsFrom")]
+	public GraphQLQuery<string> AddEmployeeIsFrom (string sessionToken, string[] isFrom, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+isFrom, name);
+	}
+
 	/// <summary>Adds IsMemberOf to Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addEmployeeIsMemberOf")]
@@ -3025,6 +3031,15 @@ experience, name);
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 isMemberOf, name);
+	}
+
+	/// <summary>Adds IsTo to Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addEmployeeIsTo")]
+	public GraphQLQuery<string> AddEmployeeIsTo (string sessionToken, string[] isTo, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+isTo, name);
 	}
 
 	/// <summary>Adds LivesIn to Employee entity</summary>
@@ -3061,6 +3076,15 @@ name, worksFor);
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 event_of, subject);
+	}
+
+	/// <summary>Adds Is_from to Events entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addEventsIs_from")]
+	public GraphQLQuery<string> AddEventsIs_from (string sessionToken, string[] is_from, string subject, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+is_from, subject);
 	}
 
 	/// <summary>Adds Is_to to Events entity</summary>
@@ -3255,10 +3279,10 @@ name, dateOfBirth, email, gender, image, password, phone, user);
 	/// <summary>Creates a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createEvents")]
-	public GraphQLQuery<string> CreateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, string project = null, int? score = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> CreateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-subject, date, description, project, score);
+subject, date, description, score);
 	}
 
 	/// <summary>Creates a Experience entity</summary>
@@ -3378,15 +3402,6 @@ employees, name);
 name);
 	}
 
-	/// <summary>Deletes Events from Employee entity</summary>
-	/// <param name="sessionToken">Token Used on production</param>
-	[GraphQLField("deleteEmployeeEvents")]
-	public GraphQLQuery<string> DeleteEmployeeEvents (string sessionToken, string[] events, string name, Func<string, string> fields = null ) 
-	{
-		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-events, name);
-	}
-
 	/// <summary>Deletes Experience from Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteEmployeeExperience")]
@@ -3396,6 +3411,15 @@ events, name);
 experience, name);
 	}
 
+	/// <summary>Deletes IsFrom from Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteEmployeeIsFrom")]
+	public GraphQLQuery<string> DeleteEmployeeIsFrom (string sessionToken, string[] isFrom, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+isFrom, name);
+	}
+
 	/// <summary>Deletes IsMemberOf from Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteEmployeeIsMemberOf")]
@@ -3403,6 +3427,15 @@ experience, name);
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 isMemberOf, name);
+	}
+
+	/// <summary>Deletes IsTo from Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteEmployeeIsTo")]
+	public GraphQLQuery<string> DeleteEmployeeIsTo (string sessionToken, string[] isTo, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+isTo, name);
 	}
 
 	/// <summary>Deletes LivesIn from Employee entity</summary>
@@ -3448,6 +3481,15 @@ subject);
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 event_of, subject);
+	}
+
+	/// <summary>Deletes Is_from from Events entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteEventsIs_from")]
+	public GraphQLQuery<string> DeleteEventsIs_from (string sessionToken, string[] is_from, string subject, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+is_from, subject);
 	}
 
 	/// <summary>Deletes Is_to from Events entity</summary>
@@ -3714,10 +3756,10 @@ name, dateOfBirth, email, gender, image, password, phone, user);
 	/// <summary>Merge a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeEvents")]
-	public GraphQLQuery<string> MergeEvents (string sessionToken, string subject, DateTime? date = null, string description = null, string project = null, int? score = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> MergeEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-subject, date, description, project, score);
+subject, date, description, score);
 	}
 
 	/// <summary>Merge a Experience entity</summary>
@@ -3822,10 +3864,10 @@ name, dateOfBirth, email, gender, image, password, phone, user);
 	/// <summary>Updates a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateEvents")]
-	public GraphQLQuery<string> UpdateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, string project = null, int? score = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> UpdateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-subject, date, description, project, score);
+subject, date, description, score);
 	}
 
 	/// <summary>Updates a Experience entity</summary>

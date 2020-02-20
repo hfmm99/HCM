@@ -54,9 +54,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var name = await user_name.GetItemAsync<string>("name");
+        var user_name_session = await user_name.GetItemAsync<string>("user_name_session");
 
-        if (name == null)
+        if (user_name_session == null)
         {
             navigationManager.NavigateTo("/login");
         }
@@ -87,7 +87,7 @@
                 team = (await query.RunAsync()).FirstOrDefault();
             }
             else
-                team = new GqlTeam();
+                team = new GqlTeam { Members = new List<GqlEmployee>(), Exp_requeres = new List<GqlExperience>(), WorksOn = new List<GqlProject>()};
 
             //Load Employees
             Employees = await gql.Employee(string.Empty, fields: e => new GqlEmployee
@@ -113,9 +113,9 @@
         }
     }
 
-    public void Save()
+    public async void Save()
     {
-        gql.MergeTeam(string.Empty, team.Name).RunAsync();
+        await gql.MergeTeam(string.Empty, team.Name).RunAsync();
         SaveEmployees();
         SaveExperiences();
         SaveProjects();
@@ -159,47 +159,47 @@
         team.WorksOn.Remove(project);
     }
 
-    private void SaveEmployees()
+    private async void SaveEmployees()
     {
         // Save team employees
-        gql.AddTeamMembers(string.Empty, name: team.Name, members: team.Members.Select(s => s.Name).ToArray()).RunAsync();
+        await gql.AddTeamMembers(string.Empty, name: team.Name, members: team.Members.Select(s => s.Name).ToArray()).RunAsync();
 
         // Delete removed employees, if any
         var membersToRemove = RemovedEmployees.Select(s => s.Name).Except(team.Members.Select(es => es.Name));
 
         if (membersToRemove.Any())
-            gql.DeleteTeamMembers(string.Empty, name: team.Name, members: membersToRemove.ToArray()).RunAsync();
+        await gql.DeleteTeamMembers(string.Empty, name: team.Name, members: membersToRemove.ToArray()).RunAsync();
     }
 
-    private void SaveExperiences()
+    private async void SaveExperiences()
     {
         // Insert newly created experiences, if any
         foreach (var experience in Experiences.Where(s => !s._id.HasValue))
-            gql.CreateExperience(string.Empty, experience.Name).RunAsync();
+        await gql.CreateExperience(string.Empty, experience.Name).RunAsync();
 
         // Save team needed exp
-        gql.AddTeamExp_requeres(string.Empty, name: team.Name, exp_requeres: team.Exp_requeres.Select(s => s.Name).ToArray()).RunAsync();
+        await gql.AddTeamExp_requeres(string.Empty, name: team.Name, exp_requeres: team.Exp_requeres.Select(s => s.Name).ToArray()).RunAsync();
 
         // Delete removed experiences, if any
         var experiencesToRemove = RemovedExperiences.Select(s => s.Name).Except(team.Exp_requeres.Select(es => es.Name));
 
         if (experiencesToRemove.Any())
-            gql.DeleteTeamExp_requeres(string.Empty, name: team.Name, exp_requeres: experiencesToRemove.ToArray()).RunAsync();
+        await gql.DeleteTeamExp_requeres(string.Empty, name: team.Name, exp_requeres: experiencesToRemove.ToArray()).RunAsync();
     }
 
-    private void SaveProjects()
+    private async  void SaveProjects()
     {
         // Insert newly created projects, if any
         foreach (var project in Projects.Where(s => !s._id.HasValue))
-            gql.CreateProject(string.Empty, project.Name).RunAsync();
+        await gql.CreateProject(string.Empty, project.Name).RunAsync();
 
         // Save team needed exp
-        gql.AddTeamWorksOn(string.Empty, name: team.Name, worksOn: team.WorksOn.Select(s => s.Name).ToArray()).RunAsync();
+        await gql.AddTeamWorksOn(string.Empty, name: team.Name, worksOn: team.WorksOn.Select(s => s.Name).ToArray()).RunAsync();
 
         // Delete removed projects, if any
         var projectsToRemove = RemovedProjects.Select(s => s.Name).Except(team.WorksOn.Select(es => es.Name));
 
         if (projectsToRemove.Any())
-            gql.DeleteTeamWorksOn(string.Empty, name: team.Name, worksOn: projectsToRemove.ToArray()).RunAsync();
+        await gql.DeleteTeamWorksOn(string.Empty, name: team.Name, worksOn: projectsToRemove.ToArray()).RunAsync();
     }
 }

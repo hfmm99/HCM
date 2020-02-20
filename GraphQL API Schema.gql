@@ -12,7 +12,8 @@ type Employee {
   worksFor: [Client] @relation(name: "WORKS_FOR", direction: out)
   livesIn: [Country] @relation(name: "LIVES_IN", direction: out)
   experience: [Experience] @relation(name: "KNOWS", direction: out)
-  events: [Events] @relation(name: "FROM", direction: in)
+  isTo: [Events] @relation(name: "TO", direction: in)
+  isFrom: [Events] @relation(name: "IS_FROM", direction: out)
 }
 
 type Team {
@@ -36,13 +37,13 @@ type Scope {
 
 type Events {
   score: Int
-  project: String
   subject: ID!
   date: DateTime
   description: String
   is_to: [Employee] @relation(name: "TO", direction: out)
   scopes: [Scope] @relation(name: "SCOPE_OF", direction: in)
   event_of: [Project] @relation(name: "EVENT_OF", direction: out)
+  is_from: [Employee] @relation(name: "IS_FROM", direction: in)
 }
 
 type Project {

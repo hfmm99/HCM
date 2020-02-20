@@ -3,7 +3,7 @@
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 @inject HttpClient httpClient
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Blazored.SessionStorage.ISessionStorageService user_name
 @inject NavigationManager navigationManager
 
 <div class="sidebar @TogglinClass">
@@ -26,7 +26,7 @@
     {
         <div class="topRow bg--lightGray btm--gray px-4">
             <button class="ml-md-auto button_submenu_picture"><img src="/Images/@employee.Image" alt="@employee.Name" class="profile_picture" /></button>
-            <nav class="menu">
+            <div class="menu">
                 <ul class="list-group">
                     <li class="list-group-item">
                         <button class="button_submenu_picture" @onclick="Profile">Profile</button>
@@ -35,7 +35,7 @@
                         <button class="button_submenu_picture" @onclick="logout">Log out</button>
                     </li>
                 </ul>
-            </nav>
+            </div>
         </div>
     }
     <div class="content px-4">
@@ -52,13 +52,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var name = await sessionStorage.GetItemAsync<string>("name");
+        var user_name_session = await user_name.GetItemAsync<string>("user_name_session");
 
         gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
 
-        if (name != null)
+        if (user_name_session != null)
         {
-            var query = gql.Employee(string.Empty, user: name, fields: e => new GqlEmployee
+            var query = gql.Employee(string.Empty, name: user_name_session, fields: e => new GqlEmployee
             {
                 _id = e._id,
                 Name = e.Name,
@@ -85,7 +85,7 @@
 
     public async Task logout()
     {
-        await sessionStorage.SetItemAsync("name", null);
+        await user_name.SetItemAsync("user_name_session", null);
         navigationManager.NavigateTo("/login");
     }
 

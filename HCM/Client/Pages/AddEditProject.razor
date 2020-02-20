@@ -33,9 +33,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var name = await user_name.GetItemAsync<string>("name");
+        var user_name_session = await user_name.GetItemAsync<string>("user_name_session");
 
-        if (name == null)
+        if (user_name_session == null)
         {
             navigationManager.NavigateTo("/login");
         }
@@ -63,10 +63,10 @@
         navigationManager.NavigateTo("/projects");
     }
 
-    public void Save()
+    public async void Save()
     {
         // Save Employee
-        gql.MergeProject(string.Empty, name: project.Name).RunAsync();
+        await gql.MergeProject(string.Empty, name: project.Name).RunAsync();
         Cancel();
     }
 }

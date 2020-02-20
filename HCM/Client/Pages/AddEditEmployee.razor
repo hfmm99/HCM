@@ -83,7 +83,7 @@
         <label>Employee's experience:</label>
         <MultiSelect TItem="GqlExperience" Placeholder="Type to Search" Items="Experiences" Values="employee.Experience" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ExperienceRemoved" OnAddNewItem="@AddNewExperience" />
     </div>
-    <button class="btn btn-primary underline-first-letter" type="submit" accesskey="s" @onclick="Save">Save</button>
+    <button class="btn btn-primary underline-first-letter" type="button" accesskey="s" @onclick="Save">Save</button>
     <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
     }
 </form>
@@ -101,9 +101,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var name = await user_name.GetItemAsync<string>("name");
+        var user_name_session = await user_name.GetItemAsync<string>("user_name_session");
 
-        if (name == null)
+        if (user_name_session == null)
         {
             navigationManager.NavigateTo("/login");
         }
@@ -137,7 +137,7 @@
                 employee = (await query.RunAsync()).FirstOrDefault();
             }
             else
-                employee = new GqlEmployee();
+                employee = new GqlEmployee  { Experience = new List<GqlExperience>() };
 
             ////Load Experiences
             Experiences = await gql.Experience(string.Empty, fields: r => new GqlExperience
@@ -154,30 +154,28 @@
     {
     }
 
-    public void Save()
+    public async void Save()
     {
         // Save Employee
-        gql.MergeEmployee(string.Empty, name: employee.Name, dateOfBirth: employee.DateOfBirth, email: employee.Email, gender: employee.Gender, phone: employee.Phone, user: employee.User, password: employee.Password).RunAsync();
+        await gql.MergeEmployee(string.Empty, name: employee.Name, dateOfBirth: employee.DateOfBirth, email: employee.Email, gender: employee.Gender, phone: employee.Phone, user: employee.User, password: employee.Password).RunAsync();
 
         SaveExperiences();
         Cancel();
     }
 
-    private void SaveExperiences()
+    private async void SaveExperiences()
     {
         // Insert newly created experiences, if any
         foreach (var experience in Experiences.Where(s => !s._id.HasValue))
-            gql.CreateExperience(string.Empty, experience.Name).RunAsync();
-        Console.WriteLine("cree nueva");
+        await gql.CreateExperience(string.Empty, experience.Name).RunAsync();
 
         // Save employee experiences
-        gql.AddEmployeeExperience(string.Empty, name: employee.Name, experience: employee.Experience.Select(s => s.Name).ToArray()).RunAsync();
-        Console.WriteLine("Salve exp");
+        await gql.AddEmployeeExperience(string.Empty, name: employee.Name, experience: employee.Experience.Select(s => s.Name).ToArray()).RunAsync();
 
         // Delete removed experiences, if any
         var experiencesToRemove = RemovedExperiences.Select(s => s.Name).Except(employee.Experience.Select(es => es.Name));
         if (experiencesToRemove.Any())
-            gql.DeleteEmployeeExperience(string.Empty, name: employee.Name, experience: experiencesToRemove.ToArray()).RunAsync();
+        await gql.DeleteEmployeeExperience(string.Empty, name: employee.Name, experience: experiencesToRemove.ToArray()).RunAsync();
     }
 
     public void Cancel()
@@ -200,6 +198,6 @@
 
     public void Change_picture()
     {
-    
+
     }
 }

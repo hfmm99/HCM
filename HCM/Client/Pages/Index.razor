@@ -88,9 +88,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var name = await user_name.GetItemAsync<string>("name");
+        var user_name_session = await user_name.GetItemAsync<string>("user_name_session");
 
-        if (name == null)
+        if (user_name_session == null)
         {
             navigationManager.NavigateTo("/login");
         }
@@ -102,12 +102,12 @@
 
     protected async Task Search()
     {
-        var name = await user_name.GetItemAsync<string>("name");
+        var user_name_session = await user_name.GetItemAsync<string>("user_name_session");
         gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
 
-        if (name != null)
+        if (user_name_session != null)
         {
-            var query = gql.Employee(string.Empty, user: name, fields: e => new GqlEmployee
+            var query = gql.Employee(string.Empty, name: user_name_session, fields: e => new GqlEmployee
             {
                 _id = e._id,
                 Name = e.Name,

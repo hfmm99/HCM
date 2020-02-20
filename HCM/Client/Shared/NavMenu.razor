@@ -1,5 +1,5 @@
 ﻿@using MatBlazor
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Blazored.SessionStorage.ISessionStorageService user_name
 @inject NavigationManager navigationManager
 
 <div class="bg--darkBlue pl-4 navbar navbar-dark">
@@ -105,7 +105,7 @@
 
     public async Task logout()
     {
-        await sessionStorage.SetItemAsync("name", null);
+        await user_name.SetItemAsync("user_name_session", null);
         navigationManager.NavigateTo("/login");
         logout_visible = "visible";
     }

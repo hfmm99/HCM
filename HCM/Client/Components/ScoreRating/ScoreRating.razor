@@ -1,0 +1,22 @@
+﻿@using System.Collections;
+@using Microsoft.AspNetCore.Components;
+<CascadingValue Value="@this">
+    @ChildContent
+</CascadingValue>
+
+<div class="container">
+    <div class="score-rating">
+        @foreach (ScoreRatingOption option in Options)
+        {
+            <input id="score-rb1" type="radio" name="rating" value="1" /><label for="score-rb1" class="bg--red" title="Very Poor"></label>
+        }
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    internal List<ScoreRatingOption> Options { get; set; } = new List<ScoreRatingOption>();
+}

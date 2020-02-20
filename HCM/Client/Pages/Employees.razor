@@ -66,8 +66,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var name = await user_name.GetItemAsync<string>("name");
-        if (name == null)
+        var user_name_session = await user_name.GetItemAsync<string>("user_name_session");
+        if (user_name_session == null)
         {
             navigationManager.NavigateTo("/login");
         }
