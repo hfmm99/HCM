@@ -5,11 +5,11 @@
 </CascadingValue>
 
 <div class="container">
-    <div class="score-rating">
-        @foreach (ScoreRatingOption option in Options)
-        {
-            <input id="score-rb1" type="radio" name="rating" value="1" /><label for="score-rb1" class="bg--red" title="Very Poor"></label>
-        }
+    <div class="score-rating"> 
+        @for (int i = 0; i <= Options.Count - 1; i++)
+        {  
+            <input id="@i" type="radio" name="rating" value="@Options[i].Value" checked="@Options[i].Checked" /><label for="@i" style="background-color:@Options[i].Color" title="@Options[i].Title"></label>
+        }      
     </div>
 </div>
 

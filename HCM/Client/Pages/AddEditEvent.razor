@@ -50,9 +50,12 @@
                 <div class="col">
                     <label for="num_score">Score:</label>
                     @*<input id="num_score" type="number" class="form-control" min="-10" max="10" @bind="events.Score" />*@
-                <ScoreRating @ref="score">
-                    <ScoreRatingOption />
-                    <ScoreRatingOption />
+                <ScoreRating>
+                    <ScoreRatingOption Title="Very Poor" Color="#e62325" Value="0" />
+                    <ScoreRatingOption Title="Poor" Color="#fe8500" Value="1" />
+                    <ScoreRatingOption Title="Good" Color="#fed500" Value="2" Checked="true" />
+                    <ScoreRatingOption Title="Very Good" Color="#81b532" Value="3" />
+                    <ScoreRatingOption Title="Outstanding" Color="#00884b" Value="4" />
                 </ScoreRating>
                 </div>
             </div>
@@ -266,5 +269,5 @@
         navigationManager.NavigateTo("/events");
     }
 
-     private ScoreRating score;
+   
 }

@@ -1143,7 +1143,7 @@ button:focus + .menu {
     .score-rating label {
         width: 100%;
         margin-right: 4px;
-        height: 15px;
+        height: 20px;
     }
 
     .score-rating input[type="radio"]:checked + label {
@@ -1153,8 +1153,8 @@ button:focus + .menu {
         .score-rating input[type="radio"]:checked + label:after {
             content: " ";
             position: relative;
-            left: 40%;
-            top: -2px;
+            left: 43%;
+            top: -4px;
             border-left: 7px solid transparent;
             border-right: 7px solid transparent;
             border-top: 7px solid black;

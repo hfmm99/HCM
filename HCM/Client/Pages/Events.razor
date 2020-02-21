@@ -41,7 +41,7 @@
 </div>
 
 @code {
-        bool ShowPopup = false;
+    bool ShowPopup = false;
     private int page = 1;
     private int pages = 0;
     private Grid grid;
@@ -78,17 +78,25 @@
     protected async Task Search()
     {
         gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+        var user_name_session = await user_name.GetItemAsync<string>("user_name_session");
 
-        var query = gql.Events(string.Empty, first: 10, offset: (page - 1) * 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_EventsFilter { OR = new List<Gql_EventsFilter> { new Gql_EventsFilter { Subject_contains = SearchTerm } } }, orderBy: new[] { sorting }, fields: e => new GqlEvents
+        var query = gql.Events(string.Empty, filter: new Gql_EventsFilter {Is_from = new Gql_EmployeeFilter { Name = user_name_session}}, orderBy: new[] { sorting }, fields: e => new GqlEvents
         {
             _id = e._id,
             Subject = e.Subject,
             Date = e.Date
         });
 
+        //var query = gql.Events(string.Empty, first: 10, offset: (page - 1) * 10, filter: string.IsNullOrEmpty(SearchTerm) ? null : new Gql_EventsFilter { OR = new List<Gql_EventsFilter> { new Gql_EventsFilter { Subject_contains = SearchTerm } } }, orderBy: new[] { sorting }, fields: e => new GqlEvents
+        //{
+        //    _id = e._id,
+        //    Subject = e.Subject,
+        //    Date = e.Date
+        //});
+
         events = await query.RunAsync();
 
-        pages = 10; 
+        pages = 10;
 
         StateHasChanged();
     }
