@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 		if(type.Kind == Kind.Object)
 		{
 #>
-public partial class Gql<#= type.Name #>
+public partial class Gql<#= type.Name.Replace(" ", string.Empty) #>
 {
 <# 
 			foreach(var field in type.Fields)
@@ -53,7 +53,7 @@ public partial class Gql<#= type.Name #>
 		else if(type.Kind == Kind.InputObject)
 		{
 #>
-public class Gql<#= type.Name #>
+public class Gql<#= type.Name.Replace(" ", string.Empty) #>
 {
 <# 
 			foreach(var field in type.InputFields)
@@ -79,7 +79,7 @@ public class Gql<#= type.Name #>
 		{
 #>
 [JsonConverter(typeof(GraphQLEnumConverter))]
-public enum Gql<#= type.Name #>
+public enum Gql<#= type.Name.Replace(" ", string.Empty) #>
 {
 <# 
 			for(int enumValueIndex = 0; enumValueIndex < type.EnumValues.Length; enumValueIndex++)
@@ -215,7 +215,7 @@ public sealed class GraphQLApiClient : IGraphQLApiClient
 			case Kind.Object:
 			case Kind.Enum:
 			case Kind.InputObject:
-				result = "Gql" + type.Name;
+				result = "Gql" + type.Name.Replace(" ", string.Empty);
 			break;
 			case Kind.List:
 				result = isArgument ? ParseType(type.OfType, isArgument, isField, false) + "[]" : (isField ? "List<" + ParseType(type.OfType, isArgument, false, allowsNulls) + ">" : ParseType(type.OfType, isArgument, false, allowsNulls));

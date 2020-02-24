@@ -1,5 +1,5 @@
-﻿@using System.Collections;
-@using Microsoft.AspNetCore.Components;
+﻿@using Microsoft.AspNetCore.Components;
+@namespace  HCM.Client.Components.Grid
 
 <CascadingValue Value="@this">
     @ChildContent
@@ -46,7 +46,7 @@ else
                         else
                         {
                             <td class="text--vertMiddle">
-                                 @column.Template(item)
+                                @column.Template(item)
                             </td>
                         }
                     }

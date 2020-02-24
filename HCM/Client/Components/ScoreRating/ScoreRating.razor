@@ -1,22 +1,41 @@
-﻿@using System.Collections;
-@using Microsoft.AspNetCore.Components;
+﻿@using Microsoft.AspNetCore.Components;
+@namespace HCM.Client.Components.ScoreRating
+
 <CascadingValue Value="@this">
     @ChildContent
 </CascadingValue>
 
-<div class="container">
-    <div class="score-rating"> 
+@if (Options != null && Options.Count > 0)
+{
+    <div class="score-rating">
         @for (int i = 0; i <= Options.Count - 1; i++)
-        {  
-            <input id="@i" type="radio" name="rating" value="@Options[i].Value" checked="@Options[i].Checked" /><label for="@i" style="background-color:@Options[i].Color" title="@Options[i].Title"></label>
-        }      
+        {
+            <input type="radio" name="rating" id="@("rb" + (i + 1))" value="@Options[i].Value" @onchange="RadioSelection" checked="@Options[i].Value == Value" /><label for="@("rb" + (i + 1))" style="background-color: @Options[i].Color;" title="@Options[i].Title"></label>
+        }
     </div>
-</div>
-
+}
 
 @code {
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 
     internal List<ScoreRatingOption> Options { get; set; } = new List<ScoreRatingOption>();
+
+    [Parameter]
+    public int Value { get; set; }
+
+    [ParameterAttribute]
+    public Action<int> ValueChanged { get; set; }
+
+    protected void RadioSelection(ChangeEventArgs e)
+    {
+        Value = Convert.ToInt32(e.Value);
+        ValueChanged(Convert.ToInt32(e.Value));
+    }
+
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine("Value: " + Value);
+        Console.WriteLine("Options: " + Options.Count);
+    }
 }

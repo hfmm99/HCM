@@ -5,6 +5,7 @@
 @inject ModalService ModalService
 @inject Blazored.SessionStorage.ISessionStorageService user_name
 @using Microsoft.AspNetCore.Components.Authorization
+@using  HCM.Client.Components.ScoreRating;
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <AuthorizeView>
@@ -33,10 +34,10 @@
                             <br />
                             <div class="checkbox mb-3">
                                 <label>
-                                    <input type="checkbox" value="remember-me"/> Remember me
+                                    <input type="checkbox" value="remember-me" /> Remember me
                                 </label>
                             </div>
-                            <input  type="submit" class="btn btn-lg btn-primary btn-block" @onclick="Login_user" value="Sign in"/>
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" @onclick="Login_user" value="Sign in" />
                         </form>
                     </div>
                 </div>
@@ -71,7 +72,7 @@
         {
             await user_name.SetItemAsync("user_name_session", employee.Name);
             navigationManager.NavigateTo("/");
-            NavMenu.logout_visible_change(Input_user);      
+            NavMenu.logout_visible_change(Input_user);
         }
         else
         {

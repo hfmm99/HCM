@@ -139,7 +139,7 @@ public partial class GqlEvents
 
 	/// <summary>score of  Events</summary>
 	[GraphQLField("score")]
-	public int? Score { get; set; }
+	public int Score { get; set; }
 
 	/// <summary>subject of  Events</summary>
 	[GraphQLField("subject")]
@@ -3279,10 +3279,10 @@ name, dateOfBirth, email, gender, image, password, phone, user);
 	/// <summary>Creates a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createEvents")]
-	public GraphQLQuery<string> CreateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> CreateEvents (string sessionToken, int? score, string subject, DateTime? date = null, string description = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-subject, date, description, score);
+score, subject, date, description);
 	}
 
 	/// <summary>Creates a Experience entity</summary>
@@ -3756,10 +3756,10 @@ name, dateOfBirth, email, gender, image, password, phone, user);
 	/// <summary>Merge a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeEvents")]
-	public GraphQLQuery<string> MergeEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> MergeEvents (string sessionToken, int? score, string subject, DateTime? date = null, string description = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-subject, date, description, score);
+score, subject, date, description);
 	}
 
 	/// <summary>Merge a Experience entity</summary>
@@ -3864,10 +3864,10 @@ name, dateOfBirth, email, gender, image, password, phone, user);
 	/// <summary>Updates a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateEvents")]
-	public GraphQLQuery<string> UpdateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> UpdateEvents (string sessionToken, int? score, string subject, DateTime? date = null, string description = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-subject, date, description, score);
+score, subject, date, description);
 	}
 
 	/// <summary>Updates a Experience entity</summary>

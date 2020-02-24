@@ -9,70 +9,69 @@
 @inject Blazored.SessionStorage.ISessionStorageService user_name
 @inject HttpClient httpClient
 
-    <form class="needs-validation">
-        @if (events != null)
-        {
-            <div class="form-row">
-                <div class="col">
-                    <div class="form-group">
-                        <label>Involved Employees:</label>
-                        <MultiSelect TItem="GqlEmployee" Placeholder="Type to Search" Items="Employees" Values="events.Is_to" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ToEmployeeRemoved" OnAddNewItem="@AddNewToEmployee" />
-                    </div>
-                </div>
-                <div class="col">
-                    <label for="txtSubject">Subject:</label>
-                    <input id="txtSubject" type="text" class="form-control" placeholder="Enter a subject" @bind="events.Subject" />
-                    <div class="invalid-feedback">
-                        You must enter a subject
-                    </div>
+<form class="needs-validation">
+    @if (events != null)
+    {
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    <label>Involved Employees:</label>
+                    <MultiSelect TItem="GqlEmployee" Placeholder="Type to Search" Items="Employees" Values="events.Is_to" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ToEmployeeRemoved" OnAddNewItem="@AddNewToEmployee" />
                 </div>
             </div>
-            <div class="form-row" style="z-index:0">
-                <div class="col">
-                    <label for="schProject">Project:</label>
-                    <MultiSelect TItem="GqlProject" Placeholder="Type to Search" Items="projects" DisplayFieldSelector="@(i => i.Name)" Values="events.Event_of" OnValueRemoved="@ProjectRemoved" OnAddNewItem="@AddNewProject" />
-                    <div class="invalid-feedback">
-                        You must enter a valid project
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="txtScope">Scope:</label>
-                        <MultiSelect TItem="GqlScope" Placeholder="Type to Search" Items="scopes" DisplayFieldSelector="@(i => i.Name)" Values="events.Scopes" OnValueRemoved="@ScopesRemoved" OnAddNewItem="@AddNewScope" Layout="LayoutEnum.Vertical" />
-                    </div>
+            <div class="col">
+                <label for="txtSubject">Subject:</label>
+                <input id="txtSubject" type="text" class="form-control" placeholder="Enter a subject" @bind="events.Subject" />
+                <div class="invalid-feedback">
+                    You must enter a subject
                 </div>
             </div>
-            <div class="form-row" style="z-index:-1">
-                <div class="col">
-                    <label for="dtpDate">Date:</label>
-                    <input id="dtpDate" type="date" class="form-control" placeholder="Date" @bind="events.Date" />
+        </div>
+        <div class="form-row" style="z-index:0">
+            <div class="col">
+                <label for="schProject">Project:</label>
+                <MultiSelect TItem="GqlProject" Placeholder="Type to Search" Items="projects" DisplayFieldSelector="@(i => i.Name)" Values="events.Event_of" OnValueRemoved="@ProjectRemoved" OnAddNewItem="@AddNewProject" />
+                <div class="invalid-feedback">
+                    You must enter a valid project
                 </div>
-                <div class="col">
-                    <label for="num_score">Score:</label>
-                    @*<input id="num_score" type="number" class="form-control" min="-10" max="10" @bind="events.Score" />*@
-                <ScoreRating>
-                    <ScoreRatingOption Title="Very Poor" Color="#e62325" Value="0" />
-                    <ScoreRatingOption Title="Poor" Color="#fe8500" Value="1" />
-                    <ScoreRatingOption Title="Good" Color="#fed500" Value="2" Checked="true" />
-                    <ScoreRatingOption Title="Very Good" Color="#81b532" Value="3" />
-                    <ScoreRatingOption Title="Outstanding" Color="#00884b" Value="4" />
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="txtScope">Scope:</label>
+                    <MultiSelect TItem="GqlScope" Placeholder="Type to Search" Items="scopes" DisplayFieldSelector="@(i => i.Name)" Values="events.Scopes" OnValueRemoved="@ScopesRemoved" OnAddNewItem="@AddNewScope" Layout="LayoutEnum.Vertical" />
+                </div>
+            </div>
+        </div>
+        <div class="form-row" style="z-index:-1">
+            <div class="col">
+                <label for="dtpDate">Date:</label>
+                <input id="dtpDate" type="date" class="form-control" placeholder="Date" @bind="events.Date" />
+            </div>
+            <div class="col">
+                <label>Score:</label>
+                <ScoreRating @bind-Value="events.Score" >
+                    <ScoreRatingOption Title="Very Bad" Color="#e62325" Value="-2" />
+                    <ScoreRatingOption Title="Bad" Color="#fe8500" Value="-1" />
+                    <ScoreRatingOption Title="Neutral" Color="#fed500" Value="0" />
+                    <ScoreRatingOption Title="Good" Color="#81b532" Value="1" />
+                    <ScoreRatingOption Title="Very Good" Color="#00884b" Value="2" />
                 </ScoreRating>
-                </div>
             </div>
-            <textarea placeholder="Description of the incident" style="width:100%" rows="10" @bind="events.Description"></textarea>
-            <button class="btn btn-primary underline-first-letter" type="button" accesskey="s" @onclick="Save">Save</button>
-            <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
-        }     
-        <datalist id="listamodelos">
-            @if (projects != null)
+        </div>
+        <textarea placeholder="Description of the incident" style="width:100%" rows="10" @bind="events.Description"></textarea>
+        <button class="btn btn-primary underline-first-letter" type="button" accesskey="s" @onclick="Save">Save</button>
+        <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
+    }
+    <datalist id="listamodelos">
+        @if (projects != null)
+        {
+            foreach (var project in projects)
             {
-                foreach (var project in projects)
-                {
-                    <option value="@project.Name" />
-                }
+                <option value="@project.Name" />
             }
-        </datalist>
-    </form>
+        }
+    </datalist>
+</form>
 @code {
     [Parameter]
     public int Id { get; set; }
@@ -106,14 +105,14 @@
                     Subject = e.Subject,
                     Description = e.Description,
                     Is_to = new List<GqlEmployee>
-    {
+{
                     new GqlEmployee
                     {
                         Name = ""
                     }
                     },
                     Scopes = new List<GqlScope>
-    {
+{
                     new GqlScope
                     {
                         Name =""
@@ -122,7 +121,7 @@
                     Date = e.Date,
                     Score = e.Score,
                     Event_of = new List<GqlProject>
-    {
+{
                         new GqlProject
                         {
                             Name = ""
@@ -255,9 +254,9 @@
 
         //Save the employee who is doing the event
         var user_name_session = await user_name.GetItemAsync<string>("user_name_session");
-        await gql.AddEventsIs_from(string.Empty, subject: events.Subject, is_from: new string []{ user_name_session}).RunAsync();
+        await gql.AddEventsIs_from(string.Empty, subject: events.Subject, is_from: new string[] { user_name_session }).RunAsync();
 
-        //Delete event employees 
+        //Delete event employees
         var EmployeesToRemove = RemovedEmployees.Select(s => s.Name).Except(events.Scopes.Select(es => es.Name));
 
         if (EmployeesToRemove.Any())
@@ -269,5 +268,5 @@
         navigationManager.NavigateTo("/events");
     }
 
-   
+
 }

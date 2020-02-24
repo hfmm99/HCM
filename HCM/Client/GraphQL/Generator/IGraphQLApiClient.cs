@@ -331,7 +331,7 @@ public interface IGraphQLApiClient
 	/// <summary>Creates a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createEvents")]
-	GraphQLQuery<string> CreateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null );
+	GraphQLQuery<string> CreateEvents (string sessionToken, int? score, string subject, DateTime? date = null, string description = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Creates a Experience entity</summary>
@@ -649,7 +649,7 @@ public interface IGraphQLApiClient
 	/// <summary>Merge a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeEvents")]
-	GraphQLQuery<string> MergeEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null );
+	GraphQLQuery<string> MergeEvents (string sessionToken, int? score, string subject, DateTime? date = null, string description = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Merge a Experience entity</summary>
@@ -721,7 +721,7 @@ public interface IGraphQLApiClient
 	/// <summary>Updates a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateEvents")]
-	GraphQLQuery<string> UpdateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null );
+	GraphQLQuery<string> UpdateEvents (string sessionToken, int? score, string subject, DateTime? date = null, string description = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Updates a Experience entity</summary>
