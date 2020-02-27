@@ -4,12 +4,11 @@
 @inject NavigationManager navigationManager
 @inject ModalService ModalService
 @inject Blazored.SessionStorage.ISessionStorageService user_name
-@using Microsoft.AspNetCore.Components.Authorization
-@using  HCM.Client.Components.ScoreRating;
-@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime JSRuntime
 
-<AuthorizeView>
-    <NotAuthorized>
+@using  HCM.Client.Components.ScoreRating;
+
+
         <div class="container">
             <div class="box">
                 <div class="path_info_space">
@@ -43,8 +42,6 @@
                 </div>
             </div>
         </div>
-    </NotAuthorized>
-</AuthorizeView>
 
 @code {
     private GraphQLApiClient gql = null;
@@ -65,7 +62,6 @@
             Password = e.Password,
             Name = e.Name
         });
-
 
         employee = (await query.RunAsync()).FirstOrDefault();
         if (employee.User == Input_user && employee.Password == Input_password)

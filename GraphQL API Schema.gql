@@ -63,9 +63,9 @@ type LearningPath {
   name: ID!
   description: String
   tags: [Tag] @relation(name: "TAG", direction: in)
+  objetives: String
   learnings: [LearningItem] @relation(name: "CONTENT", direction: out)
-  prerequisite: [LearningPath]
-    @relation(name: "IS_PREREQUISITE", direction: out)
+  prerequisite: [LearningPath] @relation(name: "IS_PREREQUISITE", direction: out)
 }
 
 type Tag {

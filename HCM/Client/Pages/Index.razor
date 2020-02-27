@@ -13,68 +13,74 @@
 <body>
     @if (employee != null)
     {
-    <div class="container-fluid">
-        <div class="panel panel-headline">
-            <div class="panel-heading">
-                <h3 class="panel-title">Dashboard</h3>
-                <p class="panel-subtitle">Period: @date_short</p>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="metric">
-                            <span class="icon"><i class="oi oi-briefcase"></i></span>
-                            <p>
-                                @foreach (var works_for in employee.WorksFor)
-                                {
-                                <span class="number">@works_for.Name</span>
-                                }
-                                    <span class="title">Works for</span>
-                                </p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="metric">
-                            <span class="icon"><i class="oi oi-people"></i></span>
-                            <p>
-                                @foreach (var member in employee.IsMemberOf)
-                                {
-                                <span class="number">@member.Name</span>
-                                }
-                                <span class="title">Member of</span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        @foreach (var work_as in employee.WorksAs)
-                        {
-                        <div class="metric">
-                            <span class="icon"><i class="oi oi-monitor"></i></span>
-                            <p>
-                                <span class="number">@work_as.Name</span>
-                                <span class="title">Work as</span>
-                            </p>
-                        </div>
-                        }
-                    </div>
-                    <div class="col-md-3">
-                        <div class="metric">
-                            <span class="icon"><i class="oi oi-home"></i></span>
-                            <p>
-                                @foreach (var country in employee.LivesIn)
-                                {
-                                <span class="number">@country.Name</span>
-                                }
-                                <span class="title">Lives in</span>
-                            </p>
-                        </div>
-                    </div>
+        <div class="container-fluid">
+            <div class="panel panel-headline">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Dashboard</h3>
+                    <p class="panel-subtitle">Period: @date_short</p>
                 </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            @foreach (var works_for in employee.WorksFor)
+                            {
+                                <div class="metric">
+                                    <span class="icon"><i class="oi oi-briefcase"></i></span>
+                                    <p>
 
+                                        <span class="number">@works_for.Name</span>
+
+                                        <span class="title">Works for</span>
+                                    </p>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-3">
+                            @foreach (var member in employee.IsMemberOf)
+                            {
+                                <div class="metric">
+                                    <span class="icon"><i class="oi oi-people"></i></span>
+                                    <p>
+
+                                        <span class="number">@member.Name</span>
+
+                                        <span class="title">Member of</span>
+                                    </p>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-3">
+                            @foreach (var work_as in employee.WorksAs)
+                            {
+                                <div class="metric">
+                                    <span class="icon"><i class="oi oi-monitor"></i></span>
+                                    <p>
+                                        <span class="number">@work_as.Name</span>
+                                        <span class="title">Work as</span>
+                                    </p>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-3">
+                            @foreach (var country in employee.LivesIn)
+                            {
+                                <div class="metric">
+                                    <span class="icon"><i class="oi oi-home"></i></span>
+                                    <p>
+
+                                        <span class="number">@country.Name</span>
+
+                                        <span class="title">Lives in</span>
+                                    </p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-    </div>
-        }
+    }
 </body>
 </html>
 
@@ -112,28 +118,28 @@
                 _id = e._id,
                 Name = e.Name,
                 IsMemberOf = new List<GqlTeam>
-                {
+        {
                     new GqlTeam
                     {
                     Name = ""
                     }
                 },
                 WorksFor = new List<GqlClient>
-                {
+        {
                     new GqlClient
                     {
                         Name= ""
                     }
                 },
-                LivesIn= new List<GqlCountry>
-                {
+                LivesIn = new List<GqlCountry>
+        {
                     new GqlCountry
                     {
                         Name = ""
                     }
                 },
-                WorksAs= new List<GqlRole>
-                {
+                WorksAs = new List<GqlRole>
+        {
                     new GqlRole
                     {
                         Name = ""

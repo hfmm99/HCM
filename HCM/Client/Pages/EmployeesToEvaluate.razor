@@ -1,0 +1,83 @@
+﻿@page "/evaluations"
+
+@using HCM.Client.Components
+@using HCM.Client.Components.Grid
+
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+@inject Blazored.SessionStorage.ISessionStorageService user_name
+
+<div class="row margin-btm-small">
+    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Employee..."/>
+</div>
+@code {
+    private GqlEmployee employee = null;
+    private GqlTeam team = null;
+
+    private GraphQLApiClient gql = null;
+
+    private Gql_EmployeeOrdering sorting = Gql_EmployeeOrdering.name_asc;
+
+    private Grid grid;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user_name_session = await user_name.GetItemAsync<string>("user_name_session");
+        if (user_name_session == null)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            await Search();
+        }
+    }
+
+    protected async Task Search()
+    {
+        var user_name_session = await user_name.GetItemAsync<string>("user_name_session");
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+        var query = gql.Employee(string.Empty, name: user_name_session, fields: e => new GqlEmployee
+        {
+            IsMemberOf = new List<GqlTeam>
+                {
+                    new GqlTeam
+                    {
+                    Name = ""
+                    }
+                },
+        });
+        employee = (await query.RunAsync()).FirstOrDefault();
+
+        var query2 = gql.Team(string.Empty, name: employee.IsMemberOf[0].Name, fields: r => new GqlTeam
+        {
+            Members = new List<GqlEmployee>
+            {
+              new GqlEmployee{ Name = "" }
+            },
+        });
+        team = (await query2.RunAsync()).FirstOrDefault();
+
+        foreach(var o in team.Members)
+        {
+            Console.WriteLine(o.Name);
+        }
+    }
+
+    private string searchTerm;
+    public string SearchTerm
+    {
+        get { return searchTerm; }
+        set { searchTerm = value; Search(); }
+    }
+
+    private int page = 1;
+    private int pages = 0;
+
+    public void OnPageChange(PageChangeEventArgs e)
+    {
+        page = e.Page;
+        Search();
+    }
+}

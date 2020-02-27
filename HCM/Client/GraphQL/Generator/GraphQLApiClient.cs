@@ -205,6 +205,10 @@ public partial class GqlLearningPath
 	[GraphQLField("name")]
 	public string Name { get; set; }
 
+	/// <summary>objetives of  LearningPath</summary>
+	[GraphQLField("objetives")]
+	public string Objetives { get; set; }
+
 	/// <summary>LearningPath prerequisite LearningPath</summary>
 	[GraphQLField("prerequisite")]
 	public List<GqlLearningPath> Prerequisite { get; set; }
@@ -2031,6 +2035,62 @@ public class Gql_LearningPathFilter
 	[JsonProperty(PropertyName = "name_starts_with", NullValueHandling = NullValueHandling.Ignore)]
 	public string Name_starts_with { get; set; }
 
+	/// <summary>objetives</summary>
+	[JsonProperty(PropertyName = "objetives", NullValueHandling = NullValueHandling.Ignore)]
+	public string Objetives { get; set; }
+
+	/// <summary>objetives_contains</summary>
+	[JsonProperty(PropertyName = "objetives_contains", NullValueHandling = NullValueHandling.Ignore)]
+	public string Objetives_contains { get; set; }
+
+	/// <summary>objetives_ends_with</summary>
+	[JsonProperty(PropertyName = "objetives_ends_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Objetives_ends_with { get; set; }
+
+	/// <summary>objetives_gt</summary>
+	[JsonProperty(PropertyName = "objetives_gt", NullValueHandling = NullValueHandling.Ignore)]
+	public string Objetives_gt { get; set; }
+
+	/// <summary>objetives_gte</summary>
+	[JsonProperty(PropertyName = "objetives_gte", NullValueHandling = NullValueHandling.Ignore)]
+	public string Objetives_gte { get; set; }
+
+	/// <summary>objetives_in</summary>
+	[JsonProperty(PropertyName = "objetives_in", NullValueHandling = NullValueHandling.Ignore)]
+	public List<string> Objetives_in { get; set; }
+
+	/// <summary>objetives_lt</summary>
+	[JsonProperty(PropertyName = "objetives_lt", NullValueHandling = NullValueHandling.Ignore)]
+	public string Objetives_lt { get; set; }
+
+	/// <summary>objetives_lte</summary>
+	[JsonProperty(PropertyName = "objetives_lte", NullValueHandling = NullValueHandling.Ignore)]
+	public string Objetives_lte { get; set; }
+
+	/// <summary>objetives_not</summary>
+	[JsonProperty(PropertyName = "objetives_not", NullValueHandling = NullValueHandling.Ignore)]
+	public string Objetives_not { get; set; }
+
+	/// <summary>objetives_not_contains</summary>
+	[JsonProperty(PropertyName = "objetives_not_contains", NullValueHandling = NullValueHandling.Ignore)]
+	public string Objetives_not_contains { get; set; }
+
+	/// <summary>objetives_not_ends_with</summary>
+	[JsonProperty(PropertyName = "objetives_not_ends_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Objetives_not_ends_with { get; set; }
+
+	/// <summary>objetives_not_in</summary>
+	[JsonProperty(PropertyName = "objetives_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public List<string> Objetives_not_in { get; set; }
+
+	/// <summary>objetives_not_starts_with</summary>
+	[JsonProperty(PropertyName = "objetives_not_starts_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Objetives_not_starts_with { get; set; }
+
+	/// <summary>objetives_starts_with</summary>
+	[JsonProperty(PropertyName = "objetives_starts_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Objetives_starts_with { get; set; }
+
 	/// <summary>prerequisite</summary>
 	[JsonProperty(PropertyName = "prerequisite", NullValueHandling = NullValueHandling.Ignore)]
 	public Gql_LearningPathFilter Prerequisite { get; set; }
@@ -2107,7 +2167,11 @@ public enum Gql_LearningPathOrdering
 	/// <summary>Ascending sort for name</summary>
 	name_asc,
 	/// <summary>Descending sort for name</summary>
-	name_desc
+	name_desc,
+	/// <summary>Ascending sort for objetives</summary>
+	objetives_asc,
+	/// <summary>Descending sort for objetives</summary>
+	objetives_desc
 }
 
 public class Gql_ProjectFilter
@@ -2913,12 +2977,14 @@ _id, _ids, duration, durations, filter, first, name, names, offset, orderBy);
 	/// <param name="descriptions">descriptions is list variant of description of LearningPath</param>
 	/// <param name="name">name of LearningPath</param>
 	/// <param name="names">names is list variant of name of LearningPath</param>
+	/// <param name="objetives">objetives of LearningPath</param>
+	/// <param name="objetivess">objetivess is list variant of objetives of LearningPath</param>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("LearningPath")]
-	public GraphQLQuery<GqlLearningPath> LearningPath (string sessionToken, long? _id = null, long?[] _ids = null, string description = null, string[] descriptions = null, Gql_LearningPathFilter filter = null, int? first = null, string name = null, string[] names = null, int? offset = null, Gql_LearningPathOrdering[] orderBy = null, Func<GqlLearningPath, GqlLearningPath> fields = null ) 
+	public GraphQLQuery<GqlLearningPath> LearningPath (string sessionToken, long? _id = null, long?[] _ids = null, string description = null, string[] descriptions = null, Gql_LearningPathFilter filter = null, int? first = null, string name = null, string[] names = null, string objetives = null, string[] objetivess = null, int? offset = null, Gql_LearningPathOrdering[] orderBy = null, Func<GqlLearningPath, GqlLearningPath> fields = null ) 
 	{
 		return new GraphQLQuery<GqlLearningPath>(_httpClient, _endpoint, true, false, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-_id, _ids, description, descriptions, filter, first, name, names, offset, orderBy);
+_id, _ids, description, descriptions, filter, first, name, names, objetives, objetivess, offset, orderBy);
 	}
 
 	/// <param name="name">name of Project</param>
@@ -3279,10 +3345,10 @@ name, dateOfBirth, email, gender, image, password, phone, user);
 	/// <summary>Creates a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createEvents")]
-	public GraphQLQuery<string> CreateEvents (string sessionToken, int? score, string subject, DateTime? date = null, string description = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> CreateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-score, subject, date, description);
+subject, date, description, score);
 	}
 
 	/// <summary>Creates a Experience entity</summary>
@@ -3306,10 +3372,10 @@ name, duration);
 	/// <summary>Creates a LearningPath entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createLearningPath")]
-	public GraphQLQuery<string> CreateLearningPath (string sessionToken, string name, string description = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> CreateLearningPath (string sessionToken, string name, string description = null, string objetives = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-name, description);
+name, description, objetives);
 	}
 
 	/// <summary>Creates a Project entity</summary>
@@ -3756,10 +3822,10 @@ name, dateOfBirth, email, gender, image, password, phone, user);
 	/// <summary>Merge a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeEvents")]
-	public GraphQLQuery<string> MergeEvents (string sessionToken, int? score, string subject, DateTime? date = null, string description = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> MergeEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-score, subject, date, description);
+subject, date, description, score);
 	}
 
 	/// <summary>Merge a Experience entity</summary>
@@ -3783,10 +3849,10 @@ name, duration);
 	/// <summary>Merge a LearningPath entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeLearningPath")]
-	public GraphQLQuery<string> MergeLearningPath (string sessionToken, string name, string description = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> MergeLearningPath (string sessionToken, string name, string description = null, string objetives = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-name, description);
+name, description, objetives);
 	}
 
 	/// <summary>Merge a Project entity</summary>
@@ -3864,10 +3930,10 @@ name, dateOfBirth, email, gender, image, password, phone, user);
 	/// <summary>Updates a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateEvents")]
-	public GraphQLQuery<string> UpdateEvents (string sessionToken, int? score, string subject, DateTime? date = null, string description = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> UpdateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-score, subject, date, description);
+subject, date, description, score);
 	}
 
 	/// <summary>Updates a Experience entity</summary>
@@ -3891,10 +3957,10 @@ name, duration);
 	/// <summary>Updates a LearningPath entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateLearningPath")]
-	public GraphQLQuery<string> UpdateLearningPath (string sessionToken, string name, string description = null, Func<string, string> fields = null ) 
+	public GraphQLQuery<string> UpdateLearningPath (string sessionToken, string name, string description = null, string objetives = null, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
-name, description);
+name, description, objetives);
 	}
 
 	/// <summary>Updates a Project entity</summary>

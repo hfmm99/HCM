@@ -151,7 +151,7 @@
 
     public async void DeleteEmployee()
     {
-        gql.DeleteEmployee(string.Empty, (grid.SelectedItem as GqlEmployee).Name).RunAsync();
+        await gql.DeleteEmployee(string.Empty, (grid.SelectedItem as GqlEmployee).Name).RunAsync();
         ModalService.CloseModal();
         await Search();
     }

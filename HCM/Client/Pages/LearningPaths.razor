@@ -5,6 +5,7 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 @inject Blazored.SessionStorage.ISessionStorageService user_name
+@inject ModalService ModalService
 
 <DeleteModal OnDelete="@DeletePath" />
 <div class="btn-toolbar row margin-btm-small" role="toolbar">
@@ -109,15 +110,26 @@
         navigationManager.NavigateTo("/learning_path/-1");
     }
 
-    protected void EditPath()
+    public void EditPath()
     {
+        if (grid.SelectedItem != null)
+            navigationManager.NavigateTo("/learning_path/" + (grid.SelectedItem as GqlLearningPath)._id);
     }
 
-    protected void ConfirmDelete()
+    public void ConfirmDelete()
     {
+        if (grid.SelectedItem != null)
+        {
+            string deleteItemName = (grid.SelectedItem as GqlLearningPath).Name;
+            bool showModal = true;
+            ModalService.ShowModal(showModal, deleteItemName);
+        }
     }
 
-    protected void DeletePath()
+    public async void DeletePath()
     {
+        await gql.DeleteLearningPath(string.Empty, (grid.SelectedItem as GqlLearningPath).Name).RunAsync();
+        ModalService.CloseModal();
+        await Search();
     }
 }

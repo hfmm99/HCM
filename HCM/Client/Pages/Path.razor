@@ -62,9 +62,13 @@
                     <div class="path_specific_summary">
                         <h3>In this path you will:</h3>
                         <ul class="specific_summary_list">
-                            <li class="specific_summary_list_item">Demo Specific Summary</li>
-                            <li class="specific_summary_list_item">Demo Specific Summary</li>
-                            <li class="specific_summary_list_item">Demo Specific Summary</li>
+                            @if (Objectives != null)
+                            {
+                                foreach (var Objetive in Objectives)
+                                {
+                                <li class="specific_summary_list_item">@Objetive</li>
+                                }
+                            }
                         </ul>
                     </div>
                     <!--Button start-->
@@ -159,6 +163,7 @@
 
     private GraphQLApiClient gql = null;
     private GqlLearningPath learningPath = null;
+    private List<string> Objectives = new List<string>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -183,15 +188,16 @@
             _id = e._id,
             Name = e.Name,
             Description = e.Description,
+            Objetives = e.Objetives,
             Tags = new List<GqlTag>
-        {
+    {
                 new GqlTag
                 {
                     Name = e.Tags[0].Name
                 }
             },
             Learnings = new List<GqlLearningItem>
-        {
+    {
                 new GqlLearningItem
                 {
                     Name = e.Learnings[0].Name,
@@ -201,6 +207,8 @@
         });
         learningPath = (await query.RunAsync()).FirstOrDefault();
         StateHasChanged();
+
+        Objectives = learningPath.Objetives.Split(';').ToList();    
     }
 
     private void GoBack()

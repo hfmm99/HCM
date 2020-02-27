@@ -85,9 +85,11 @@ public interface IGraphQLApiClient
 	/// <param name="descriptions">descriptions is list variant of description of LearningPath</param>
 	/// <param name="name">name of LearningPath</param>
 	/// <param name="names">names is list variant of name of LearningPath</param>
+	/// <param name="objetives">objetives of LearningPath</param>
+	/// <param name="objetivess">objetivess is list variant of objetives of LearningPath</param>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("LearningPath")]
-	GraphQLQuery<GqlLearningPath> LearningPath (string sessionToken, long? _id = null, long?[] _ids = null, string description = null, string[] descriptions = null, Gql_LearningPathFilter filter = null, int? first = null, string name = null, string[] names = null, int? offset = null, Gql_LearningPathOrdering[] orderBy = null, Func<GqlLearningPath, GqlLearningPath> fields = null );
+	GraphQLQuery<GqlLearningPath> LearningPath (string sessionToken, long? _id = null, long?[] _ids = null, string description = null, string[] descriptions = null, Gql_LearningPathFilter filter = null, int? first = null, string name = null, string[] names = null, string objetives = null, string[] objetivess = null, int? offset = null, Gql_LearningPathOrdering[] orderBy = null, Func<GqlLearningPath, GqlLearningPath> fields = null );
 	
 
 	/// <param name="name">name of Project</param>
@@ -331,7 +333,7 @@ public interface IGraphQLApiClient
 	/// <summary>Creates a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createEvents")]
-	GraphQLQuery<string> CreateEvents (string sessionToken, int? score, string subject, DateTime? date = null, string description = null, Func<string, string> fields = null );
+	GraphQLQuery<string> CreateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Creates a Experience entity</summary>
@@ -349,7 +351,7 @@ public interface IGraphQLApiClient
 	/// <summary>Creates a LearningPath entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createLearningPath")]
-	GraphQLQuery<string> CreateLearningPath (string sessionToken, string name, string description = null, Func<string, string> fields = null );
+	GraphQLQuery<string> CreateLearningPath (string sessionToken, string name, string description = null, string objetives = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Creates a Project entity</summary>
@@ -649,7 +651,7 @@ public interface IGraphQLApiClient
 	/// <summary>Merge a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeEvents")]
-	GraphQLQuery<string> MergeEvents (string sessionToken, int? score, string subject, DateTime? date = null, string description = null, Func<string, string> fields = null );
+	GraphQLQuery<string> MergeEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Merge a Experience entity</summary>
@@ -667,7 +669,7 @@ public interface IGraphQLApiClient
 	/// <summary>Merge a LearningPath entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeLearningPath")]
-	GraphQLQuery<string> MergeLearningPath (string sessionToken, string name, string description = null, Func<string, string> fields = null );
+	GraphQLQuery<string> MergeLearningPath (string sessionToken, string name, string description = null, string objetives = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Merge a Project entity</summary>
@@ -721,7 +723,7 @@ public interface IGraphQLApiClient
 	/// <summary>Updates a Events entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateEvents")]
-	GraphQLQuery<string> UpdateEvents (string sessionToken, int? score, string subject, DateTime? date = null, string description = null, Func<string, string> fields = null );
+	GraphQLQuery<string> UpdateEvents (string sessionToken, string subject, DateTime? date = null, string description = null, int? score = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Updates a Experience entity</summary>
@@ -739,7 +741,7 @@ public interface IGraphQLApiClient
 	/// <summary>Updates a LearningPath entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateLearningPath")]
-	GraphQLQuery<string> UpdateLearningPath (string sessionToken, string name, string description = null, Func<string, string> fields = null );
+	GraphQLQuery<string> UpdateLearningPath (string sessionToken, string name, string description = null, string objetives = null, Func<string, string> fields = null );
 	
 
 	/// <summary>Updates a Project entity</summary>
