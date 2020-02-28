@@ -142,9 +142,14 @@ namespace HCM.Client.GraphQL.Client
             if (typesDefaultGraphQL.ContainsKey(t.FullName))
                 return typesDefaultGraphQL[t.FullName];
 
+            //If is String
             if (t == typeof(string))
                 return string.Empty;
 
+            //If Is Nullable
+            if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(Nullable<>))
+                return Activator.CreateInstance(Nullable.GetUnderlyingType(typeof(T)));
+                
             var result = Activator.CreateInstance(t);
             typesDefaultGraphQL[t.FullName] = result;
 

@@ -1,11 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Components;
 
-<div class="input-group">
+<div class="input-group @Class">
     <div class="input-group-prepend">
-            <button class="btn btn-outline-primary" type="button" title="First" @onclick='(() => CurrentPage = 1)'>❰❰</button>
-        </div>
-        <div class="input-group-prepend">
-            <button class="btn btn-outline-primary" type="button" title="Previous" @onclick='(() => ChangePage(false))'>❮</button>
+        <button class="btn btn-outline-primary" type="button" title="First" @onclick='(() => CurrentPage = 1)'>❰❰</button>
+    </div>
+    <div class="input-group-prepend">
+        <button class="btn btn-outline-primary" type="button" title="Previous" @onclick='(() => ChangePage(false))'>❮</button>
     </div>
     <select class="custom-select" @bind="CurrentPage">
         @for (int i = 1; i <= Pages; i++)
@@ -14,10 +14,10 @@
         }
     </select>
     <div class="input-group-append">
-            <button class="btn btn-outline-primary" type="button" title="Next" @onclick='(() => ChangePage(true))'>❯</button>
-        </div>
-        <div class="input-group-append">
-            <button class="btn btn-outline-primary" type="button" title="Last" @onclick='(() => CurrentPage = Pages)'>❱❱</button>
+        <button class="btn btn-outline-primary" type="button" title="Next" @onclick='(() => ChangePage(true))'>❯</button>
+    </div>
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary" type="button" title="Last" @onclick='(() => CurrentPage = Pages)'>❱❱</button>
     </div>
 </div>
 
@@ -38,10 +38,13 @@
     public int Pages { get; set; }
 
     /// <summary>
-    ///  Event occurs when the user clicks on a column header to sort.
+    ///  Event occurs when the user change of page.
     /// </summary>
     [Parameter]
     public EventCallback<PageChangeEventArgs> OnPageChange { get; set; }
+
+    [Parameter]
+    public string Class { get; set; } = "";
 
     private void ChangePage(bool ascending)
     {

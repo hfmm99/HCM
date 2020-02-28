@@ -28,7 +28,7 @@
 </div>
 
 <div class="row">
-    <Grid @ref="grid" Data="@employees" OnDoubleClick="@EditEmployee" OnSort="@OnGridSort">
+    <Grid @ref="grid" Data="@employees" OnDoubleClick="@EditEmployee" OnSort="@OnGridSort" Pages="@pages" OnPageChange="@OnPageChange">
         <GridColumns>
             <GridColumn Title="Image">
                 <Template>
@@ -48,9 +48,6 @@
             <GridColumn Field="@nameof(GqlEmployee.Phone)" />
         </GridColumns>
     </Grid>
-    <div class="mx-auto" style="width: 215px;">
-        <Pager Pages="@pages" OnPageChange="OnPageChange" />
-    </div>
 </div>
 
 @code{
@@ -99,7 +96,7 @@
 
         employees = await query.RunAsync();
 
-        pages = 8; // (await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault().Value;
+        pages = Convert.ToInt32(Math.Ceiling(((await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault() ?? 1) / 10M));
 
         StateHasChanged();
     }

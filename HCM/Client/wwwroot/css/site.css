@@ -230,7 +230,7 @@ h2 {
 }
 
 .table tr > th {
-    background-color: #f8f9fa;
+    background-color: #EFF8FF;
 }
 
 .table thead > tr > th.sorting,
@@ -274,6 +274,17 @@ h2 {
 .td {
     vertical-align: middle;
 }
+
+.table-pager {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+}
+
+    .table-pager > div {
+        width: 215px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
 .form-row {
     margin-top: .4rem;
@@ -1062,7 +1073,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .text--vertMiddle {
-    vertical-align: middle;   
+    vertical-align: middle;
 }
 
 .svg--15px {
@@ -1078,7 +1089,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 /*Error login*/
 .error-notice {
-    margin: 5px; 
+    margin: 5px;
 }
 
 .oaerror {
@@ -1112,13 +1123,13 @@ input[type=number]::-webkit-outer-spin-button {
 /*Menu profile picture*/
 .menu {
     display: none;
-    margin-top:40px;
-    z-index:100;
+    margin-top: 40px;
+    z-index: 100;
 }
 
 button + .menu:active,
 button:focus + .menu {
-    display:flex;
+    display: flex;
 }
 
 .button_submenu_picture {
@@ -1179,5 +1190,3 @@ button:focus + .menu {
 .bg--green {
     background-color: #00884b;
 }
-
-

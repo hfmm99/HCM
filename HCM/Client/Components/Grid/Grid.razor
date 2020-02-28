@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components;
-@namespace  HCM.Client.Components.Grid
+@namespace HCM.Client.Components.Grid
 
 <CascadingValue Value="@this">
     @ChildContent
@@ -53,6 +53,13 @@ else
                 </tr>
             }
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="@Columns?.Count ?? 1" class="table-pager">
+                    <Pager Pages="@Pages" OnPageChange="@OnPageChange" />
+                </th>
+            </tr>
+        </tfoot>
     </table>
 }
 
@@ -85,6 +92,12 @@ else
 
     [Parameter]
     public bool CheckBoxSelection { get; set; }
+
+    [Parameter]
+    public int Pages { get; set; } = 1;
+
+    [Parameter]
+    public EventCallback<PageChangeEventArgs> OnPageChange { get; set; }
 
     internal List<GridColumn> Columns { get; set; } = new List<GridColumn>();
 
