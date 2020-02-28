@@ -24,7 +24,7 @@
 </div>
 
 <div class="row margin-btm-small">
-    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Employee..." />
+    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Employee..."/>
 </div>
 
 <div class="row">
@@ -93,12 +93,9 @@
             Phone = e.Phone,
             Image = e.Image
         });
-
         employees = await query.RunAsync();
-
         pages = Convert.ToInt32(Math.Ceiling(((await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault() ?? 1) / 10M));
-
-        StateHasChanged();
+        StateHasChanged();   
     }
 
     public void OnGridSort(SortEventArgs e)

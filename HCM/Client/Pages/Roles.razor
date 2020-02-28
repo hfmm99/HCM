@@ -29,14 +29,11 @@
 </div>
 
 <div class="row">
-    <Grid @ref="grid" Data="@roles" OnDoubleClick="@EditRole" OnSort="@OnGridSort">
+    <Grid @ref="grid" Data="@roles" OnDoubleClick="@EditRole" OnSort="@OnGridSort" Pages="@pages" OnPageChange="@OnPageChange">
         <GridColumns>
             <GridColumn Field="@nameof(GqlRole.Name)" />
         </GridColumns>
     </Grid>
-    <div class="mx-auto" style="width: 215px;">
-        <Pager Pages="10" OnPageChange="OnPageChange" />
-    </div>
 </div>
 
 @code{
@@ -46,6 +43,7 @@
     private Gql_RoleOrdering sorting = Gql_RoleOrdering.name_asc;
 
     private int page = 1;
+    private int pages = 0;
 
     private Grid grid;
 
@@ -83,6 +81,8 @@
         roles = await query.RunAsync();
 
         StateHasChanged();
+
+        pages = Convert.ToInt32(Math.Ceiling(((await gql.RoleCount(string.Empty).RunAsync()).FirstOrDefault() ?? 1) / 10M));
     }
 
     public void OnGridSort(SortEventArgs e)

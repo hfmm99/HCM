@@ -29,14 +29,11 @@
 </div>
 
 <div class="row">
-    <Grid @ref="grid" Data="@teams" OnDoubleClick="@EditTeam" OnSort="@OnGridSort">
+    <Grid @ref="grid" Data="@teams" OnDoubleClick="@EditTeam" OnSort="@OnGridSort" Pages="@pages" OnPageChange="@OnPageChange">
         <GridColumns>
             <GridColumn Field="@nameof(GqlTeam.Name)" />
         </GridColumns>
     </Grid>
-    <div class="mx-auto" style="width: 215px;">
-        <Pager Pages="10" OnPageChange="OnPageChange" />
-    </div>
 </div>
 
 @code{
@@ -45,6 +42,7 @@
 
     private Gql_TeamOrdering sorting = Gql_TeamOrdering.name_asc;
 
+    private int pages = 0;
     private int page = 1;
 
     private Grid grid;
@@ -83,6 +81,7 @@
         teams = await query.RunAsync();
 
         StateHasChanged();
+        pages = Convert.ToInt32(Math.Ceiling(((await gql.TeamCount(string.Empty).RunAsync()).FirstOrDefault() ?? 1) / 10M));
     }
 
     public void OnGridSort(SortEventArgs e)

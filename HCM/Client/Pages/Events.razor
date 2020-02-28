@@ -29,15 +29,12 @@
 </div>
 
 <div class="row">
-    <Grid @ref="grid" Data="@events" OnDoubleClick="@EditEvent" OnSort="@OnGridSort">
+    <Grid @ref="grid" Data="@events" OnDoubleClick="@EditEvent" OnSort="@OnGridSort" Pages="@pages" OnPageChange="@OnPageChange">
         <GridColumns>
             <GridColumn Field="@nameof(GqlEvents.Subject)" />
             <GridColumn Field="@nameof(GqlEvents.Date)" />
         </GridColumns>
-    </Grid>
-    <div class="mx-auto" style="width: 215px;">
-        <Pager Pages="@pages" OnPageChange="OnPageChange" />
-    </div>
+    </Grid>    
 </div>
 
 @code {
@@ -99,7 +96,7 @@
         });
 
         events = await query.RunAsync();
-        pages = 10;
+        pages = Convert.ToInt32(Math.Ceiling(((await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault() ?? 1) / 10M));
 
         StateHasChanged();
     }

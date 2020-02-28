@@ -8,11 +8,38 @@
 @inject Blazored.SessionStorage.ISessionStorageService user_name
 
 <div class="row margin-btm-small">
-    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Employee..."/>
+    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Employee to evaluate..."/>
+</div>
+
+<div class="row">
+    <Grid @ref="grid" Data="@employees"  Pages="@pages" OnPageChange="@OnPageChange">
+        <GridColumns>
+            <GridColumn Title="Image">
+                <Template>
+                    @{
+                        var employee = context as GqlEmployee;
+
+                        if (!string.IsNullOrEmpty(employee.Image))
+                        {
+                            <center><img src="/Images/@employee.Image" alt="@employee.Name" height="64" /></center>
+                        }
+                    }
+                </Template>
+            </GridColumn>
+            <GridColumn Field="@nameof(GqlEmployee.Name)" />
+            <GridColumn Title="Status">
+                <Template>
+                   @{ 
+                       <center><span class="icon"><i class="oi oi-circle-x" style="color:red;"></i></span></center>
+                   }
+                </Template>
+            </GridColumn>
+        </GridColumns>
+    </Grid>
 </div>
 @code {
     private GqlEmployee employee = null;
-    private GqlTeam team = null;
+    private List<GqlEmployee> employees = null;
 
     private GraphQLApiClient gql = null;
 
@@ -46,23 +73,23 @@
                     {
                     Name = ""
                     }
-                },
+                }
         });
         employee = (await query.RunAsync()).FirstOrDefault();
 
-        var query2 = gql.Team(string.Empty, name: employee.IsMemberOf[0].Name, fields: r => new GqlTeam
+        var query2 = gql.Employee(string.Empty, filter: new Gql_EmployeeFilter { IsMemberOf = new Gql_TeamFilter { Name = employee.IsMemberOf[0].Name }}, fields: e => new GqlEmployee
         {
-            Members = new List<GqlEmployee>
-            {
-              new GqlEmployee{ Name = "" }
-            },
+            _id =e._id,
+            Name = e.Name,
+            Image = e.Image
         });
-        team = (await query2.RunAsync()).FirstOrDefault();
 
-        foreach(var o in team.Members)
-        {
-            Console.WriteLine(o.Name);
-        }
+        employees = await query2.RunAsync();
+        pages = Convert.ToInt32(Math.Ceiling(((await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault() ?? 1) / 10M));
+        StateHasChanged();
+
+        Console.WriteLine(employee.IsMemberOf[0].Name);
+        Console.WriteLine(employees.Count);
     }
 
     private string searchTerm;

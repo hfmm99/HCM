@@ -29,14 +29,11 @@
 </div>
 
 <div class="row">
-    <Grid @ref="grid" Data="@experiences" OnDoubleClick="@EditExperience" OnSort="@OnGridSort">
+    <Grid @ref="grid" Data="@experiences" OnDoubleClick="@EditExperience" OnSort="@OnGridSort" Pages="@pages" OnPageChange="@OnPageChange">
         <GridColumns>
             <GridColumn Field="@nameof(GqlEmployee.Name)" />
         </GridColumns>
     </Grid>
-    <div class="mx-auto" style="width: 215px;">
-        <Pager Pages="@pages" OnPageChange="OnPageChange" />
-    </div>
 </div>
 
 @code {
@@ -83,7 +80,7 @@
 
         experiences = await query.RunAsync();
 
-        pages = 10; // (await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault().Value;
+        pages = Convert.ToInt32(Math.Ceiling(((await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault() ?? 1) / 10M));
 
         StateHasChanged();
     }
