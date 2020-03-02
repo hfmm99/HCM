@@ -238,8 +238,9 @@ h2 {
 .table thead > tr > th.sorting_desc {
     padding-right: 30px;
     cursor: pointer;
-    color: rgb(0, 123, 255);
+    color: #4C78A4;
     font-weight: bold;
+    text-align: center;
 }
 
     .table thead > tr > th.sorting:hover,
@@ -267,7 +268,7 @@ h2 {
     }
 
 .table > tbody > .table-active > td:first-child, table > tbody > .table-active > th:first-child, table > tfoot > .table-active > td:first-child, table > tfoot > .table-active > th:first-child, table > thead > .table-active > td:first-child, table > thead > .table-active > th:first-child {
-    border-left: 2px solid #2196F3;
+    border-left: 2px solid #BCD6EF;
     padding-left: 7px;
 }
 
