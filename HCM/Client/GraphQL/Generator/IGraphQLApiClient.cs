@@ -118,6 +118,20 @@ public interface IGraphQLApiClient
 	GraphQLQuery<GqlScope> Scope (string sessionToken, long? _id = null, long?[] _ids = null, Gql_ScopeFilter filter = null, int? first = null, string name = null, string[] names = null, int? offset = null, Gql_ScopeOrdering[] orderBy = null, Func<GqlScope, GqlScope> fields = null );
 	
 
+	/// <param name="name">name of Skill</param>
+	/// <param name="names">names is list variant of name of Skill</param>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("Skill")]
+	GraphQLQuery<GqlSkill> Skill (string sessionToken, long? _id = null, long?[] _ids = null, Gql_SkillFilter filter = null, int? first = null, string name = null, string[] names = null, int? offset = null, Gql_SkillOrdering[] orderBy = null, Func<GqlSkill, GqlSkill> fields = null );
+	
+
+	/// <param name="name">name of SubSkill</param>
+	/// <param name="names">names is list variant of name of SubSkill</param>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("SubSkill")]
+	GraphQLQuery<GqlSubSkill> SubSkill (string sessionToken, long? _id = null, long?[] _ids = null, Gql_SubSkillFilter filter = null, int? first = null, string name = null, string[] names = null, int? offset = null, Gql_SubSkillOrdering[] orderBy = null, Func<GqlSubSkill, GqlSubSkill> fields = null );
+	
+
 	/// <param name="name">name of Tag</param>
 	/// <param name="names">names is list variant of name of Tag</param>
 	/// <param name="sessionToken">Token Used on production</param>
@@ -282,6 +296,18 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> AddScopeIsScopeOf_ (string sessionToken, string[] isScopeOf_, string name, Func<string, string> fields = null );
 	
 
+	/// <summary>Adds Skill_of to Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addSkillSkill_of")]
+	GraphQLQuery<string> AddSkillSkill_of (string sessionToken, string name, string[] skill_of, Func<string, string> fields = null );
+	
+
+	/// <summary>Adds SubSkill_of to SubSkill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addSubSkillSubSkill_of")]
+	GraphQLQuery<string> AddSubSkillSubSkill_of (string sessionToken, string name, string[] subSkill_of, Func<string, string> fields = null );
+	
+
 	/// <summary>Adds IsTagOf to Tag entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addTagIsTagOf")]
@@ -370,6 +396,18 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createScope")]
 	GraphQLQuery<string> CreateScope (string sessionToken, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Creates a Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("createSkill")]
+	GraphQLQuery<string> CreateSkill (string sessionToken, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Creates a SubSkill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("createSubSkill")]
+	GraphQLQuery<string> CreateSubSkill (string sessionToken, string name, Func<string, string> fields = null );
 	
 
 	/// <summary>Creates a Tag entity</summary>
@@ -588,6 +626,30 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> DeleteScopeIsScopeOf_ (string sessionToken, string[] isScopeOf_, string name, Func<string, string> fields = null );
 	
 
+	/// <summary>Deletes a Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteSkill")]
+	GraphQLQuery<string> DeleteSkill (string sessionToken, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Deletes Skill_of from Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteSkillSkill_of")]
+	GraphQLQuery<string> DeleteSkillSkill_of (string sessionToken, string name, string[] skill_of, Func<string, string> fields = null );
+	
+
+	/// <summary>Deletes a SubSkill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteSubSkill")]
+	GraphQLQuery<string> DeleteSubSkill (string sessionToken, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Deletes SubSkill_of from SubSkill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteSubSkillSubSkill_of")]
+	GraphQLQuery<string> DeleteSubSkillSubSkill_of (string sessionToken, string name, string[] subSkill_of, Func<string, string> fields = null );
+	
+
 	/// <summary>Deletes a Tag entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteTag")]
@@ -690,6 +752,18 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> MergeScope (string sessionToken, string name, Func<string, string> fields = null );
 	
 
+	/// <summary>Merge a Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("mergeSkill")]
+	GraphQLQuery<string> MergeSkill (string sessionToken, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Merge a SubSkill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("mergeSubSkill")]
+	GraphQLQuery<string> MergeSubSkill (string sessionToken, string name, Func<string, string> fields = null );
+	
+
 	/// <summary>Merge a Tag entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeTag")]
@@ -760,6 +834,18 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateScope")]
 	GraphQLQuery<string> UpdateScope (string sessionToken, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Updates a Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("updateSkill")]
+	GraphQLQuery<string> UpdateSkill (string sessionToken, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Updates a SubSkill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("updateSubSkill")]
+	GraphQLQuery<string> UpdateSubSkill (string sessionToken, string name, Func<string, string> fields = null );
 	
 
 	/// <summary>Updates a Tag entity</summary>

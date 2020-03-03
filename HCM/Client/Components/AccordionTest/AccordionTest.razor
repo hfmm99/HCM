@@ -1,10 +1,43 @@
 ﻿@using Microsoft.AspNetCore.Components;
-@namespace HCM.Client.Components.ScoreRating
+@using HCM.Client.Components.ScoreRating;
+
+@namespace HCM.Client.Components.AccordionTest
+
+<CascadingValue Value="@this">
+    @ChildContent
+</CascadingValue>
+
 
 <div class="accordion" id="accordionExample">
+    @for (int i = 0; i <= Options.Count - 1; i++)
+    {
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#@("op"+i)" aria-expanded="true">
+                        @Options[i].Title
+                    </button>
+                </h5>
+            </div>
+            <div id="@("op"+i)" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                    <ul class="list-group">
+                        @foreach (var subSkill in Options[i].Subskills)
+                        {
+                            <li class="list-group-item">@subSkill.Name</li>
 
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 @code {
+    int i = 0;
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
 
+    internal List<AccordionOption> Options { get; set; } = new List<AccordionOption>();
 }

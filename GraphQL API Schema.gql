@@ -16,6 +16,16 @@ type Employee {
   isFrom: [Events] @relation(name: "IS_FROM", direction: out)
 }
 
+type Skill{
+name: ID!
+skill_of: [SubSkill] @relation(name: "SUBSKILL_OF", direction: in)
+}
+
+type SubSkill{
+name: ID!
+subSkill_of: [Skill] @relation(name: "SUBSKILL_OF", direction: out)
+}
+
 type Team {
   name: ID!
   roles: [Role] @relation(name: "REQUIRES", direction: out)

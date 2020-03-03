@@ -275,6 +275,38 @@ public partial class GqlScope
 
 }
 
+public partial class GqlSkill
+{
+	/// <summary>internal node id</summary>
+	[GraphQLField("_id")]
+	public long? _id { get; set; }
+
+	/// <summary>name of  Skill</summary>
+	[GraphQLField("name")]
+	public string Name { get; set; }
+
+	/// <summary>Skill skill_of SubSkill</summary>
+	[GraphQLField("skill_of")]
+	public List<GqlSubSkill> Skill_of { get; set; }
+
+}
+
+public partial class GqlSubSkill
+{
+	/// <summary>internal node id</summary>
+	[GraphQLField("_id")]
+	public long? _id { get; set; }
+
+	/// <summary>name of  SubSkill</summary>
+	[GraphQLField("name")]
+	public string Name { get; set; }
+
+	/// <summary>SubSkill subSkill_of Skill</summary>
+	[GraphQLField("subSkill_of")]
+	public List<GqlSkill> SubSkill_of { get; set; }
+
+}
+
 public partial class GqlTag
 {
 	/// <summary>internal node id</summary>
@@ -2549,6 +2581,224 @@ public enum Gql_ScopeOrdering
 	name_desc
 }
 
+public class Gql_SkillFilter
+{
+	/// <summary>AND</summary>
+	[JsonProperty(PropertyName = "AND", NullValueHandling = NullValueHandling.Ignore)]
+	public List<Gql_SkillFilter> AND { get; set; }
+
+	/// <summary>OR</summary>
+	[JsonProperty(PropertyName = "OR", NullValueHandling = NullValueHandling.Ignore)]
+	public List<Gql_SkillFilter> OR { get; set; }
+
+	/// <summary>name</summary>
+	[JsonProperty(PropertyName = "name", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name { get; set; }
+
+	/// <summary>name_contains</summary>
+	[JsonProperty(PropertyName = "name_contains", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_contains { get; set; }
+
+	/// <summary>name_ends_with</summary>
+	[JsonProperty(PropertyName = "name_ends_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_ends_with { get; set; }
+
+	/// <summary>name_gt</summary>
+	[JsonProperty(PropertyName = "name_gt", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_gt { get; set; }
+
+	/// <summary>name_gte</summary>
+	[JsonProperty(PropertyName = "name_gte", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_gte { get; set; }
+
+	/// <summary>name_in</summary>
+	[JsonProperty(PropertyName = "name_in", NullValueHandling = NullValueHandling.Ignore)]
+	public List<string> Name_in { get; set; }
+
+	/// <summary>name_lt</summary>
+	[JsonProperty(PropertyName = "name_lt", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_lt { get; set; }
+
+	/// <summary>name_lte</summary>
+	[JsonProperty(PropertyName = "name_lte", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_lte { get; set; }
+
+	/// <summary>name_not</summary>
+	[JsonProperty(PropertyName = "name_not", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_not { get; set; }
+
+	/// <summary>name_not_contains</summary>
+	[JsonProperty(PropertyName = "name_not_contains", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_not_contains { get; set; }
+
+	/// <summary>name_not_ends_with</summary>
+	[JsonProperty(PropertyName = "name_not_ends_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_not_ends_with { get; set; }
+
+	/// <summary>name_not_in</summary>
+	[JsonProperty(PropertyName = "name_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public List<string> Name_not_in { get; set; }
+
+	/// <summary>name_not_starts_with</summary>
+	[JsonProperty(PropertyName = "name_not_starts_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_not_starts_with { get; set; }
+
+	/// <summary>name_starts_with</summary>
+	[JsonProperty(PropertyName = "name_starts_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_starts_with { get; set; }
+
+	/// <summary>skill_of</summary>
+	[JsonProperty(PropertyName = "skill_of", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SubSkillFilter Skill_of { get; set; }
+
+	/// <summary>skill_of_every</summary>
+	[JsonProperty(PropertyName = "skill_of_every", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SubSkillFilter Skill_of_every { get; set; }
+
+	/// <summary>skill_of_in</summary>
+	[JsonProperty(PropertyName = "skill_of_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SubSkillFilter Skill_of_in { get; set; }
+
+	/// <summary>skill_of_none</summary>
+	[JsonProperty(PropertyName = "skill_of_none", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SubSkillFilter Skill_of_none { get; set; }
+
+	/// <summary>skill_of_not</summary>
+	[JsonProperty(PropertyName = "skill_of_not", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SubSkillFilter Skill_of_not { get; set; }
+
+	/// <summary>skill_of_not_in</summary>
+	[JsonProperty(PropertyName = "skill_of_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SubSkillFilter Skill_of_not_in { get; set; }
+
+	/// <summary>skill_of_single</summary>
+	[JsonProperty(PropertyName = "skill_of_single", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SubSkillFilter Skill_of_single { get; set; }
+
+	/// <summary>skill_of_some</summary>
+	[JsonProperty(PropertyName = "skill_of_some", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SubSkillFilter Skill_of_some { get; set; }
+
+}
+
+[JsonConverter(typeof(GraphQLEnumConverter))]
+public enum Gql_SkillOrdering
+{
+	/// <summary>Ascending sort for name</summary>
+	name_asc,
+	/// <summary>Descending sort for name</summary>
+	name_desc
+}
+
+public class Gql_SubSkillFilter
+{
+	/// <summary>AND</summary>
+	[JsonProperty(PropertyName = "AND", NullValueHandling = NullValueHandling.Ignore)]
+	public List<Gql_SubSkillFilter> AND { get; set; }
+
+	/// <summary>OR</summary>
+	[JsonProperty(PropertyName = "OR", NullValueHandling = NullValueHandling.Ignore)]
+	public List<Gql_SubSkillFilter> OR { get; set; }
+
+	/// <summary>name</summary>
+	[JsonProperty(PropertyName = "name", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name { get; set; }
+
+	/// <summary>name_contains</summary>
+	[JsonProperty(PropertyName = "name_contains", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_contains { get; set; }
+
+	/// <summary>name_ends_with</summary>
+	[JsonProperty(PropertyName = "name_ends_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_ends_with { get; set; }
+
+	/// <summary>name_gt</summary>
+	[JsonProperty(PropertyName = "name_gt", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_gt { get; set; }
+
+	/// <summary>name_gte</summary>
+	[JsonProperty(PropertyName = "name_gte", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_gte { get; set; }
+
+	/// <summary>name_in</summary>
+	[JsonProperty(PropertyName = "name_in", NullValueHandling = NullValueHandling.Ignore)]
+	public List<string> Name_in { get; set; }
+
+	/// <summary>name_lt</summary>
+	[JsonProperty(PropertyName = "name_lt", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_lt { get; set; }
+
+	/// <summary>name_lte</summary>
+	[JsonProperty(PropertyName = "name_lte", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_lte { get; set; }
+
+	/// <summary>name_not</summary>
+	[JsonProperty(PropertyName = "name_not", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_not { get; set; }
+
+	/// <summary>name_not_contains</summary>
+	[JsonProperty(PropertyName = "name_not_contains", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_not_contains { get; set; }
+
+	/// <summary>name_not_ends_with</summary>
+	[JsonProperty(PropertyName = "name_not_ends_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_not_ends_with { get; set; }
+
+	/// <summary>name_not_in</summary>
+	[JsonProperty(PropertyName = "name_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public List<string> Name_not_in { get; set; }
+
+	/// <summary>name_not_starts_with</summary>
+	[JsonProperty(PropertyName = "name_not_starts_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_not_starts_with { get; set; }
+
+	/// <summary>name_starts_with</summary>
+	[JsonProperty(PropertyName = "name_starts_with", NullValueHandling = NullValueHandling.Ignore)]
+	public string Name_starts_with { get; set; }
+
+	/// <summary>subSkill_of</summary>
+	[JsonProperty(PropertyName = "subSkill_of", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SkillFilter SubSkill_of { get; set; }
+
+	/// <summary>subSkill_of_every</summary>
+	[JsonProperty(PropertyName = "subSkill_of_every", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SkillFilter SubSkill_of_every { get; set; }
+
+	/// <summary>subSkill_of_in</summary>
+	[JsonProperty(PropertyName = "subSkill_of_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SkillFilter SubSkill_of_in { get; set; }
+
+	/// <summary>subSkill_of_none</summary>
+	[JsonProperty(PropertyName = "subSkill_of_none", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SkillFilter SubSkill_of_none { get; set; }
+
+	/// <summary>subSkill_of_not</summary>
+	[JsonProperty(PropertyName = "subSkill_of_not", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SkillFilter SubSkill_of_not { get; set; }
+
+	/// <summary>subSkill_of_not_in</summary>
+	[JsonProperty(PropertyName = "subSkill_of_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SkillFilter SubSkill_of_not_in { get; set; }
+
+	/// <summary>subSkill_of_single</summary>
+	[JsonProperty(PropertyName = "subSkill_of_single", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SkillFilter SubSkill_of_single { get; set; }
+
+	/// <summary>subSkill_of_some</summary>
+	[JsonProperty(PropertyName = "subSkill_of_some", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_SkillFilter SubSkill_of_some { get; set; }
+
+}
+
+[JsonConverter(typeof(GraphQLEnumConverter))]
+public enum Gql_SubSkillOrdering
+{
+	/// <summary>Ascending sort for name</summary>
+	name_asc,
+	/// <summary>Descending sort for name</summary>
+	name_desc
+}
+
 public class Gql_TagFilter
 {
 	/// <summary>AND</summary>
@@ -3025,6 +3275,26 @@ _id, _ids, filter, first, name, names, offset, orderBy);
 _id, _ids, filter, first, name, names, offset, orderBy);
 	}
 
+	/// <param name="name">name of Skill</param>
+	/// <param name="names">names is list variant of name of Skill</param>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("Skill")]
+	public GraphQLQuery<GqlSkill> Skill (string sessionToken, long? _id = null, long?[] _ids = null, Gql_SkillFilter filter = null, int? first = null, string name = null, string[] names = null, int? offset = null, Gql_SkillOrdering[] orderBy = null, Func<GqlSkill, GqlSkill> fields = null ) 
+	{
+		return new GraphQLQuery<GqlSkill>(_httpClient, _endpoint, true, false, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+_id, _ids, filter, first, name, names, offset, orderBy);
+	}
+
+	/// <param name="name">name of SubSkill</param>
+	/// <param name="names">names is list variant of name of SubSkill</param>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("SubSkill")]
+	public GraphQLQuery<GqlSubSkill> SubSkill (string sessionToken, long? _id = null, long?[] _ids = null, Gql_SubSkillFilter filter = null, int? first = null, string name = null, string[] names = null, int? offset = null, Gql_SubSkillOrdering[] orderBy = null, Func<GqlSubSkill, GqlSubSkill> fields = null ) 
+	{
+		return new GraphQLQuery<GqlSubSkill>(_httpClient, _endpoint, true, false, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+_id, _ids, filter, first, name, names, offset, orderBy);
+	}
+
 	/// <param name="name">name of Tag</param>
 	/// <param name="names">names is list variant of name of Tag</param>
 	/// <param name="sessionToken">Token Used on production</param>
@@ -3270,6 +3540,24 @@ isRequiredBy, name);
 isScopeOf_, name);
 	}
 
+	/// <summary>Adds Skill_of to Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addSkillSkill_of")]
+	public GraphQLQuery<string> AddSkillSkill_of (string sessionToken, string name, string[] skill_of, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name, skill_of);
+	}
+
+	/// <summary>Adds SubSkill_of to SubSkill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addSubSkillSubSkill_of")]
+	public GraphQLQuery<string> AddSubSkillSubSkill_of (string sessionToken, string name, string[] subSkill_of, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name, subSkill_of);
+	}
+
 	/// <summary>Adds IsTagOf to Tag entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addTagIsTagOf")]
@@ -3400,6 +3688,24 @@ name);
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("createScope")]
 	public GraphQLQuery<string> CreateScope (string sessionToken, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name);
+	}
+
+	/// <summary>Creates a Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("createSkill")]
+	public GraphQLQuery<string> CreateSkill (string sessionToken, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name);
+	}
+
+	/// <summary>Creates a SubSkill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("createSubSkill")]
+	public GraphQLQuery<string> CreateSubSkill (string sessionToken, string name, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 name);
@@ -3729,6 +4035,42 @@ name);
 isScopeOf_, name);
 	}
 
+	/// <summary>Deletes a Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteSkill")]
+	public GraphQLQuery<string> DeleteSkill (string sessionToken, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name);
+	}
+
+	/// <summary>Deletes Skill_of from Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteSkillSkill_of")]
+	public GraphQLQuery<string> DeleteSkillSkill_of (string sessionToken, string name, string[] skill_of, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name, skill_of);
+	}
+
+	/// <summary>Deletes a SubSkill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteSubSkill")]
+	public GraphQLQuery<string> DeleteSubSkill (string sessionToken, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name);
+	}
+
+	/// <summary>Deletes SubSkill_of from SubSkill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteSubSkillSubSkill_of")]
+	public GraphQLQuery<string> DeleteSubSkillSubSkill_of (string sessionToken, string name, string[] subSkill_of, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name, subSkill_of);
+	}
+
 	/// <summary>Deletes a Tag entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteTag")]
@@ -3882,6 +4224,24 @@ name);
 name);
 	}
 
+	/// <summary>Merge a Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("mergeSkill")]
+	public GraphQLQuery<string> MergeSkill (string sessionToken, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name);
+	}
+
+	/// <summary>Merge a SubSkill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("mergeSubSkill")]
+	public GraphQLQuery<string> MergeSubSkill (string sessionToken, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name);
+	}
+
 	/// <summary>Merge a Tag entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("mergeTag")]
@@ -3985,6 +4345,24 @@ name);
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("updateScope")]
 	public GraphQLQuery<string> UpdateScope (string sessionToken, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name);
+	}
+
+	/// <summary>Updates a Skill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("updateSkill")]
+	public GraphQLQuery<string> UpdateSkill (string sessionToken, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+name);
+	}
+
+	/// <summary>Updates a SubSkill entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("updateSubSkill")]
+	public GraphQLQuery<string> UpdateSubSkill (string sessionToken, string name, Func<string, string> fields = null ) 
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 name);

@@ -8,11 +8,11 @@
 @inject Blazored.SessionStorage.ISessionStorageService user_name
 
 <div class="row margin-btm-small">
-    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Employee to evaluate..."/>
+    <SearchBox @bind-SearchTerm="SearchTerm" PlaceHolder="Search Employee to evaluate..." />
 </div>
 
 <div class="row">
-    <Grid @ref="grid" Data="@employees"  Pages="@pages" OnPageChange="@OnPageChange">
+    <Grid @ref="grid" Data="@employees" Pages="@pages" OnPageChange="@OnPageChange" OnDoubleClick="@EvaluateEmployee">
         <GridColumns>
             <GridColumn Title="Image">
                 <Template>
@@ -29,9 +29,9 @@
             <GridColumn Field="@nameof(GqlEmployee.Name)" />
             <GridColumn Title="Status">
                 <Template>
-                   @{ 
-                       <center><span class="icon"><i class="oi oi-circle-x" style="color:red;"></i></span></center>
-                   }
+                    @{
+                        <center><span class="icon"><i class="oi oi-circle-x" style="color:red;"></i></span></center>
+                    }
                 </Template>
             </GridColumn>
         </GridColumns>
@@ -67,8 +67,9 @@
 
         var query = gql.Employee(string.Empty, name: user_name_session, fields: e => new GqlEmployee
         {
+            _id = e._id,
             IsMemberOf = new List<GqlTeam>
-                {
+            {
                     new GqlTeam
                     {
                     Name = ""
@@ -77,9 +78,19 @@
         });
         employee = (await query.RunAsync()).FirstOrDefault();
 
-        var query2 = gql.Employee(string.Empty, filter: new Gql_EmployeeFilter { IsMemberOf = new Gql_TeamFilter { Name = employee.IsMemberOf[0].Name }}, fields: e => new GqlEmployee
+        var filter = string.IsNullOrEmpty(searchTerm)
+            ? new Gql_EmployeeFilter { IsMemberOf = new Gql_TeamFilter { Name = employee.IsMemberOf[0].Name } }
+            : new Gql_EmployeeFilter
+            {
+                AND = new List<Gql_EmployeeFilter>
+                {
+                    new Gql_EmployeeFilter { IsMemberOf = new Gql_TeamFilter { Name = employee.IsMemberOf[0].Name } },
+                    new Gql_EmployeeFilter {Name_contains = SearchTerm}
+                    }
+            };
+        var query2 = gql.Employee(string.Empty, filter: filter, fields: e => new GqlEmployee
         {
-            _id =e._id,
+            _id = e._id,
             Name = e.Name,
             Image = e.Image
         });
@@ -106,5 +117,11 @@
     {
         page = e.Page;
         Search();
+    }
+
+    public void EvaluateEmployee()
+    {
+        if (grid.SelectedItem != null)
+            navigationManager.NavigateTo("/evaluation/" + (grid.SelectedItem as GqlEmployee)._id);
     }
 }

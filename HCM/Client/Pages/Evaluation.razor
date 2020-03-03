@@ -1,49 +1,99 @@
-﻿@page "/evaluation"
-    <div class="accordion" id="accordionExample">
-        <div class="card">
-            <div class="card-header" id="headingOne">
-                <h5 class="mb-0">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Collapsible Group Item #1
-                    </button>
-                </h5>
-            </div>
+﻿@page "/evaluation/{Id:int}"
 
-            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                <div class="card-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header" id="headingTwo">
-                <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Collapsible Group Item #2
-                    </button>
-                </h5>
-            </div>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                <div class="card-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header" id="headingThree">
-                <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Collapsible Group Item #3
-                    </button>
-                </h5>
-            </div>
-            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                <div class="card-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                </div>
-            </div>
-        </div>
-    </div>
-@code {
+@using HCM.Client.Components.AccordionTest
+@using HCM.Client.Components;
 
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+@inject Blazored.SessionStorage.ISessionStorageService user_name
+
+<form class="needs-validation">
+    @if (employee != null)
+    {
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="metric">
+                        <span class="icon"><i class="oi oi-clipboard"></i></span>
+                        <p>
+                            <span class="title">Evaluation for</span>
+                            <span class="number">@employee.Name</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <AccordionTest>
+        @if (Skills != null)
+        {
+            @foreach (var skill in Skills)
+            {
+                <AccordionOption Title="@skill.Name" Subskills="@skill.Skill_of" />
+            }
+        }
+    </AccordionTest>
+    <br />
+    <button class="btn btn-primary underline-first-letter" type="button" accesskey="s" @onclick="Save">Save</button>
+    <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
+</form>
+@code{
+    [Parameter]
+    public int Id { get; set; }
+
+    private GraphQLApiClient gql = null;
+    private List<GqlSkill> Skills = null;
+    private GqlEmployee employee = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user_name_session = await user_name.GetItemAsync<string>("user_name_session");
+        if (user_name_session == null)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            await Search();
+        }
+    }
+
+    protected async Task Search()
+    {
+        gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+        var query = gql.Skill(string.Empty, fields: e => new GqlSkill
+        {
+            _id = e._id,
+            Name = e.Name,
+            Skill_of = new List<GqlSubSkill>
+{
+                new GqlSubSkill
+                {
+                    Name = ""
+                }
+            }
+        });
+
+        var query2 = gql.Employee(string.Empty, _id: Id, fields: e => new GqlEmployee
+        {
+            _id = e._id,
+            Name = e.Name
+        });
+
+        Skills = await query.RunAsync();
+        employee = (await query2.RunAsync()).FirstOrDefault();
+        StateHasChanged();
+    }
+
+    public void Cancel()
+    {
+        navigationManager.NavigateTo("/evaluations");
+    }
+
+    public void Save()
+    {
+        navigationManager.NavigateTo("/evaluations");
+    }
 }
