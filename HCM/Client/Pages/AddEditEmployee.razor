@@ -12,79 +12,79 @@
 
     @if (employee != null)
     {
-    <div class="hovereffect">
-        @if (employee.Image == null)
+        <div class="hovereffect">
+            @if (employee.Image == null)
             {
-        <div class="img-thumbnail" style="width: 100px;" />
+                <div class="img-thumbnail" style="width: 100px;" />
             }
             else
             {
-        <img src="/Images/@employee.Image" alt="@employee.Name" class="img-thumbnail img-responsive" />
+                <img src="/Images/@employee.Image" alt="@employee.Name" class="img-thumbnail img-responsive" />
             }
-        <a class="info" @onclick="Change_picture">Change Image</a>
-    </div>
+            <a class="info" @onclick="Change_picture">Change Image</a>
+        </div>
 
-    <div class="form-row">
-        <div class="col">
-            <label for="txtName">Name:</label>
-            <input id="txtName" type="text" class="form-control" placeholder="Enter employee's name" @bind="employee.Name" required autofocus />
-            <div class="invalid-feedback">
-                You must enter a name.
+        <div class="form-row">
+            <div class="col">
+                <label for="txtName">Name:</label>
+                <input id="txtName" type="text" class="form-control" placeholder="Enter employee's name" @bind="employee.Name" required autofocus />
+                <div class="invalid-feedback">
+                    You must enter a name.
+                </div>
+            </div>
+            <div class="col">
+                <label for="txtPhone">Phone:</label>
+                <input id="txtPhone" type="tel" class="form-control" placeholder="Enter employee's phone" @bind="employee.Phone" />
+                <div class="invalid-feedback">
+                    You must enter a valid phone.
+                </div>
             </div>
         </div>
-        <div class="col">
-            <label for="txtPhone">Phone:</label>
-            <input id="txtPhone" type="tel" class="form-control" placeholder="Enter employee's phone" @bind="employee.Phone" />
-            <div class="invalid-feedback">
-                You must enter a valid phone.
+        <div class="form-row">
+            <div class="col">
+                <label for="txtEmail">Email:</label>
+                <input id="txtEmail" type="email" class="form-control" placeholder="Enter employee's email" @bind="employee.Email" />
+                <div class="invalid-feedback">
+                    You must enter a valid email.
+                </div>
+            </div>
+            <div class="col">
+                <label for="dtpDateOfBirth">Date of Birth:</label>
+                <input id="dtpDateOfBirth" type="date" class="form-control" placeholder="Enter employee's email" @bind="employee.DateOfBirth" />
             </div>
         </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="txtEmail">Email:</label>
-            <input id="txtEmail" type="email" class="form-control" placeholder="Enter employee's email" @bind="employee.Email" />
-            <div class="invalid-feedback">
-                You must enter a valid email.
+        <div class="form-row">
+            <div class="col">
+                Gender:
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="rbMale" name="rbGender" class="custom-control-input" checked='@(employee.Gender == "M")' @onchange='(() => employee.Gender = "M")' />
+                    <label for="rbMale" class="custom-control-label">Male</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="rbFemale" name="rbGender" class="custom-control-input" checked='@(employee.Gender == "F")' @onchange='(() => employee.Gender = "F")' />
+                    <label for="rbFemale" class="custom-control-label">Female</label>
+                </div>
             </div>
         </div>
-        <div class="col">
-            <label for="dtpDateOfBirth">Date of Birth:</label>
-            <input id="dtpDateOfBirth" type="date" class="form-control" placeholder="Enter employee's email" @bind="employee.DateOfBirth" />
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            Gender:
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="rbMale" name="rbGender" class="custom-control-input" checked='@(employee.Gender == "M")' @onchange='(() => employee.Gender = "M")' />
-                <label for="rbMale" class="custom-control-label">Male</label>
-            </div>
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="rbFemale" name="rbGender" class="custom-control-input" checked='@(employee.Gender == "F")' @onchange='(() => employee.Gender = "F")' />
-                <label for="rbFemale" class="custom-control-label">Female</label>
+        <!--User and pass-->
+        <div class="form-row">
+            <div class="col">
+                <label for="lblUser">User:</label>
+                <input id="txtUser" type="text" class="form-control" placeholder="User" @bind="employee.User" required autofocus />
             </div>
         </div>
-    </div>
- <!--User and pass-->
-    <div class="form-row">
-        <div class="col">
-            <label for="lblUser">User:</label>
-            <input id="txtUser" type="text" class="form-control" placeholder="User" @bind="employee.User" required autofocus />
+        <div class="form-row">
+            <div class="col">
+                <label for="lblPass">Password:</label>
+                <input id="txtPass" type="password" class="form-control" placeholder="Password" @bind="employee.Password" required autofocus />
+            </div>
         </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="lblPass">Password:</label>
-            <input id="txtPass" type="password" class="form-control" placeholder="Password" @bind="employee.Password" required autofocus />
+        <div class="form-group">
+            <label>Employee's experience:</label>
+            <MultiSelect TItem="GqlExperience" Placeholder="Type to Search" Items="Experiences" Values="employee.Experience" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ExperienceRemoved" OnAddNewItem="@AddNewExperience" />
         </div>
-    </div>
-    <div class="form-group">
-        <label>Employee's experience:</label>
-        <MultiSelect TItem="GqlExperience" Placeholder="Type to Search" Items="Experiences" Values="employee.Experience" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@ExperienceRemoved" OnAddNewItem="@AddNewExperience" />
-    </div>
-    <button class="btn btn-primary underline-first-letter" type="button" accesskey="s" @onclick="Save">Save</button>
-    <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
+        <button class="btn btn-primary underline-first-letter" type="button" accesskey="s" @onclick="Save">Save</button>
+        <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
     }
 </form>
 
@@ -123,7 +123,7 @@
                     Image = e.Image,
                     DateOfBirth = e.DateOfBirth,
                     Experience = new List<GqlExperience>
-                    {
+                {
                         new GqlExperience
                         {
                             Name = ""
@@ -137,7 +137,7 @@
                 employee = (await query.RunAsync()).FirstOrDefault();
             }
             else
-                employee = new GqlEmployee  { Experience = new List<GqlExperience>() };
+                employee = new GqlEmployee { Experience = new List<GqlExperience>() };
 
             ////Load Experiences
             Experiences = await gql.Experience(string.Empty, fields: r => new GqlExperience
@@ -167,7 +167,7 @@
     {
         // Insert newly created experiences, if any
         foreach (var experience in Experiences.Where(s => !s._id.HasValue))
-        await gql.CreateExperience(string.Empty, experience.Name).RunAsync();
+            await gql.CreateExperience(string.Empty, experience.Name).RunAsync();
 
         // Save employee experiences
         await gql.AddEmployeeExperience(string.Empty, name: employee.Name, experience: employee.Experience.Select(s => s.Name).ToArray()).RunAsync();
@@ -175,7 +175,7 @@
         // Delete removed experiences, if any
         var experiencesToRemove = RemovedExperiences.Select(s => s.Name).Except(employee.Experience.Select(es => es.Name));
         if (experiencesToRemove.Any())
-        await gql.DeleteEmployeeExperience(string.Empty, name: employee.Name, experience: experiencesToRemove.ToArray()).RunAsync();
+            await gql.DeleteEmployeeExperience(string.Empty, name: employee.Name, experience: experiencesToRemove.ToArray()).RunAsync();
     }
 
     public void Cancel()

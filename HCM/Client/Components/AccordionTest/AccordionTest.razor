@@ -20,14 +20,41 @@
                 </h5>
             </div>
             <div id="@("op"+i)" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                <div class="card-body">
-                    <ul class="list-group">
-                        @foreach (var subSkill in Options[i].Subskills)
-                        {
-                            <li class="list-group-item">@subSkill.Name</li>
-
-                        }
-                    </ul>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card-body">
+                            <ul class="list-group" style="border:none">
+                                @foreach (var subSkill in Options[i].Subskills)
+                                {
+                                    <li class="list-group-item" style="border:none">@subSkill.Name</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card-body">
+                            <ul class="list-group" style="border:none">
+                                @foreach (var subSkill in Options[i].Subskills)
+                                {
+                                    <li class="list-group-item" style="border:none">
+                                        <div class="container">
+                                            <div class="score-rating">
+                                                <input id="score-rb1" type="radio" name="rating" value="1" /><label for="score-rb1" class="bg--red"
+                                                                                                                    title="Very Poor"></label>
+                                                <input id="score-rb2" type="radio" name="rating" value="2" /><label for="score-rb2" class="bg--orange"
+                                                                                                                    title="Poor"></label>
+                                                <input id="score-rb3" type="radio" name="rating" value="3" checked /><label for="score-rb3" class="bg--yellow"
+                                                                                                                            title="Good"></label>
+                                                <input id="score-rb4" type="radio" name="rating" value="4" /><label for="score-rb4" class="bg--lightgreen"
+                                                                                                                    title="Very Good"></label>
+                                                <input id="score-rb5" type="radio" name="rating" value="5" /><label for="score-rb5" class="bg--green" title="Outstanding"></label>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

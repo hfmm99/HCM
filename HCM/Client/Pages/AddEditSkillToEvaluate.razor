@@ -1,0 +1,124 @@
+﻿@page "/skill/{Id:int}"
+@using HCM.Client.Components
+@using HCM.Client.Components.Modals
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+@inject ModalService ModalService
+@inject Blazored.SessionStorage.ISessionStorageService user_name
+
+<form class="needs-validation">
+    @if(skill != null)
+    {
+    <div class="form-row">
+        <div class="col">
+            <label for="txtName">Name:</label>
+            <input id="txtName" type="text" class="form-control" placeholder="Enter skill's name" @bind="skill.Name" required autofocus />
+            <div class="invalid-feedback">
+                You must enter a name.
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Employee's experience:</label>
+        <MultiSelect TItem="GqlSubSkill" Placeholder="Type to Search" Items="SubSkills" Values="skill.Skill_of" DisplayFieldSelector="@(i => i.Name)" OnValueRemoved="@SubSkillRemoved" OnAddNewItem="@AddNewSubSkill" />
+    </div>
+    <button class="btn btn-primary underline-first-letter" type="button" accesskey="s" @onclick="Save">Save</button>
+    <button class="btn btn-secondary underline-first-letter" accesskey="c" @onclick="Cancel">Cancel</button>
+    }
+</form>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private GraphQLApiClient gql = null;
+    private GqlSkill skill = null;
+
+    private List<GqlSubSkill> SubSkills;
+    private List<GqlSubSkill> RemovedSubSkills;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user_name_session = await user_name.GetItemAsync<string>("user_name_session");
+
+        if (user_name_session == null)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            gql = new GraphQLApiClient(httpClient, "http://localhost:7474/graphql/");
+
+            if (Id > 0)
+            {
+                var query = gql.Skill(string.Empty, _id: Id, fields: e => new GqlSkill
+                {
+                    _id = e._id,
+                    Name = e.Name,
+                    Skill_of = new List<GqlSubSkill>
+                {
+                        new GqlSubSkill
+                        {
+                            Name = ""
+                        }
+                    },
+                });
+
+                skill = (await query.RunAsync()).FirstOrDefault();
+            }
+            else
+                skill = new GqlSkill { Skill_of = new List<GqlSubSkill>() };
+
+            ////Load subskills
+            SubSkills = await gql.SubSkill(string.Empty, fields: r => new GqlSubSkill
+            {
+                _id = r._id,
+                Name = r.Name
+            }).RunAsync();
+
+            RemovedSubSkills = new List<GqlSubSkill>();
+        }
+    }
+
+    public async void Save()
+    {
+        // Save Skill
+        await gql.MergeSkill(string.Empty, name: skill.Name).RunAsync();
+
+        SaveSubSkills();
+        Cancel();
+    }
+
+    private async void SaveSubSkills()
+    {
+        // Insert newly created subskills, if any
+        foreach (var subskill in SubSkills.Where(s => !s._id.HasValue))
+            await gql.CreateSubSkill(string.Empty, subskill.Name).RunAsync();
+
+        // Save skill subskills
+        await gql.AddSkillSkill_of(string.Empty, name: skill.Name, skill_of: skill.Skill_of.Select(s => s.Name).ToArray()).RunAsync();
+
+        // Delete removed experiences, if any
+        var subSkillsToRemove = RemovedSubSkills.Select(s => s.Name).Except(skill.Skill_of.Select(es => es.Name));
+        if (subSkillsToRemove.Any())
+            await gql.DeleteSkillSkill_of(string.Empty, name: skill.Name, skill_of: subSkillsToRemove.ToArray()).RunAsync();
+    }
+
+    public void Cancel()
+    {
+        navigationManager.NavigateTo("/skills");
+    }
+
+    public void AddNewSubSkill(string text)
+    {
+        var newsubSkill = new GqlSubSkill { Name = text };
+        SubSkills.Add(newsubSkill);
+        skill.Skill_of.Add(newsubSkill);
+    }
+
+    public void SubSkillRemoved(GqlSubSkill subskill)
+    {
+        RemovedSubSkills.Add(subskill);
+        skill.Skill_of.Remove(subskill);
+    }
+}
