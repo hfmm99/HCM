@@ -1191,3 +1191,8 @@ button:focus + .menu {
 .bg--green {
     background-color: #00884b;
 }
+
+.evaluated {
+    color: forestgreen;
+    font-size: 1.5em;
+}

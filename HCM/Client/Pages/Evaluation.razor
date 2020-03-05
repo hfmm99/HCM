@@ -92,8 +92,12 @@
         navigationManager.NavigateTo("/evaluations");
     }
 
-    public void Save()
+    public async void Save()
     {
-        navigationManager.NavigateTo("/evaluations");
+        //Save the employee who is doing the event
+        var user_name_session = await user_name.GetItemAsync<string>("user_name_session");       
+        await gql.AddEmployeeEvaluated(string.Empty, name: user_name_session, evaluated: new string[] { employee.Name }).RunAsync();
+
+        Cancel();
     }
 }

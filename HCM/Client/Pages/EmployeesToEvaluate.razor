@@ -30,7 +30,19 @@
             <GridColumn Title="Status">
                 <Template>
                     @{
-                        <center><span class="icon"><i class="oi oi-circle-x" style="color:red;"></i></span></center>
+                        var EmployeeToEvaluate = context as GqlEmployee;
+                        foreach (var evaluated in employee.Evaluated)
+                        {
+                            if (evaluated.Name == EmployeeToEvaluate.Name)
+                            {
+                                @*<center><span class="icon"><i class="oi oi-circle-x" style="color:red;"></i></span></center>*@
+                                <center><span class="icon evaluated"><i class="oi oi-circle-check" title="Evaluated"></i></span></center>
+                            }
+                            @*else
+                            {
+                                <center><span class="icon"><i class="oi oi-circle-check" style="color:forestgreen;"></i></span></center>
+                            }*@
+                        }
                     }
                 </Template>
             </GridColumn>
@@ -69,12 +81,20 @@
         {
             _id = e._id,
             IsMemberOf = new List<GqlTeam>
-            {
+{
                     new GqlTeam
                     {
                     Name = ""
                     }
+                },
+            Name = e.Name,
+            Evaluated = new List<GqlEmployee>
+{
+                new GqlEmployee
+                {
+                    Name = ""
                 }
+            }
         });
         employee = (await query.RunAsync()).FirstOrDefault();
 
@@ -86,21 +106,18 @@
                 {
                     new Gql_EmployeeFilter { IsMemberOf = new Gql_TeamFilter { Name = employee.IsMemberOf[0].Name } },
                     new Gql_EmployeeFilter {Name_contains = SearchTerm}
-                    }
+                }
             };
-        var query2 = gql.Employee(string.Empty, filter: filter, fields: e => new GqlEmployee
+        var query2 = gql.Employee(string.Empty, filter: filter, orderBy: new[] { sorting }, fields: e => new GqlEmployee
         {
             _id = e._id,
             Name = e.Name,
-            Image = e.Image
+            Image = e.Image,
         });
 
         employees = await query2.RunAsync();
         pages = Convert.ToInt32(Math.Ceiling(((await gql.EmployeeCount(string.Empty).RunAsync()).FirstOrDefault() ?? 1) / 10M));
         StateHasChanged();
-
-        Console.WriteLine(employee.IsMemberOf[0].Name);
-        Console.WriteLine(employees.Count);
     }
 
     private string searchTerm;
@@ -123,5 +140,16 @@
     {
         if (grid.SelectedItem != null)
             navigationManager.NavigateTo("/evaluation/" + (grid.SelectedItem as GqlEmployee)._id);
+    }
+
+    public void OnGridSort(SortEventArgs e)
+    {
+        switch (e.ColumnName)
+        {
+            case nameof(GqlEmployee.Name):
+                sorting = e.SortingAscending ? Gql_EmployeeOrdering.name_asc : Gql_EmployeeOrdering.name_desc;
+                break;
+        }
+        Search();
     }
 }

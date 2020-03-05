@@ -14,6 +14,7 @@ type Employee {
   experience: [Experience] @relation(name: "KNOWS", direction: out)
   isTo: [Events] @relation(name: "TO", direction: in)
   isFrom: [Events] @relation(name: "IS_FROM", direction: out)
+  evaluated: [Employee] @relation(name: "EVALUATED", direction: out)
 }
 
 type Skill{

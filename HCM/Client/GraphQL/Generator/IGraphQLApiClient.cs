@@ -164,6 +164,12 @@ public interface IGraphQLApiClient
 	GraphQLQuery<string> AddCountryEmployees (string sessionToken, string[] employees, string name, Func<string, string> fields = null );
 	
 
+	/// <summary>Adds Evaluated to Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addEmployeeEvaluated")]
+	GraphQLQuery<string> AddEmployeeEvaluated (string sessionToken, string[] evaluated, string name, Func<string, string> fields = null );
+	
+
 	/// <summary>Adds Experience to Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addEmployeeExperience")]
@@ -450,6 +456,12 @@ public interface IGraphQLApiClient
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("deleteEmployee")]
 	GraphQLQuery<string> DeleteEmployee (string sessionToken, string name, Func<string, string> fields = null );
+	
+
+	/// <summary>Deletes Evaluated from Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteEmployeeEvaluated")]
+	GraphQLQuery<string> DeleteEmployeeEvaluated (string sessionToken, string[] evaluated, string name, Func<string, string> fields = null );
 	
 
 	/// <summary>Deletes Experience from Employee entity</summary>

@@ -53,6 +53,10 @@ public partial class GqlEmployee
 	[GraphQLField("email")]
 	public string Email { get; set; }
 
+	/// <summary>Employee evaluated Employee</summary>
+	[GraphQLField("evaluated")]
+	public List<GqlEmployee> Evaluated { get; set; }
+
 	/// <summary>Employee experience Experience</summary>
 	[GraphQLField("experience")]
 	public List<GqlExperience> Experience { get; set; }
@@ -666,6 +670,38 @@ public class Gql_EmployeeFilter
 	/// <summary>email_starts_with</summary>
 	[JsonProperty(PropertyName = "email_starts_with", NullValueHandling = NullValueHandling.Ignore)]
 	public string Email_starts_with { get; set; }
+
+	/// <summary>evaluated</summary>
+	[JsonProperty(PropertyName = "evaluated", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Evaluated { get; set; }
+
+	/// <summary>evaluated_every</summary>
+	[JsonProperty(PropertyName = "evaluated_every", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Evaluated_every { get; set; }
+
+	/// <summary>evaluated_in</summary>
+	[JsonProperty(PropertyName = "evaluated_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Evaluated_in { get; set; }
+
+	/// <summary>evaluated_none</summary>
+	[JsonProperty(PropertyName = "evaluated_none", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Evaluated_none { get; set; }
+
+	/// <summary>evaluated_not</summary>
+	[JsonProperty(PropertyName = "evaluated_not", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Evaluated_not { get; set; }
+
+	/// <summary>evaluated_not_in</summary>
+	[JsonProperty(PropertyName = "evaluated_not_in", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Evaluated_not_in { get; set; }
+
+	/// <summary>evaluated_single</summary>
+	[JsonProperty(PropertyName = "evaluated_single", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Evaluated_single { get; set; }
+
+	/// <summary>evaluated_some</summary>
+	[JsonProperty(PropertyName = "evaluated_some", NullValueHandling = NullValueHandling.Ignore)]
+	public Gql_EmployeeFilter Evaluated_some { get; set; }
 
 	/// <summary>experience</summary>
 	[JsonProperty(PropertyName = "experience", NullValueHandling = NullValueHandling.Ignore)]
@@ -3342,6 +3378,15 @@ employees, name);
 employees, name);
 	}
 
+	/// <summary>Adds Evaluated to Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("addEmployeeEvaluated")]
+	public GraphQLQuery<string> AddEmployeeEvaluated (string sessionToken, string[] evaluated, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+evaluated, name);
+	}
+
 	/// <summary>Adds Experience to Employee entity</summary>
 	/// <param name="sessionToken">Token Used on production</param>
 	[GraphQLField("addEmployeeExperience")]
@@ -3772,6 +3817,15 @@ employees, name);
 	{
 		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
 name);
+	}
+
+	/// <summary>Deletes Evaluated from Employee entity</summary>
+	/// <param name="sessionToken">Token Used on production</param>
+	[GraphQLField("deleteEmployeeEvaluated")]
+	public GraphQLQuery<string> DeleteEmployeeEvaluated (string sessionToken, string[] evaluated, string name, Func<string, string> fields = null ) 
+	{
+		return new GraphQLQuery<string>(_httpClient, _endpoint, false, true, MethodBase.GetCurrentMethod(), fields, sessionToken, 
+evaluated, name);
 	}
 
 	/// <summary>Deletes Experience from Employee entity</summary>
